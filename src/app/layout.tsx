@@ -41,8 +41,8 @@ export const metadata: Metadata = {
       'Corporate, medical, and leisure travel coordinated through New Delhi and Dubai.',
   },
   icons: {
-    icon: '/brand/ezyquick-logo.png',
-    apple: '/brand/ezyquick-logo.png',
+    icon: assetPath('/brand/ezyquick-logo.png'),
+    apple: assetPath('/brand/ezyquick-logo.png'),
   },
 };
 
