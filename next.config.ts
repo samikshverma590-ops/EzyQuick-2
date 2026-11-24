@@ -17,7 +17,7 @@ const securityHeaders = [
       "img-src 'self' data: blob: https:",
       "font-src 'self' data: https:",
       "connect-src 'self' https:",
-      strictFrame ? "frame-ancestors 'none'" : "frame-ancestors 'self' https: http://localhost:* http://127.0.0.1:*",
+      ...(strictFrame ? ["frame-ancestors 'none'"] : []),
       "base-uri 'self'",
       "form-action 'self'",
     ].join('; '),
