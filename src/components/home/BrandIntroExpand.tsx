@@ -7,6 +7,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { usePage } from '@/engine/next';
 import { prefersReducedMotion, isMobile } from '@/engine';
+import { assetPath } from '@/lib/asset-path';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -99,7 +100,7 @@ export function BrandIntroExpand() {
         >
           <div data-expand-img className="relative h-full w-full">
             <Image
-              src="/images/editorial/expanding-frame.jpg"
+              src={assetPath('/images/editorial/expanding-frame.jpg')}
               alt="Wooden boat bow facing tranquil emerald alpine waters and mountains"
               fill
               sizes="(max-width: 768px) 100vw, 92vw"

@@ -1,5 +1,7 @@
 import type { NextConfig } from 'next';
 
+const isGitHubPages = process.env.GITHUB_PAGES === 'true';
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
 const strictFrame = process.env.STRICT_FRAME_DENY === 'true';
 
 const securityHeaders = [
@@ -25,6 +27,13 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  ...(isGitHubPages
+    ? {
+        output: 'export' as const,
+        basePath,
+        trailingSlash: true,
+      }
+    : {}),
   turbopack: {
     rules: {
       '*.css': {
@@ -34,18 +43,23 @@ const nextConfig: NextConfig = {
     },
   },
   images: {
+    unoptimized: isGitHubPages,
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1440, 1920],
   },
   poweredByHeader: false,
-  async headers() {
-    return [
-      {
-        source: '/(.*)',
-        headers: securityHeaders,
-      },
-    ];
-  },
+  ...(!isGitHubPages
+    ? {
+        async headers() {
+          return [
+            {
+              source: '/(.*)',
+              headers: securityHeaders,
+            },
+          ];
+        },
+      }
+    : {}),
 };
 
 export default nextConfig;

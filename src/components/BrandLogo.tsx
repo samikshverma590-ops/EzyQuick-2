@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { SITE } from '@/data/site';
+import { assetPath } from '@/lib/asset-path';
 
 interface BrandLogoProps {
   /** 'plain' sits directly on white/light surfaces; 'plate' adds a crisp white surface plate over dark photography */
@@ -26,6 +27,7 @@ export function BrandLogo({
   className = '',
 }: BrandLogoProps) {
   const dims = SIZE_MAP[size];
+  const logoSrc = assetPath(SITE.logoPath);
 
   if (variant === 'plate') {
     return (
@@ -33,7 +35,7 @@ export function BrandLogo({
         className={`inline-flex items-center bg-white px-3.5 py-2 shadow-[0_6px_24px_rgba(8,20,38,0.16)] rounded-[3px] ${className}`}
       >
         <Image
-          src={SITE.logoPath}
+          src={logoSrc}
           alt={SITE.logoAlt}
           width={dims.width}
           height={dims.height}
@@ -48,7 +50,7 @@ export function BrandLogo({
   return (
     <span className={`inline-flex items-center ${className}`}>
       <Image
-        src={SITE.logoPath}
+        src={logoSrc}
         alt={SITE.logoAlt}
         width={dims.width}
         height={dims.height}

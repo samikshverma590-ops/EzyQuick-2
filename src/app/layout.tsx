@@ -7,6 +7,7 @@ import { WhatsAppDock } from '@/components/WhatsAppDock';
 import { MotionEngine } from '@/engine/next';
 import { OFFICES, SITE } from '@/data/site';
 import { SERVICES } from '@/data/services';
+import { assetPath } from '@/lib/asset-path';
 import './globals.css';
 
 export const viewport: Viewport = {
@@ -118,7 +119,7 @@ export default function RootLayout({
         <div id="brand-intro" role="status" aria-label="Loading EzyQuick">
           <div data-intro-out className="flex flex-col items-center gap-4 px-6">
             <Image
-              src={SITE.logoPath}
+              src={assetPath(SITE.logoPath)}
               alt={SITE.logoAlt}
               width={220}
               height={88}

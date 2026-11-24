@@ -6,8 +6,10 @@ import { ArrowUpRight, CheckCircle2, AlertCircle, ShieldCheck } from 'lucide-rea
 import {
   DESTINATION_OPTIONS,
   SERVICE_OPTIONS,
+  enquirySchema,
 } from '@/lib/enquiry-schema';
 import { buildWhatsAppUrl, SITE } from '@/data/site';
+import { BASE_PATH } from '@/lib/asset-path';
 
 interface EnquiryFormProps {
   defaultService?: (typeof SERVICE_OPTIONS)[number];
@@ -107,12 +109,38 @@ export function EnquiryForm({
     setFieldErrors({});
     setServerMessage('');
 
+    // Validate client-side first with shared Zod schema for instant accessible errors
+    const localCheck = enquirySchema.safeParse(form);
+    if (!localCheck.success) {
+      const errs: Record<string, string> = {};
+      for (const issue of localCheck.error.issues) {
+        const key = String(issue.path[0] || 'form');
+        if (!errs[key]) errs[key] = issue.message;
+      }
+      setFieldErrors(errs);
+      setStatus('error');
+      setServerMessage('Please review the highlighted fields before submitting.');
+      return;
+    }
+
     try {
-      const res = await fetch('/api/enquiry', {
+      const res = await fetch(`${BASE_PATH}/api/enquiry`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
       });
+
+      const contentType = res.headers.get('content-type') || '';
+      if (res.status === 404 || res.status === 405 || !contentType.includes('application/json')) {
+        // Static hosting mode (e.g. GitHub Pages preview without server runtime): be 100% honest
+        setStatus('success');
+        setReferenceId('STATIC-PREVIEW');
+        setServerMessage(
+          'Your travel brief has been validated. Because this live preview is hosted statically on GitHub Pages without a mail server, tap Continue via WhatsApp or Email below to send it directly to our desk.'
+        );
+        return;
+      }
+
       const json = await res.json();
 
       if (!res.ok || !json.ok) {

@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRight, MapPin, Phone, ShieldCheck } from 'lucide-react';
 import { APPROACH_CHAPTERS, OFFICES, SITE, WHY_EZYQUICK_PILLARS } from '@/data/site';
+import { assetPath } from '@/lib/asset-path';
 
 export const metadata: Metadata = {
   title: 'About EzyQuick — Travel Made Easy Across New Delhi & Dubai',
@@ -43,7 +44,7 @@ export default function AboutPage() {
 
         <div className="relative aspect-[21/9] w-full overflow-hidden bg-[var(--color-bg-dark)]">
           <Image
-            src="/images/editorial/executive-lounge.jpg"
+            src={assetPath('/images/editorial/executive-lounge.jpg')}
             alt="Architectural international travel consultation lounge"
             fill
             priority

@@ -6,6 +6,7 @@ import { ArrowDown, ArrowUpRight } from 'lucide-react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SITE } from '@/data/site';
+import { assetPath } from '@/lib/asset-path';
 import { usePage } from '@/engine/next';
 import { prefersReducedMotion, scrollToTarget } from '@/engine';
 
@@ -41,7 +42,7 @@ export function HeroSection() {
         aria-hidden="true"
       >
         <Image
-          src="/images/hero/main-hero.jpg"
+          src={assetPath('/images/hero/main-hero.jpg')}
           alt="Dubai skyline bathed in golden twilight light"
           fill
           priority
