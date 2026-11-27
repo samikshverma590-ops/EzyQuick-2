@@ -1,91 +1,57 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowUpRight } from 'lucide-react';
-import { SERVICES } from '@/data/services';
+import { ArrowRight } from 'lucide-react';
+import { ServiceShowcase } from '@/components/services/ServiceShowcase';
+import { SITE } from '@/data/site';
+import { buildBreadcrumbJsonLd } from '@/lib/structured-data';
 
 export const metadata: Metadata = {
-  title: 'Travel Services — Corporate, Medical, Leisure, Visas & More',
+  title: 'Travel Services — Corporate, Medical, Leisure, Visas, Flights & MICE',
   description:
-    'Explore all nine travel services coordinated by EzyQuick: Corporate Travel, Medical Travel, Leisure Travel, Visa Services, Air Tickets, Hotel Bookings, Forex Services, Travel Insurance, and MICE Services.',
+    'Explore all nine EzyQuick travel services: Corporate Travel, Medical Travel, Leisure Holidays, Visa Services, Air Tickets, Hotel Bookings, Forex, Travel Insurance, and MICE.',
+  alternates: { canonical: `${SITE.url}/services/` },
+  openGraph: {
+    title: 'Nine Travel Services | EzyQuick',
+    description:
+      'Complete corporate, medical, and leisure travel coordination from New Delhi and Dubai.',
+    url: `${SITE.url}/services/`,
+  },
 };
 
-export default function ServicesDirectoryPage() {
+export default function ServicesPage() {
+  const breadcrumb = buildBreadcrumbJsonLd([
+    { name: 'Home', path: '/' },
+    { name: 'Services', path: '/services/' },
+  ]);
+
   return (
-    <div className="pt-28 sm:pt-36 pb-[var(--section-space)] bg-[var(--color-bg-primary)]">
-      <div className="site-container space-y-14">
-        <nav aria-label="Breadcrumb" className="text-xs text-[var(--color-text-muted)]">
-          <Link href="/" className="hover:text-[var(--color-brand-primary-ink)]">
-            Home
-          </Link>
-          <span className="mx-2">/</span>
-          <span className="text-[var(--color-text-primary)] font-medium">Services</span>
-        </nav>
-
-        <header className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-end pb-10 border-b border-[var(--color-border)]">
-          <div className="lg:col-span-8 space-y-4">
-            <p className="t-meta text-[var(--color-brand-primary-ink)]">
-              Nine Travel Disciplines · One Point of Contact
+    <main className="pt-28 pb-24 sm:pt-32">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+      />
+      <div className="mx-auto max-w-[1440px] px-4 sm:px-8">
+        <div className="mb-12 flex flex-col justify-between gap-6 border-b border-[#0C1E3A]/12 pb-10 lg:flex-row lg:items-end">
+          <div className="max-w-3xl">
+            <p className="font-mono-hud text-xs font-semibold tracking-wider text-[#0059FD] uppercase">
+              Nine Travel Disciplines
             </p>
-            <h1 className="t-hero text-[var(--color-text-primary)]">
-              Every service your journey requires.
+            <h1 className="font-display mt-2 text-4xl font-extrabold leading-[0.98] text-[#0C1E3A] sm:text-6xl">
+              Travel Services built for both business and leisure.
             </h1>
-          </div>
-          <div className="lg:col-span-4 space-y-4">
-            <p className="text-sm sm:text-base text-[var(--color-text-secondary)] leading-relaxed">
-              Combine flights, hotels, visa guidance, and destination planning—or reach out for a
-              single specialised service through our New Delhi and Dubai desks.
+            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-[#475B78] sm:text-base">
+              Every service is coordinated by our New Delhi and Dubai desks with clear pre-booking
+              proposals, organised documentation checklists, and single-point human support.
             </p>
-            <Link href="/contact#enquiry" className="btn-ezy btn-primary !min-h-[44px]">
-              <span>Plan Your Journey</span>
-              <ArrowUpRight className="btn-arrow h-4 w-4" aria-hidden="true" />
-            </Link>
           </div>
-        </header>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
-          {SERVICES.map((service) => (
-            <Link
-              key={service.slug}
-              href={`/services/${service.slug}`}
-              className="group bg-white border border-[var(--color-border)] overflow-hidden flex flex-col justify-between"
-            >
-              <div className="media-frame relative aspect-[16/10] w-full bg-[var(--color-bg-dark)]">
-                <Image
-                  src={service.image}
-                  alt={service.imageAlt}
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  className="object-cover"
-                />
-                <span className="absolute top-3.5 left-3.5 bg-white/95 text-[var(--color-brand-primary-ink)] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] tabular-nums">
-                  {service.index} · {service.shortLabel}
-                </span>
-              </div>
-
-              <div className="p-6 flex-1 flex flex-col justify-between gap-5">
-                <div className="space-y-2.5">
-                  <p className="text-xs text-[var(--color-text-muted)]">{service.category}</p>
-                  <h2 className="font-display text-3xl text-[var(--color-text-primary)] group-hover:text-[var(--color-brand-primary-ink)] transition-colors">
-                    {service.name}
-                  </h2>
-                  <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
-                    {service.summary}
-                  </p>
-                </div>
-
-                <div className="pt-4 border-t border-[var(--color-border)] flex items-center justify-between text-xs font-semibold uppercase tracking-[0.1em] text-[var(--color-brand-primary-ink)]">
-                  <span>Explore service</span>
-                  <ArrowUpRight
-                    className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                    aria-hidden="true"
-                  />
-                </div>
-              </div>
-            </Link>
-          ))}
+          <Link href="/plan-your-journey/" className="btn-kinetic self-start px-6 py-3 text-sm lg:self-auto">
+            <span>Start an Enquiry</span>
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          </Link>
         </div>
+
+        <ServiceShowcase />
       </div>
-    </div>
+    </main>
   );
 }

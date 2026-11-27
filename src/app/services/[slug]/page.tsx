@@ -1,298 +1,194 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ArrowUpRight, Info } from 'lucide-react';
-import { SERVICES, getServiceBySlug } from '@/data/services';
-import { DESTINATIONS } from '@/data/destinations';
-import { FaqAccordion } from '@/components/FaqAccordion';
-import { EnquiryForm } from '@/components/EnquiryForm';
+import { ArrowLeft, ArrowRight, CheckCircle2, Info } from 'lucide-react';
+import { getServiceBySlug, SERVICES } from '@/data/services';
 import { SITE } from '@/data/site';
-import type { SERVICE_OPTIONS } from '@/lib/enquiry-schema';
-
-interface PageProps {
-  params: Promise<{ slug: string }>;
-}
+import { FaqAccordion } from '@/components/services/FaqAccordion';
+import { buildBreadcrumbJsonLd } from '@/lib/structured-data';
 
 export function generateStaticParams() {
-  return SERVICES.map((s) => ({ slug: s.slug }));
+  return SERVICES.map((service) => ({ slug: service.slug }));
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
   const { slug } = await params;
   const service = getServiceBySlug(slug);
   if (!service) return { title: 'Service Not Found' };
 
   return {
-    title: `${service.name} — EzyQuick Travel Desk`,
+    title: `${service.name} — ${service.shortLabel}`,
     description: service.summary,
-    alternates: { canonical: `/services/${service.slug}` },
+    alternates: { canonical: `${SITE.url}/services/${service.slug}/` },
+    openGraph: {
+      title: `${service.name} | EzyQuick`,
+      description: service.summary,
+      url: `${SITE.url}/services/${service.slug}/`,
+    },
   };
 }
 
-export default async function ServiceDetailPage({ params }: PageProps) {
+export default async function ServiceDetailPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
   const { slug } = await params;
   const service = getServiceBySlug(slug);
   if (!service) notFound();
 
   const related = service.relatedSlugs
     .map((s) => getServiceBySlug(s))
-    .filter((item): item is NonNullable<typeof item> => Boolean(item));
+    .filter((s): s is NonNullable<typeof s> => Boolean(s));
 
-  const breadcrumbJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: SITE.url },
-      { '@type': 'ListItem', position: 2, name: 'Services', item: `${SITE.url}/services` },
-      {
-        '@type': 'ListItem',
-        position: 3,
-        name: service.name,
-        item: `${SITE.url}/services/${service.slug}`,
-      },
-    ],
-  };
+  const breadcrumb = buildBreadcrumbJsonLd([
+    { name: 'Home', path: '/' },
+    { name: 'Services', path: '/services/' },
+    { name: service.name, path: `/services/${service.slug}/` },
+  ]);
 
   return (
-    <>
+    <main className="pt-28 pb-24 sm:pt-32">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
       />
+      <div className="mx-auto max-w-[1280px] px-4 sm:px-8">
+        <Link
+          href="/services/"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#475B78] hover:text-[#0059FD]"
+        >
+          <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
+          <span>Back to all 9 services</span>
+        </Link>
 
-      {/* Full-Bleed Service Hero */}
-      <section className="relative min-h-[76svh] flex flex-col justify-end bg-[var(--color-bg-dark)] text-white pt-32 pb-12 overflow-hidden">
-        <div className="absolute inset-0" aria-hidden="true">
-          <Image
-            src={service.image}
-            alt={service.imageAlt}
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-          />
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                'linear-gradient(180deg, rgba(8,20,38,0.62) 0%, rgba(8,20,38,0.3) 44%, rgba(8,20,38,0.9) 100%)',
-            }}
-          />
-        </div>
-
-        <div className="site-container relative z-10 space-y-5">
-          <nav aria-label="Breadcrumb" className="text-xs text-white/75">
-            <Link href="/" className="hover:text-white">
-              Home
-            </Link>
-            <span className="mx-2">/</span>
-            <Link href="/services" className="hover:text-white">
-              Services
-            </Link>
-            <span className="mx-2">/</span>
-            <span className="text-white">{service.name}</span>
-          </nav>
-
-          <p className="t-meta text-[var(--color-brand-secondary)]">
-            {service.index} · {service.category}
-          </p>
-          <h1 className="t-hero text-white max-w-[16ch]">{service.name}</h1>
-          <p className="text-lg sm:text-xl text-white/88 max-w-2xl leading-relaxed">
-            {service.tagline}
-          </p>
-
-          <div className="pt-2 flex flex-wrap gap-3.5">
-            <a href="#service-enquiry" className="btn-ezy btn-light">
-              <span>{service.ctaLabel}</span>
-              <ArrowUpRight className="btn-arrow h-4 w-4" aria-hidden="true" />
-            </a>
-            <Link href="/services" className="btn-ezy btn-outline-light">
-              <span>All nine services</span>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Editorial Intro + Transparency Notice */}
-      <section className="bg-[var(--color-bg-primary)] py-[var(--section-space)] border-b border-[var(--color-border)]">
-        <div className="site-container grid grid-cols-1 lg:grid-cols-12 gap-12">
-          <div className="lg:col-span-6 space-y-5">
-            <p className="t-meta text-[var(--color-brand-primary-ink)]">Overview</p>
-            <h2 className="t-display text-[var(--color-text-primary)]">{service.headline}</h2>
-            <p className="text-base sm:text-lg text-[var(--color-text-secondary)] leading-relaxed">
+        {/* Hero Split */}
+        <div className="mt-6 grid gap-10 lg:grid-cols-12 lg:items-center">
+          <div className="lg:col-span-6">
+            <span className="font-mono-hud text-xs font-semibold tracking-wider text-[#0059FD] uppercase">
+              {service.index} · {service.category}
+            </span>
+            <h1 className="font-display mt-2 text-4xl font-extrabold leading-[0.98] text-[#0C1E3A] sm:text-5xl">
+              {service.name}
+            </h1>
+            <p className="font-display mt-4 text-xl font-bold text-[#174A9C]">{service.headline}</p>
+            <p className="mt-4 text-sm leading-relaxed text-[#475B78] sm:text-base">
               {service.editorialIntro}
             </p>
-            {service.transparencyNote && (
-              <div className="flex items-start gap-3 bg-white border-l-4 border-[var(--color-brand-primary)] p-5 text-sm text-[var(--color-text-primary)]">
-                <Info
-                  className="h-5 w-5 text-[var(--color-brand-primary)] shrink-0 mt-0.5"
-                  aria-hidden="true"
-                />
-                <p className="leading-relaxed">{service.transparencyNote}</p>
-              </div>
-            )}
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Link
+                href={`/plan-your-journey/?service=${encodeURIComponent(service.name)}`}
+                className="btn-kinetic px-6 py-3 text-sm"
+              >
+                <span>{service.ctaLabel}</span>
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Link>
+              <Link href="/contact/" className="btn-outline-kinetic px-5 py-3 text-sm">
+                <span>Contact Delhi or Dubai Desk</span>
+              </Link>
+            </div>
           </div>
 
-          {/* Scope Ledger */}
-          <div className="lg:col-span-6 bg-white border border-[var(--color-border)] p-6 sm:p-8 space-y-5">
-            <p className="t-meta text-[var(--color-brand-primary-ink)]">How We Can Help</p>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
-              {service.scope.map((item, idx) => (
-                <li
-                  key={item}
-                  className="border-t border-[var(--color-border)] pt-3.5 space-y-1"
-                >
-                  <span className="t-meta text-[var(--color-brand-primary-ink)]">
-                    0{idx + 1}
-                  </span>
-                  <p className="text-sm font-medium text-[var(--color-text-primary)] leading-snug">
-                    {item}
-                  </p>
+          <div className="img-frame rounded-3xl border border-[#0C1E3A]/12 shadow-xl lg:col-span-6">
+            <img
+              src={service.image}
+              alt={service.imageAlt}
+              className="aspect-[16/11] w-full object-cover"
+            />
+          </div>
+        </div>
+
+        {/* Mandatory Transparency Notice */}
+        {service.transparencyNote && (
+          <div className="mt-10 flex items-start gap-3 rounded-2xl border border-[#174A9C]/25 bg-[#174A9C]/8 p-5 text-sm leading-relaxed text-[#0C1E3A]">
+            <Info className="mt-0.5 h-5 w-5 shrink-0 text-[#174A9C]" aria-hidden="true" />
+            <p>{service.transparencyNote}</p>
+          </div>
+        )}
+
+        {/* Scope & Benefits */}
+        <div className="mt-14 grid gap-8 lg:grid-cols-12">
+          <div className="rounded-3xl border border-[#0C1E3A]/12 bg-[#FFFFFF] p-6 sm:p-8 lg:col-span-6">
+            <h2 className="font-display text-2xl font-bold text-[#0C1E3A]">What We Coordinate</h2>
+            <ul className="mt-5 space-y-3">
+              {service.scope.map((item) => (
+                <li key={item} className="flex items-start gap-2.5 text-sm text-[#0C1E3A]">
+                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#0059FD]" aria-hidden="true" />
+                  <span>{item}</span>
                 </li>
               ))}
             </ul>
           </div>
-        </div>
-      </section>
 
-      {/* Benefits & 4-Step Process */}
-      <section className="bg-white py-[var(--section-space)] border-b border-[var(--color-border)]">
-        <div className="site-container space-y-16">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="space-y-4 lg:col-span-6">
+            <h2 className="font-display text-2xl font-bold text-[#0C1E3A]">Key Strengths</h2>
             {service.benefits.map((b) => (
-              <article
+              <div
                 key={b.title}
-                className="bg-[var(--color-bg-primary)] border border-[var(--color-border)] p-6 space-y-3"
+                className="rounded-3xl border border-[#0C1E3A]/12 bg-[#FFFFFF] p-6"
               >
-                <h3 className="font-display text-2xl sm:text-3xl text-[var(--color-text-primary)]">
-                  {b.title}
-                </h3>
-                <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
-                  {b.detail}
-                </p>
-              </article>
-            ))}
-          </div>
-
-          <div className="space-y-8">
-            <div className="space-y-2">
-              <p className="t-meta text-[var(--color-brand-primary-ink)]">How It Works</p>
-              <h2 className="t-title text-[var(--color-text-primary)]">
-                Clear steps from first message to confirmation.
-              </h2>
-            </div>
-            <ol className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-              {service.processSteps.map((s) => (
-                <li
-                  key={s.step}
-                  className="border-t-2 border-[var(--color-brand-primary)] pt-4 space-y-2"
-                >
-                  <span className="t-meta text-[var(--color-brand-primary-ink)]">{s.step}</span>
-                  <p className="font-display text-2xl leading-snug text-[var(--color-text-primary)]">
-                    {s.detail}
-                  </p>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </div>
-      </section>
-
-      {/* Leisure Travel Special: Quick Destination Showcase */}
-      {service.slug === 'leisure-travel' && (
-        <section className="bg-[var(--color-bg-secondary)] py-[var(--section-space-tight)] border-b border-[var(--color-border)]">
-          <div className="site-container space-y-8">
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-              <div className="space-y-2">
-                <p className="t-meta text-[var(--color-brand-primary-ink)]">
-                  India &amp; International
-                </p>
-                <h2 className="t-title text-[var(--color-text-primary)]">
-                  All 14 advertised holiday destinations.
-                </h2>
+                <h3 className="font-display text-lg font-bold text-[#0C1E3A]">{b.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-[#475B78]">{b.detail}</p>
               </div>
-              <Link href="/destinations" className="editorial-link text-sm">
-                <span>Open interactive destination atlas</span>
-                <ArrowUpRight className="link-arrow h-4 w-4" aria-hidden="true" />
-              </Link>
-            </div>
-            <div className="flex flex-wrap gap-2.5">
-              {DESTINATIONS.map((d) => (
-                <Link
-                  key={d.slug}
-                  href={`/destinations/${d.slug}`}
-                  className="bg-white border border-[var(--color-border)] px-4 py-2.5 text-sm font-medium text-[var(--color-text-primary)] hover:border-[var(--color-brand-primary)] hover:text-[var(--color-brand-primary-ink)] transition-colors"
-                >
-                  {d.name} <span className="text-xs text-[var(--color-text-muted)]">· {d.country}</span>
-                </Link>
-              ))}
-            </div>
+            ))}
           </div>
-        </section>
-      )}
-
-      {/* FAQs */}
-      <section className="bg-[var(--color-bg-primary)] py-[var(--section-space)] border-b border-[var(--color-border)]">
-        <div className="site-container max-w-4xl space-y-8">
-          <div className="space-y-2">
-            <p className="t-meta text-[var(--color-brand-primary-ink)]">Questions Answered</p>
-            <h2 className="t-title text-[var(--color-text-primary)]">
-              Common questions about {service.name}.
-            </h2>
-          </div>
-          <FaqAccordion items={service.faqs} />
         </div>
-      </section>
 
-      {/* Pre-Selected Service Enquiry */}
-      <section
-        id="service-enquiry"
-        className="bg-[var(--color-bg-secondary)] py-[var(--section-space)] border-b border-[var(--color-border)]"
-      >
-        <div className="site-container max-w-4xl space-y-8">
-          <div className="space-y-2">
-            <p className="t-meta text-[var(--color-brand-primary-ink)]">Start an Enquiry</p>
-            <h2 className="t-display text-[var(--color-text-primary)]">
-              Request {service.name} assistance.
-            </h2>
-          </div>
-          <EnquiryForm
-            defaultService={service.name as (typeof SERVICE_OPTIONS)[number]}
-            compactHeading
-          />
-        </div>
-      </section>
-
-      {/* Related Services */}
-      <section className="bg-[var(--color-bg-primary)] py-[var(--section-space-tight)]">
-        <div className="site-container space-y-8">
-          <div className="flex items-end justify-between gap-4">
-            <h2 className="t-title text-[var(--color-text-primary)]">Related services</h2>
-            <Link href="/services" className="editorial-link text-sm">
-              <span>All 9 services</span>
-              <ArrowUpRight className="link-arrow h-4 w-4" aria-hidden="true" />
-            </Link>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {related.map((item) => (
-              <Link
-                key={item.slug}
-                href={`/services/${item.slug}`}
-                className="group bg-white border border-[var(--color-border)] p-6 space-y-3 hover:border-[var(--color-brand-primary)] transition-colors"
+        {/* 4-Step Process */}
+        <div className="mt-14">
+          <h2 className="font-display text-2xl font-bold text-[#0C1E3A] sm:text-3xl">
+            How {service.name} Works
+          </h2>
+          <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {service.processSteps.map((p) => (
+              <div
+                key={p.step}
+                className="rounded-3xl border border-[#0C1E3A]/12 bg-[#FFFFFF] p-5"
               >
-                <span className="t-meta text-[var(--color-brand-primary-ink)]">
-                  {item.index} · {item.shortLabel}
+                <span className="font-mono-hud text-xl font-bold text-[#0059FD]">{p.step}</span>
+                <p className="mt-3 text-sm leading-relaxed text-[#0C1E3A]">{p.detail}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* FAQs */}
+        {service.faqs.length > 0 && (
+          <div className="mt-14">
+            <h2 className="font-display mb-5 text-2xl font-bold text-[#0C1E3A] sm:text-3xl">
+              Frequently Asked Questions
+            </h2>
+            <FaqAccordion items={service.faqs} />
+          </div>
+        )}
+
+        {/* Related Services */}
+        <div className="mt-16 border-t border-[#0C1E3A]/12 pt-12">
+          <h2 className="font-display text-2xl font-bold text-[#0C1E3A]">Related Services</h2>
+          <div className="mt-6 grid gap-5 md:grid-cols-3">
+            {related.map((rel) => (
+              <Link
+                key={rel.slug}
+                href={`/services/${rel.slug}/`}
+                className="studio-card flex flex-col rounded-3xl p-6"
+              >
+                <span className="font-mono-hud text-[10px] font-semibold text-[#0059FD] uppercase">
+                  {rel.index} · {rel.shortLabel}
                 </span>
-                <h3 className="font-display text-3xl text-[var(--color-text-primary)] group-hover:text-[var(--color-brand-primary-ink)]">
-                  {item.name}
-                </h3>
-                <p className="text-sm text-[var(--color-text-secondary)]">{item.tagline}</p>
+                <h3 className="font-display mt-1 text-xl font-bold text-[#0C1E3A]">{rel.name}</h3>
+                <p className="mt-2 flex-1 text-xs leading-relaxed text-[#475B78]">{rel.summary}</p>
+                <span className="mt-4 inline-flex items-center gap-1 text-xs font-bold text-[#0C1E3A]">
+                  View service <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                </span>
               </Link>
             ))}
           </div>
         </div>
-      </section>
-    </>
+      </div>
+    </main>
   );
 }

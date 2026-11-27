@@ -1,34 +1,33 @@
 import Link from 'next/link';
-import { ArrowUpRight } from 'lucide-react';
-import { SITE } from '@/data/site';
+import { ArrowRight, Compass } from 'lucide-react';
 
 export default function NotFound() {
   return (
-    <section className="min-h-[80svh] bg-[var(--color-bg-primary)] pt-36 pb-24 flex items-center">
-      <div className="site-container max-w-3xl space-y-6">
-        <p className="t-meta text-[var(--color-brand-primary-ink)]">
-          404 · Off-Route Coordinate · {SITE.corridorLabel}
+    <main className="flex min-h-[75svh] items-center justify-center px-4 pt-28 pb-20">
+      <div className="max-w-lg text-center">
+        <div className="mx-auto mb-5 inline-flex h-14 w-14 items-center justify-center rounded-full bg-[#0059FD]/15 text-[#0059FD]">
+          <Compass className="h-7 w-7" aria-hidden="true" />
+        </div>
+        <p className="font-mono-hud text-xs font-semibold tracking-widest text-[#0059FD] uppercase">
+          404 · Off the Atlas
         </p>
-        <h1 className="t-hero text-[var(--color-text-primary)]">
-          This route isn’t on our departure board.
+        <h1 className="font-display mt-2 text-4xl font-extrabold text-[#0C1E3A] sm:text-5xl">
+          This route isn’t on our map.
         </h1>
-        <p className="text-base sm:text-lg text-[var(--color-text-secondary)] max-w-xl leading-relaxed">
-          The page you are looking for may have moved or never existed. Return to our home desk,
-          browse all nine travel services, or explore our curated destinations.
+        <p className="mt-4 text-sm leading-relaxed text-[#475B78]">
+          Return to the EzyQuick Global Atlas or browse our nine travel services and 14 verified
+          destinations.
         </p>
-        <div className="flex flex-wrap gap-3.5 pt-2">
-          <Link href="/" className="btn-ezy btn-primary">
-            <span>Return Home</span>
-            <ArrowUpRight className="btn-arrow h-4 w-4" aria-hidden="true" />
+        <div className="mt-7 flex flex-wrap justify-center gap-3">
+          <Link href="/" className="btn-kinetic px-6 py-3 text-sm">
+            <span>Return to Global Atlas</span>
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Link>
-          <Link href="/destinations" className="btn-ezy btn-outline">
-            <span>Explore Destinations</span>
-          </Link>
-          <Link href="/contact" className="btn-ezy btn-outline">
-            <span>Plan Your Journey</span>
+          <Link href="/destinations/" className="btn-outline-kinetic px-5 py-3 text-sm">
+            <span>Browse Destinations</span>
           </Link>
         </div>
       </div>
-    </section>
+    </main>
   );
 }

@@ -30,15 +30,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Prepare static export workspace
-        run: |
-          rm -rf src/app/api src/app/opengraph-image.tsx
-          sed -i 's|export default function sitemap|export const dynamic = "force-static";\nexport default function sitemap|' src/app/sitemap.ts
-          sed -i 's|export default function robots|export const dynamic = "force-static";\nexport default function robots|' src/app/robots.ts
+      - name: Typecheck
+        run: npm run typecheck
 
       - name: Build static site for GitHub Pages
         env:
-          GITHUB_PAGES: 'true'
           NEXT_PUBLIC_BASE_PATH: '/EzyQuick-2'
         run: npm run build
 

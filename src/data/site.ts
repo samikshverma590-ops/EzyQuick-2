@@ -2,18 +2,22 @@ import { assetPath } from '@/lib/asset-path';
 
 export interface OfficeInfo {
   id: 'delhi' | 'dubai';
+  code: 'DEL' | 'DXB';
   label: string;
   city: string;
   country: string;
+  lat: number;
+  lng: number;
   coordinates: string;
-  iata: string;
   addressLines: string[];
   phoneDisplay: string;
   phoneHref: string;
+  whatsappDigits: string;
   timezone: string;
+  role: string;
 }
 
-export interface ApproachChapter {
+export interface JourneyStage {
   index: string;
   code: string;
   title: string;
@@ -26,34 +30,29 @@ export const SITE = {
   legalName: 'EzyQuick Travel Solutions',
   tagline: 'Travel Made Easy',
   secondaryTagline: 'Travel Beyond the Ordinary',
-  url: 'https://ezyquick.in',
+  url: 'https://samikshverma590-ops.github.io/EzyQuick-2',
+  productionDomain: 'https://ezyquick.in',
   email: 'info@ezyquick.in',
   emailHref: 'mailto:info@ezyquick.in',
   whatsappNumber: '+91 8527729449',
   whatsappDigits: '918527729449',
-  logoPath: '/brand/ezyquick-logo.png',
+  logoPath: '/assets/brand/ezyquick-logo.png',
   logoAlt: 'EzyQuick — Travel Made Easy',
   copyrightYear: 2026,
-  heroHeadline: 'More world. Less to organise.',
-  heroSubheadline:
-    'From holidays and business trips to flights, stays and visa assistance, EzyQuick brings your travel arrangements together through one point of contact.',
-  corridorLabel: 'DEL 28.65°N  ↔  DXB 25.12°N',
-  googleReviewSearchUrl: 'https://www.google.com/search?q=EzyQuick+travel+reviews',
+  privacyNotice:
+    'We collect only the contact and trip details you submit to prepare your travel proposal and respond via your chosen desk (New Delhi or Dubai). We do not sell your personal information. Please never enter passport numbers, payment-card details, or clinical medical records in this public form. Enquiries sent via WhatsApp or email are handled directly by our travel advisors for active trip coordination.',
 } as const;
-
-export function buildWhatsAppUrl(message?: string): string {
-  const defaultMsg = 'Hello EzyQuick, I would like to plan a journey.';
-  return `https://wa.me/${SITE.whatsappDigits}?text=${encodeURIComponent(message || defaultMsg)}`;
-}
 
 export const OFFICES: OfficeInfo[] = [
   {
     id: 'delhi',
+    code: 'DEL',
     label: 'India Office',
     city: 'New Delhi',
     country: 'India',
+    lat: 28.6519,
+    lng: 77.1636,
     coordinates: '28.6519° N, 77.1636° E',
-    iata: 'DEL',
     addressLines: [
       'HN 3234, Shop Office No. 2,',
       'Ground Floor, Ranjit Nagar,',
@@ -61,37 +60,44 @@ export const OFFICES: OfficeInfo[] = [
     ],
     phoneDisplay: '+91 8527729449',
     phoneHref: 'tel:+918527729449',
+    whatsappDigits: '918527729449',
     timezone: 'IST (UTC+5:30)',
+    role: 'Primary India & South Asia Travel Desk',
   },
   {
     id: 'dubai',
+    code: 'DXB',
     label: 'Dubai Office',
     city: 'Dubai',
     country: 'United Arab Emirates',
+    lat: 25.1212,
+    lng: 55.3773,
     coordinates: '25.1212° N, 55.3773° E',
-    iata: 'DXB',
     addressLines: ['IFZA Properties,', 'Silicon Oasis,', 'Dubai, UAE'],
     phoneDisplay: '+971 589658819',
     phoneHref: 'tel:+971589658819',
+    whatsappDigits: '918527729449',
     timezone: 'GST (UTC+4:00)',
+    role: 'Gulf & International Travel Coordination Desk',
   },
 ];
 
 export const NAV_LINKS = [
-  { label: 'Services', href: '/services' },
-  { label: 'Destinations', href: '/destinations' },
-  { label: 'About', href: '/about' },
-  { label: 'Contact', href: '/contact' },
+  { label: 'Home', href: '/' },
+  { label: 'Services', href: '/services/' },
+  { label: 'Destinations', href: '/destinations/' },
+  { label: 'About', href: '/about/' },
+  { label: 'Contact', href: '/contact/' },
 ] as const;
 
-export const APPROACH_CHAPTERS: ApproachChapter[] = [
+export const JOURNEY_STAGES: JourneyStage[] = [
   {
     index: '01',
     code: 'BRIEF',
     title: 'Discover',
-    summary: 'Tell us where you need to be, who is travelling, and what matters most.',
+    summary: 'Share where you need to be, who is travelling, and what matters most.',
     detail:
-      'Whether it is a family holiday, an executive delegation, or a medical travel itinerary, every arrangement begins with a direct conversation.',
+      'Whether coordinating a family holiday, an executive delegation, or a medical travel itinerary, every arrangement begins with a direct human conversation.',
   },
   {
     index: '02',
@@ -99,7 +105,7 @@ export const APPROACH_CHAPTERS: ApproachChapter[] = [
     title: 'Plan',
     summary: 'Flights, stays, ground transfers, and visa checklists assembled into one clear proposal.',
     detail:
-      'We organise suitable routing, accommodation categories, and timing options for your review before anything is confirmed.',
+      'We organise suitable routing, accommodation categories, and timing options for your review before any booking is confirmed.',
   },
   {
     index: '03',
@@ -107,80 +113,110 @@ export const APPROACH_CHAPTERS: ApproachChapter[] = [
     title: 'Prepare',
     summary: 'Documentation guidance, forex assistance, and travel insurance options coordinated in sequence.',
     detail:
-      'Every supporting detail is organised through one point of contact so you are not juggling disconnected portals before departure.',
+      'Supporting requirements are prepared through one point of contact so you are not juggling disconnected portals before departure.',
   },
   {
     index: '04',
     code: 'DEPART',
     title: 'Travel',
-    summary: 'Depart with confirmed itineraries and accessible human support across Delhi and Dubai.',
+    summary: 'Depart with confirmed itineraries and accessible advisor support across New Delhi and Dubai.',
     detail:
-      'If plans shift or schedules change, you speak directly with the desk that built your itinerary.',
+      'If plans shift or schedules change, you speak directly with the travel desk that structured your journey.',
   },
 ];
 
 export const WHY_EZYQUICK_PILLARS = [
   {
     index: '01',
-    title: 'One desk for nine travel disciplines',
+    title: 'Nine travel disciplines under one desk',
     description:
-      'Corporate trips, medical travel coordination, leisure holidays, visas, air tickets, hotels, forex, travel insurance, and MICE handled under one roof.',
+      'Corporate trips, medical travel coordination, leisure holidays, visa guidance, air tickets, hotels, forex, travel insurance, and MICE handled together.',
   },
   {
     index: '02',
-    title: 'Two real hubs: Delhi and Dubai',
+    title: 'Two active offices: New Delhi and Dubai',
     description:
-      'Reachable offices in Ranjit Nagar, New Delhi and IFZA Properties, Dubai Silicon Oasis supporting India, UAE, and international travellers.',
+      'Reachable teams in Ranjit Nagar, New Delhi and IFZA Properties, Dubai Silicon Oasis supporting India, UAE, and international travellers.',
   },
   {
     index: '03',
-    title: 'Clear communication before confirmation',
+    title: 'Clear proposals before confirmation',
     description:
-      'We share tailored options, itinerary outlines, and relevant documentation checklists transparently before you commit to bookings.',
+      'Tailored itinerary outlines, routing options, and relevant documentation checklists shared transparently before you commit to bookings.',
   },
   {
     index: '04',
-    title: 'Direct human access, not automated queues',
+    title: 'Direct human access across channels',
     description:
-      'Start an enquiry online, write to info@ezyquick.in, or connect straight on WhatsApp with a travel advisor who tracks the whole journey.',
+      'Submit a structured brief online, write to info@ezyquick.in, call Delhi or Dubai directly, or continue on WhatsApp with an advisor.',
   },
 ] as const;
 
-export const STORYTELLING_CHAPTERS = [
+/**
+ * Curated Journey Dispatches — authentic destination inspiration used in Scene 8
+ * (strictly zero fabricated customer reviews or ratings).
+ */
+export const JOURNEY_DISPATCHES = [
   {
-    id: 'dubai',
     slug: 'dubai',
     region: 'United Arab Emirates',
     coordinates: '25.2048° N, 55.2708° E',
-    title: 'Dubai between desert stillness and vertical light',
+    title: 'Dubai between desert stillness and skyline geometry',
     caption:
-      'From architectural avenues and marina evenings to family escapes and executive summits, Dubai is both our Gulf gateway and one of our most requested routes.',
-    note: 'Ask about our proposed "Free Dubai Visa for a Kid" family promotion and its current eligibility terms.',
-    image: assetPath('/images/editorial/story-dubai-dusk.jpg'),
+      'From architectural avenues and marina evenings to family escapes and executive summits, Dubai is both our Gulf hub and one of our most requested routes.',
+    image: assetPath('/assets/images/editorial/story-dubai-dusk.jpg'),
     alt: 'Dubai skyline bathed in golden dusk light',
   },
   {
-    id: 'kerala',
     slug: 'kerala',
     region: 'South India',
     coordinates: '9.4981° N, 76.3388° E',
     title: 'Kerala where mornings move at the pace of water',
     caption:
-      'Backwater houseboats, tea-draped high ranges, and restorative coastal stays—thoughtfully paced for families, honeymooners, and unhurried private escapes.',
-    note: 'Custom domestic itineraries pairing Munnar hills, Alleppey waterways, and coastal retreats.',
-    image: assetPath('/images/editorial/story-kerala-dawn.jpg'),
+      'Backwater houseboats, tea-draped high ranges, and calm coastal stays paced for families, honeymooners, and unhurried private escapes.',
+    image: assetPath('/assets/images/editorial/story-kerala-dawn.jpg'),
     alt: 'Serene Kerala backwaters lined with palms at dawn',
   },
   {
-    id: 'ladakh',
     slug: 'ladakh',
     region: 'Himalayan India',
     coordinates: '34.1526° N, 77.5771° E',
     title: 'Ladakh at the edge of high-altitude silence',
     caption:
-      'High mountain passes, monastic valleys, and crystalline skies—structured with sensible acclimatisation pacing, reliable transfers, and comfortable stays.',
-    note: 'Seasonal mountain journeys planned around road windows and comfortable daily travel distances.',
-    image: assetPath('/images/editorial/story-ladakh-pass.jpg'),
-    alt: 'Open mountain highway winding through dramatic Himalayan terrain',
+      'Mountain passes, monastic valleys, and clear skies structured with sensible acclimatisation pacing, reliable local transport, and comfortable stays.',
+    image: assetPath('/assets/images/editorial/story-ladakh-pass.jpg'),
+    alt: 'Open mountain highway winding through Himalayan terrain',
   },
 ] as const;
+
+const MAX_URL_MESSAGE_CHARS = 1450;
+
+export function buildSafeWhatsAppUrl(message: string): { url: string; truncated: boolean } {
+  const defaultMsg = 'Hello EzyQuick, I would like to plan a journey.';
+  const raw = (message || defaultMsg).trim();
+  const truncated = raw.length > MAX_URL_MESSAGE_CHARS;
+  const safeText = truncated
+    ? `${raw.slice(0, MAX_URL_MESSAGE_CHARS - 52)}… [Full brief copied/shortened for WhatsApp]`
+    : raw;
+
+  return {
+    url: `https://wa.me/${SITE.whatsappDigits}?text=${encodeURIComponent(safeText)}`,
+    truncated,
+  };
+}
+
+export function buildSafeMailtoUrl(
+  subject: string,
+  body: string
+): { url: string; truncated: boolean } {
+  const rawBody = body.trim();
+  const truncated = rawBody.length > MAX_URL_MESSAGE_CHARS;
+  const safeBody = truncated
+    ? `${rawBody.slice(0, MAX_URL_MESSAGE_CHARS - 48)}… [Shortened for email URL; paste full brief]`
+    : rawBody;
+
+  return {
+    url: `mailto:${SITE.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(safeBody)}`,
+    truncated,
+  };
+}

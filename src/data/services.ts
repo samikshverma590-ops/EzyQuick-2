@@ -8,7 +8,7 @@ export interface ServiceFAQ {
 export interface TravelService {
   slug: string;
   index: string;
-  category: 'Executive & Institutional' | 'Personal & Holidays' | 'Core Travel Support';
+  category: 'Corporate & Institutional' | 'Leisure & Holidays' | 'Core Travel Support';
   shortLabel: string;
   name: string;
   headline: string;
@@ -30,16 +30,16 @@ export const SERVICES: TravelService[] = [
   {
     slug: 'corporate-travel',
     index: '01',
-    category: 'Executive & Institutional',
+    category: 'Corporate & Institutional',
     shortLabel: 'Business',
     name: 'Corporate Travel',
-    headline: 'Business travel organised with quiet precision.',
-    tagline: 'Centralised travel coordination for modern companies and leadership teams.',
+    headline: 'Business travel coordinated with speed and clarity.',
+    tagline: 'Centralised travel management for leadership teams, founders, and growing organisations.',
     summary:
-      'Domestic and international executive trips, recurring business routes, hotel stays, visa documentation guidance, and responsive itinerary adjustments through one desk.',
+      'Domestic and international executive trips, recurring business corridors, business-district stays, visa documentation checklists, and responsive schedule adjustments through one desk.',
     editorialIntro:
-      'Corporate schedules rarely stay static. EzyQuick supports growing companies, founders, and travel coordinators with structured air routing, well-located business hotels, airport transfers, and single-point communication across India, the UAE, and international business hubs.',
-    image: assetPath('/images/services/corporate-travel.jpg'),
+      'Corporate itineraries rarely stay static. EzyQuick supports companies, founders, and travel coordinators with structured air routing, well-located business hotels, airport transfers, and direct single-point communication across New Delhi, Dubai, and international hubs.',
+    image: assetPath('/assets/images/services/corporate-travel.jpg'),
     imageAlt: 'Modern architectural corporate lounge for business travellers',
     ctaLabel: 'Discuss corporate travel',
     scope: [
@@ -50,20 +50,20 @@ export const SERVICES: TravelService[] = [
       'Multi-city itineraries for leadership and sales delegations',
       'Itinerary change and rescheduling assistance',
       'Group and off-site travel arrangements',
-      'Dedicated travel desk point of contact',
+      'Dedicated advisor point of contact across Delhi and Dubai',
     ],
     benefits: [
       {
         title: 'Centralised coordination',
-        detail: 'Consolidate flights, hotels, visas, and transfers with one responsive desk instead of managing multiple bookings separately.',
+        detail: 'Consolidate flights, hotels, visas, and transfers with one responsive desk instead of managing disconnected bookings.',
       },
       {
-        title: 'Options shaped to policy',
-        detail: 'We present clear itinerary choices aligned with your company schedule, routing preferences, and travel class guidelines.',
+        title: 'Aligned to company policy',
+        detail: 'Clear itinerary options matched to your schedules, routing preferences, and travel class guidelines.',
       },
       {
-        title: 'India & UAE corridor fluency',
-        detail: 'With offices in New Delhi and Dubai Silicon Oasis, we support both domestic Indian business routes and Gulf/international travel.',
+        title: 'India and UAE corridor fluency',
+        detail: 'Active offices in Ranjit Nagar, New Delhi and Dubai Silicon Oasis support both domestic Indian routes and Gulf/international trips.',
       },
     ],
     processSteps: [
@@ -75,15 +75,15 @@ export const SERVICES: TravelService[] = [
     faqs: [
       {
         question: 'Can EzyQuick handle both one-off executive trips and recurring company travel?',
-        answer: 'Yes. We assist both one-time leadership trips and organisations that require recurring weekly or monthly domestic and international travel coordination.',
+        answer: 'Yes. We assist both one-time leadership trips and organisations requiring recurring weekly or monthly domestic and international travel coordination.',
       },
       {
         question: 'Do you coordinate visas and hotels alongside business flights?',
-        answer: 'Yes. Corporate travel enquiries can combine air tickets, hotel bookings, business visa documentation guidance, and travel insurance assistance in a single brief.',
+        answer: 'Yes. Corporate travel enquiries can combine air tickets, hotel bookings, business visa documentation guidance, and travel insurance options in one brief.',
       },
       {
         question: 'How quickly can we start a corporate enquiry?',
-        answer: 'Use our Plan Your Journey form with Corporate Travel selected, email info@ezyquick.in, or reach our Delhi or Dubai desks directly on WhatsApp.',
+        answer: 'Use our Plan Your Journey page with Corporate Travel selected, email info@ezyquick.in, or call our New Delhi or Dubai office directly.',
       },
     ],
     relatedSlugs: ['mice-services', 'air-tickets', 'hotel-bookings'],
@@ -91,18 +91,18 @@ export const SERVICES: TravelService[] = [
   {
     slug: 'medical-travel',
     index: '02',
-    category: 'Executive & Institutional',
+    category: 'Corporate & Institutional',
     shortLabel: 'Care',
     name: 'Medical Travel',
-    headline: 'Thoughtful travel coordination when health comes first.',
-    tagline: 'Travel, accommodation, and local logistics assistance for patients and accompanying family members.',
+    headline: 'Practical travel coordination when health comes first.',
+    tagline: 'Flight, accommodation, and local logistics support for patients and accompanying family members.',
     summary:
-      'Dedicated travel support for patients and attendants travelling domestically or abroad for healthcare—covering flights, nearby stays, airport transfers, and medical visa documentation guidance.',
+      'Dedicated travel arrangements for patients and attendants travelling domestically or internationally for healthcare, covering flights, hospital-proximate stays, airport transfers, and medical visa documentation checklists.',
     editorialIntro:
-      'Travelling for medical care places enough emotional demand on patients and their families without the added weight of logistics. EzyQuick focuses strictly on practical, compassionate travel coordination: convenient flights, comfortable accommodation near preferred hospitals, airport pick-ups, and clear checklists for medical travel documentation.',
-    image: assetPath('/images/services/medical-travel.jpg'),
+      'Travelling for healthcare already places heavy demands on patients and families. EzyQuick focuses strictly on practical, attentive travel logistics: convenient flight connections, comfortable stays near your preferred hospital area, reliable airport pick-ups, and clear checklists for medical travel documentation.',
+    image: assetPath('/assets/images/services/medical-travel.jpg'),
     imageAlt: 'Calm medical consultation and healthcare coordination setting',
-    ctaLabel: 'Request medical travel assistance',
+    ctaLabel: 'Request medical travel support',
     scope: [
       'Patient and accompanying family flight coordination',
       'Hospital-proximate hotel and serviced-stay arrangements',
@@ -115,21 +115,21 @@ export const SERVICES: TravelService[] = [
     benefits: [
       {
         title: 'Patient and attendant focus',
-        detail: 'Every travel detail—routing, layover comfort, and proximity to care centres—is planned around the traveller and accompanying family.',
+        detail: 'Routing, layover comfort, and proximity to care centres are planned around the traveller and accompanying family.',
       },
       {
-        title: 'Calm, practical communication',
-        detail: 'One dedicated point of contact helps coordinate tickets, accommodation, and local transfers without unnecessary complexity.',
+        title: 'Calm, single-desk communication',
+        detail: 'One dedicated travel advisor coordinates tickets, nearby accommodation, and local transfers without unnecessary friction.',
       },
       {
         title: 'Privacy-first enquiry handling',
-        detail: 'We only request broad travel details during enquiry. Please do not submit detailed medical records or passport numbers through our public web form.',
+        detail: 'We request only broad travel preferences in our public enquiry form. Never submit clinical records or passport numbers online.',
       },
     ],
     processSteps: [
       { step: '01', detail: 'Share your departure city, destination, broad timing, and number of attendants.' },
-      { step: '02', detail: 'Discuss preferred hospital area and accommodation comfort needs.' },
-      { step: '03', detail: 'Review suitable flight, stay, and airport transfer arrangements.' },
+      { step: '02', detail: 'Discuss preferred hospital area and accommodation comfort requirements.' },
+      { step: '03', detail: 'Review suitable flight, stay, and airport transfer options.' },
       { step: '04', detail: 'Coordinate departure and local logistics with our travel desk.' },
     ],
     transparencyNote:
@@ -137,15 +137,15 @@ export const SERVICES: TravelService[] = [
     faqs: [
       {
         question: 'Does EzyQuick provide medical advice or choose medical treatments?',
-        answer: 'No. EzyQuick is a travel-services business. We provide travel, accommodation, visa documentation guidance, and local transport coordination for patients and accompanying family members; all clinical decisions remain between the patient and their healthcare providers.',
+        answer: 'No. EzyQuick is a travel-services company. We provide travel, accommodation, visa documentation guidance, and local transport coordination; all clinical decisions remain between the patient and their healthcare providers.',
       },
       {
         question: 'Can you arrange accommodation for family members travelling with a patient?',
-        answer: 'Yes. We help explore hotels and longer-stay accommodation options near the patient’s preferred healthcare area for both patients and attendants.',
+        answer: 'Yes. We help explore hotels and longer-stay accommodation options near your preferred healthcare area for both patients and attendants.',
       },
       {
         question: 'Should I attach medical reports or passport copies to the enquiry form?',
-        answer: 'No. For your privacy, please share only broad travel preferences in the public enquiry form. Never enter passport numbers or sensitive medical records online.',
+        answer: 'No. For your privacy, share only broad travel preferences in our public form. Never enter passport numbers or clinical medical records online.',
       },
     ],
     relatedSlugs: ['visa-services', 'hotel-bookings', 'air-tickets'],
@@ -153,62 +153,61 @@ export const SERVICES: TravelService[] = [
   {
     slug: 'leisure-travel',
     index: '03',
-    category: 'Personal & Holidays',
+    category: 'Leisure & Holidays',
     shortLabel: 'Holidays',
     name: 'Leisure Travel',
-    headline: 'Extraordinary journeys shaped around how you like to travel.',
-    tagline: 'Custom domestic and international holidays across India, the UAE, Southeast Asia, and beyond.',
+    headline: 'Custom holidays shaped around how you like to travel.',
+    tagline: 'Tailored domestic and international itineraries across India, the UAE, Southeast Asia, and Central Asia.',
     summary:
-      'Family holidays, honeymoons, group tours, adventure trips, luxury escapes, sightseeing, and custom itineraries across Kerala, Goa, Andaman, Ladakh, Dubai, Abu Dhabi, Thailand, Vietnam, Bali, Sri Lanka, Singapore, Malaysia, and Almaty.',
+      'Family holidays, honeymoons, group tours, mountain and coastal escapes, and custom itineraries across Kerala, Goa, Andaman, Ladakh, Dubai, Abu Dhabi, Phuket, Krabi, Phu Quoc, Bali, Sri Lanka, Singapore, Malaysia, and Almaty.',
     editorialIntro:
-      'A memorable holiday feels unhurried from the first conversation. Whether you are planning a multi-generational family getaway to Dubai, a quiet honeymoon in Kerala or Bali, an island escape to Phu Quoc or Krabi, or a high-altitude journey through Ladakh, we design tailored itineraries around your pace, dates, and travel style.',
-    image: assetPath('/images/services/leisure-travel.jpg'),
+      'A memorable holiday starts with an itinerary paced for your companions, not a rigid template. Whether you are planning a multi-generational family trip to Dubai, a honeymoon in Kerala or Bali, an island escape to Phu Quoc or Krabi, or an alpine journey through Ladakh or Almaty, we assemble flights, stays, sightseeing, and visa guidance into one clear plan.',
+    image: assetPath('/assets/images/services/leisure-travel.jpg'),
     imageAlt: 'Sunlit coastal shoreline for bespoke leisure travel',
     ctaLabel: 'Plan my holiday',
     scope: [
-      'Family holidays tailored across generations',
-      'Honeymoon and romantic escapes',
-      'Curated group tours and milestone trips',
-      'Mountain and coastal adventure trips',
-      'Luxury holidays and boutique resort stays',
-      'Private sightseeing and local experiences',
-      'Custom end-to-end domestic and international itineraries',
-      'Combined flight, hotel, transfer, and visa coordination',
+      'Family holidays tailored across age groups',
+      'Honeymoon and private coastal or hill escapes',
+      'Curated group tours and milestone celebrations',
+      'Mountain and island adventure itineraries',
+      'Boutique resort and city hotel curation',
+      'Private sightseeing and airport transfers',
+      'Combined flight, stay, transfer, and visa coordination',
     ],
     benefits: [
       {
-        title: 'Tailored around your rhythm',
-        detail: 'Instead of forcing your dates into a rigid template, we outline an itinerary calibrated to your companions, pace, and budget preferences.',
+        title: 'Tailored to your pace',
+        detail: 'Every itinerary is structured around your dates, companions, preferred comfort level, and travel style.',
       },
       {
-        title: 'India & international destination depth',
-        detail: 'Explore Kerala, Goa, Andaman & Nicobar, and Ladakh domestically, alongside Dubai, Abu Dhabi, Phuket, Krabi, Phu Quoc, Bali, Sri Lanka, Singapore, Malaysia, and Almaty.',
+        title: '14 verified destination specialities',
+        detail: 'Explore Kerala, Goa, Andaman & Nicobar, and Ladakh in India alongside Dubai, Abu Dhabi, Phuket, Krabi, Phu Quoc, Bali, Sri Lanka, Singapore, Malaysia, and Almaty.',
       },
       {
         title: 'Single-contact clarity',
-        detail: 'Flights, handpicked stays, sightseeing transfers, and visa guidance sit inside one coordinated plan.',
+        detail: 'Flights, handpicked stays, local transfers, and documentation timelines stay synchronised under one advisor.',
       },
     ],
     processSteps: [
-      { step: '01', detail: 'Tell us your preferred destinations, travel style, and group composition.' },
+      { step: '01', detail: 'Tell us your preferred destinations, travel style, and group size.' },
       { step: '02', detail: 'Share target dates, departure city, and approximate comfort range.' },
-      { step: '03', detail: 'Review a custom suggested itinerary and clear quotation.' },
-      { step: '04', detail: 'Confirm the arrangements that suit you and prepare to travel.' },
+      { step: '03', detail: 'Review a custom suggested itinerary and transparent quotation.' },
+      { step: '04', detail: 'Confirm your preferred arrangements and prepare to depart.' },
     ],
     transparencyNote:
-      'All destinations and holiday ideas presented on this site are custom-planned upon enquiry. Availability and quotations are confirmed specifically for your travel dates before booking.',
+      'All destinations and holiday ideas on this site are custom-planned upon enquiry. Availability and quotations are checked specifically for your travel dates before booking.',
     faqs: [
       {
         question: 'Are your leisure itineraries fixed group packages or customisable?',
-        answer: 'We specialise in custom itineraries tailored to your dates, travellers, and holiday type—covering family holidays, honeymoons, luxury stays, adventure trips, and private or group tours.',
+        answer: 'We specialise in custom itineraries tailored to your dates, travellers, and holiday style across family trips, honeymoons, group tours, and scenic escapes.',
       },
       {
         question: 'Can you include flights, hotels, sightseeing, and visa guidance together?',
-        answer: 'Yes. We coordinate the full travel chain so your flight arrival times, hotel check-ins, transfers, and visa timelines align smoothly.',
+        answer: 'Yes. We coordinate the full travel chain so arrival times, hotel check-ins, transfers, and visa timelines align smoothly.',
       },
       {
-        question: 'Which domestic and international destinations do you frequently plan?',
-        answer: 'In India we highlight Kerala, Goa, Andaman & Nicobar, and Ladakh. Internationally we feature Dubai, Abu Dhabi, Phuket, Krabi, Phu Quoc, Bali, Sri Lanka, Singapore, Malaysia, and Almaty.',
+        question: 'Which domestic and international destinations do you plan most frequently?',
+        answer: 'In India we feature Kerala, Goa, Andaman & Nicobar, and Ladakh. Internationally we feature Dubai, Abu Dhabi, Phuket, Krabi, Phu Quoc, Bali, Sri Lanka, Singapore, Malaysia, and Almaty.',
       },
     ],
     relatedSlugs: ['hotel-bookings', 'visa-services', 'air-tickets'],
@@ -219,58 +218,54 @@ export const SERVICES: TravelService[] = [
     category: 'Core Travel Support',
     shortLabel: 'Documents',
     name: 'Visa Services',
-    headline: 'Organised visa guidance with clarity at every step.',
-    tagline: 'Documentation checklists, application form guidance, and appointment coordination for international travel.',
+    headline: 'Structured visa documentation guidance at every step.',
+    tagline: 'Country-specific checklists, application form review, and appointment coordination for international travel.',
     summary:
-      'Structured documentation support for tourist, business, transit, and family visit visas—plus enquiry information on our proposed "Free Dubai Visa for a Kid" family promotion.',
+      'Organised documentation support for tourist, business, transit, and family visit visas aligned with your flights, stays, and travel timeline.',
     editorialIntro:
-      'International visa preparation is easiest when every requirement is sequenced clearly in advance. EzyQuick guides travellers through category selection, document checklists, application form review, and appointment coordination so submissions are thorough and well-organised.',
-    image: assetPath('/images/services/visa-services.jpg'),
+      'International visa preparation is far calmer when every requirement is sequenced clearly in advance. EzyQuick guides travellers through category selection, country-specific document checklists, application form review, and appointment scheduling where applicable so submissions are thorough and well-prepared.',
+    image: assetPath('/assets/images/services/visa-services.jpg'),
     imageAlt: 'International travel gateway and documentation preparation',
-    ctaLabel: 'Get visa guidance',
+    ctaLabel: 'Request visa guidance',
     scope: [
       'Tourist visa documentation assistance',
       'Business visa application guidance',
       'Transit visa checklist support',
       'Family visit visa guidance',
       'Application form review and preparation guidance',
-      'Country-specific documentation checklists',
+      'Country-specific supporting document checklists',
       'Appointment scheduling coordination where applicable',
     ],
     benefits: [
       {
         title: 'Clear, structured checklists',
-        detail: 'Know what supporting documents to assemble before starting your application so avoidable delays are minimised.',
+        detail: 'Know exactly what supporting documents to assemble before starting your application.',
       },
       {
-        title: 'Aligned with your itinerary',
-        detail: 'Coordinate flight reservations, hotel bookings, and travel insurance alongside your visa preparation timeline.',
+        title: 'Aligned with your travel dates',
+        detail: 'Coordinate flight itineraries, hotel confirmations, and travel insurance options alongside your visa timeline.',
       },
       {
-        title: 'Dubai family enquiry promotion',
-        detail: 'Travelling to Dubai with family? Ask our team about the proposed "Free Dubai Visa for a Kid" promotion and its current eligibility terms.',
+        title: 'Privacy-first handling',
+        detail: 'We never ask for passport numbers or identity scans in our public web form.',
       },
     ],
     processSteps: [
       { step: '01', detail: 'Share your nationality, destination country, visa category, and expected travel window.' },
       { step: '02', detail: 'Receive guidance on the relevant documentation checklist for your travel purpose.' },
-      { step: '03', detail: 'Prepare your application materials with structured form guidance.' },
+      { step: '03', detail: 'Prepare your application materials with structured form review.' },
       { step: '04', detail: 'Coordinate submission or appointment steps through the appropriate official channel.' },
     ],
     transparencyNote:
-      'Important notice: EzyQuick provides visa documentation guidance and application assistance only. Visa approval, processing timelines, and entry decisions rest solely with the relevant embassy, consulate, or immigration authority and cannot be guaranteed. Please do not enter passport numbers into our public enquiry form.',
+      'Important notice: EzyQuick provides visa documentation guidance and application assistance only. Visa approval, processing timelines, and entry decisions rest solely with the relevant embassy, consulate, or immigration authority and cannot be guaranteed. Never enter passport numbers into our public enquiry form.',
     faqs: [
       {
         question: 'Can EzyQuick guarantee visa approval?',
         answer: 'No travel agency can guarantee visa approval. Final visa decisions and processing timelines are made exclusively by the relevant embassy, consulate, or immigration authority. Our role is to help you prepare clear, complete documentation.',
       },
       {
-        question: 'What is the "Free Dubai Visa for a Kid" family promotion?',
-        answer: 'It is a proposed family travel promotion for eligible Dubai itineraries. Contact our team with your travel dates and family composition so we can confirm current availability and eligibility terms.',
-      },
-      {
-        question: 'Should I type my passport number in the website form?',
-        answer: 'No. Never submit passport numbers or identity scans through our public enquiry form. Our advisor will guide you on secure next steps once we respond.',
+        question: 'Should I type my passport number in the website enquiry form?',
+        answer: 'No. Never submit passport numbers or identity scans through our public enquiry form. Our advisor will guide you on appropriate next steps once we respond.',
       },
     ],
     relatedSlugs: ['air-tickets', 'travel-insurance', 'leisure-travel'],
@@ -281,58 +276,54 @@ export const SERVICES: TravelService[] = [
     category: 'Core Travel Support',
     shortLabel: 'Flights',
     name: 'Air Tickets',
-    headline: 'Fly further with routing shaped around your schedule.',
-    tagline: 'Personalised domestic and international flight booking support for individuals, families, and groups.',
+    headline: 'Flight routing shaped around your real schedule.',
+    tagline: 'Domestic and international flight booking support for individuals, families, corporate teams, and groups.',
     summary:
-      'One-way, return, multi-city, corporate, and group air ticket coordination with clear itinerary options and quotations reviewed before confirmation.',
+      'One-way, return, multi-city, executive cabin, and group air ticket coordination with clear fare rules and quotations reviewed before ticketing.',
     editorialIntro:
-      'The right flight balances schedule convenience, sensible connection buffers, baggage allowances, and fare flexibility. Instead of sifting through dozens of confusing fare rules alone, tell EzyQuick your route and cabin preference and review curated flight options directly.',
-    image: assetPath('/images/services/air-tickets.jpg'),
-    imageAlt: 'Commercial aircraft wing gliding above soft golden clouds',
+      'The right flight balances schedule reliability, sensible connection buffers, baggage allowances, and fare flexibility. Instead of sorting through dozens of restrictive fare rules alone, share your route and cabin preference with EzyQuick and review curated routing options directly.',
+    image: assetPath('/assets/images/services/air-tickets.jpg'),
+    imageAlt: 'Commercial aircraft wing gliding above sunlit clouds',
     ctaLabel: 'Request a flight quote',
     scope: [
       'Domestic flight reservations across India',
       'International flight bookings worldwide',
       'One-way and round-trip air tickets',
-      'Multi-city and open-jaw itinerary routing',
+      'Multi-city and stopover itinerary routing',
       'Group and family flight coordination',
-      'Corporate and executive cabin bookings (Economy to First Class)',
+      'Executive and corporate cabin bookings',
       'Date-change, rerouting, and cancellation assistance',
     ],
     benefits: [
       {
         title: 'Human routing judgement',
-        detail: 'We consider layover comfort, baggage rules, and schedule reliability rather than surfacing stripped-down fares with hidden trade-offs.',
+        detail: 'We weigh layover comfort, baggage rules, and schedule timing rather than surfacing stripped-down fares with hidden trade-offs.',
       },
       {
         title: 'Clear quotations before ticketing',
-        detail: 'Review full route timing and fare conditions before confirming any booking.',
+        detail: 'Review full route timing and fare conditions before approving any ticket issuance.',
       },
       {
-        title: 'Support when schedules shift',
-        detail: 'If your departure date moves or a meeting extends, reach the same travel desk to explore rebooking options.',
+        title: 'Direct support when plans change',
+        detail: 'If a meeting extends or travel dates shift, reach the same advisor desk to explore rebooking options.',
       },
     ],
     processSteps: [
       { step: '01', detail: 'Share departure city, destination, dates, and trip type (one-way, return, or multi-city).' },
-      { step: '02', detail: 'Confirm passenger count, cabin class, and any airline or timing preferences.' },
+      { step: '02', detail: 'Confirm traveller count, cabin preference, and timing priorities.' },
       { step: '03', detail: 'Review curated routing options and clear fare quotations.' },
       { step: '04', detail: 'Approve your preferred flight itinerary for ticketing.' },
     ],
     transparencyNote:
-      'Flight availability and airline fares change continuously until tickets are issued. We do not display speculative live fares on this site; all quotations are checked live at the time of enquiry.',
+      'Flight availability and airline fares change continuously until tickets are issued. We do not display speculative live fares on this website; all quotations are checked live at the time of enquiry.',
     faqs: [
       {
         question: 'Can you coordinate multi-city international routes?',
-        answer: 'Yes. Multi-city and stopover itineraries—such as combining India, Dubai, and Southeast Asia—are a core part of our flight desk.',
-      },
-      {
-        question: 'Do you assist with group flight enquiries for families or corporate teams?',
-        answer: 'Yes. Share your estimated group size and dates and we will coordinate suitable flight options together.',
+        answer: 'Yes. Multi-city and stopover itineraries combining India, the UAE, and Southeast or Central Asia are a core part of our air desk.',
       },
       {
         question: 'Why are live ticket prices not listed on the page?',
-        answer: 'Airfares fluctuate dynamically by seat inventory and timing. Checking routes directly against your exact dates ensures you receive accurate, current options rather than outdated estimates.',
+        answer: 'Airfares fluctuate dynamically by seat inventory and timing. Checking routes directly against your exact dates ensures you receive accurate current options.',
       },
     ],
     relatedSlugs: ['hotel-bookings', 'visa-services', 'corporate-travel'],
@@ -343,21 +334,21 @@ export const SERVICES: TravelService[] = [
     category: 'Core Travel Support',
     shortLabel: 'Stays',
     name: 'Hotel Bookings',
-    headline: 'Handpicked stays chosen for location, comfort, and calm.',
+    headline: 'Handpicked stays chosen for location and comfort.',
     tagline: 'Domestic and international accommodation coordination across city hotels, boutique properties, and resorts.',
     summary:
-      'Business hotels, luxury and boutique escapes, family resorts, group blocks, and long-stay accommodation arranged to match your itinerary and budget range.',
+      'Business hotels, beachfront resorts, family stays, group room blocks, and extended-stay accommodation matched to your itinerary and comfort range.',
     editorialIntro:
-      'Where you stay shapes the entire pace of a trip. Whether you need a quiet business hotel near a conference district, a beachfront resort for a family holiday, or a comfortable extended stay during a medical visit, we narrow the options to properties that genuinely fit your priorities.',
-    image: assetPath('/images/services/hotel-bookings.jpg'),
+      'Where you stay defines the rhythm of your trip. Whether you need a quiet business hotel near a conference district, a beachfront resort for a family holiday, or a comfortable extended stay during a medical visit, we narrow the field to properties that fit your actual priorities.',
+    image: assetPath('/assets/images/services/hotel-bookings.jpg'),
     imageAlt: 'Refined architectural luxury hotel lobby and courtyard',
     ctaLabel: 'Find my stay',
     scope: [
       'Domestic hotel reservations across India',
       'International hotel and resort bookings',
-      'Luxury and boutique hotel curation',
+      'Boutique and luxury resort curation',
       'Business-district executive hotels',
-      'Family-friendly resorts and interconnected room requests',
+      'Family resorts and interconnected room requests',
       'Value-conscious 3-star and 4-star stays',
       'Group room blocks and corporate stay coordination',
       'Extended and long-stay accommodation arrangements',
@@ -365,33 +356,33 @@ export const SERVICES: TravelService[] = [
     benefits: [
       {
         title: 'Matched to travel purpose',
-        detail: 'Location, room configuration, breakfast inclusions, and cancellation flexibility are aligned with why you are travelling.',
+        detail: 'Neighbourhood, room configuration, meal plans, and cancellation flexibility aligned with why you are travelling.',
       },
       {
         title: 'Synchronised with your flights',
-        detail: 'Check-in timing, late arrivals, and airport transfers are planned together so arrival feels effortless.',
+        detail: 'Check-in timing, late arrivals, and airport transfers planned together.',
       },
       {
-        title: 'Transparent option comparisons',
-        detail: 'Review curated property recommendations with clear room categories before confirming.',
+        title: 'Clear property comparisons',
+        detail: 'Review curated stay recommendations and room categories before confirming.',
       },
     ],
     processSteps: [
       { step: '01', detail: 'Share your destination city, check-in/check-out dates, and room count.' },
       { step: '02', detail: 'Indicate preferred hotel category, neighbourhood, and approximate nightly range.' },
-      { step: '03', detail: 'Review tailored stay recommendations suited to your guests.' },
+      { step: '03', detail: 'Review tailored stay recommendations suited to your group.' },
       { step: '04', detail: 'Confirm your preferred property and booking details.' },
     ],
     transparencyNote:
       'Room availability and nightly rates depend on travel dates and seasonal demand. We verify current options upon enquiry rather than quoting unverified live inventory.',
     faqs: [
       {
-        question: 'Can you help find hotels for both leisure resorts and business trips?',
-        answer: 'Yes. We coordinate accommodation across leisure resorts, boutique hotels, central business properties, family stays, and longer-term arrangements.',
-      },
-      {
         question: 'Can I book a hotel without booking a full holiday package?',
         answer: 'Yes. You can enquire for standalone hotel reservations or pair them with air tickets, transfers, and sightseeing.',
+      },
+      {
+        question: 'Do you coordinate room blocks for corporate teams or family groups?',
+        answer: 'Yes. Share your room count, dates, and preferred area and we will coordinate suitable group stay options.',
       },
     ],
     relatedSlugs: ['air-tickets', 'leisure-travel', 'corporate-travel'],
@@ -402,52 +393,52 @@ export const SERVICES: TravelService[] = [
     category: 'Core Travel Support',
     shortLabel: 'Currency',
     name: 'Forex Services',
-    headline: 'Foreign exchange assistance sorted before you board.',
+    headline: 'Foreign exchange assistance prepared before departure.',
     tagline: 'Practical currency preparation guidance for outbound leisure, business, and medical travellers.',
     summary:
-      'Coordinated foreign exchange assistance to help you prepare destination currency needs smoothly alongside your flights, visas, and international itinerary.',
+      'Pre-departure foreign exchange assistance to help organise destination currency requirements alongside your international flights and itinerary.',
     editorialIntro:
-      'Preparing foreign currency at the last minute at an airport counter rarely delivers peace of mind. EzyQuick assists international travellers in planning their currency requirements in advance as part of pre-departure preparation.',
-    image: assetPath('/images/services/forex-services.jpg'),
+      'Sorting foreign currency at an airport counter rarely delivers peace of mind. EzyQuick assists outbound travellers in planning destination currency requirements ahead of departure as part of coordinated trip preparation.',
+    image: assetPath('/assets/images/services/forex-services.jpg'),
     imageAlt: 'International currency and financial preparation desk',
     ctaLabel: 'Enquire about forex assistance',
     scope: [
       'Pre-departure foreign currency requirement planning',
       'Outbound leisure and business travel forex assistance',
       'Multi-destination currency preparation guidance',
-      'Documentation checklist guidance for authorised foreign exchange transactions',
+      'Standard documentation checklist guidance for authorised foreign exchange transactions',
       'Coordinated preparation alongside international ticketing and visa timelines',
     ],
     benefits: [
       {
-        title: 'Handled before departure day',
-        detail: 'Plan destination currency requirements calmly alongside your flights and documentation instead of rushing at departure terminals.',
+        title: 'Sorted before departure day',
+        detail: 'Plan destination currency requirements calmly alongside your flights and documents instead of rushing at terminals.',
       },
       {
         title: 'Clear documentation guidance',
-        detail: 'We explain standard KYC and travel-document requirements needed to process foreign exchange through authorised channels.',
+        detail: 'We explain standard KYC and travel-document requirements for authorised foreign exchange channels.',
       },
       {
         title: 'One travel desk',
-        detail: 'Coordinate forex assistance within the same enquiry as your flights, hotels, and international itinerary.',
+        detail: 'Combine forex assistance within the same brief as your flights, hotels, and international itinerary.',
       },
     ],
     processSteps: [
-      { step: '01', detail: 'Share your destination countries, travel dates, and approximate foreign currency needs.' },
+      { step: '01', detail: 'Share your destination countries, travel dates, and approximate currency requirements.' },
       { step: '02', detail: 'Receive guidance on available forex assistance options and standard documentation required.' },
       { step: '03', detail: 'Review current applicable terms before proceeding.' },
-      { step: '04', detail: 'Complete your pre-departure currency preparation ahead of travel.' },
+      { step: '04', detail: 'Complete pre-departure currency preparation ahead of travel.' },
     ],
     transparencyNote:
       'Important notice: Foreign exchange rates fluctuate continuously and transactions are subject to applicable regulatory guidelines and documentation checks. EzyQuick does not publish live or guaranteed exchange rates on this website.',
     faqs: [
       {
-        question: 'Do you list live exchange rates on your website?',
-        answer: 'No. Exchange rates change continuously with market conditions. Reach out with your currency requirement and travel timing so our team can share current guidance.',
+        question: 'Do you publish live exchange rates on your website?',
+        answer: 'No. Exchange rates move continuously with market conditions. Share your destination and travel timing so our team can provide current guidance.',
       },
       {
-        question: 'Can forex assistance be combined with my holiday or corporate travel enquiry?',
-        answer: 'Yes. Simply mention foreign exchange support in your Plan Your Journey request or select Forex Services directly.',
+        question: 'Can forex assistance be combined with my holiday or corporate trip enquiry?',
+        answer: 'Yes. Mention foreign exchange support in your Plan Your Journey request or select Forex Services directly.',
       },
     ],
     relatedSlugs: ['travel-insurance', 'visa-services', 'air-tickets'],
@@ -458,13 +449,13 @@ export const SERVICES: TravelService[] = [
     category: 'Core Travel Support',
     shortLabel: 'Protection',
     name: 'Travel Insurance',
-    headline: 'Explore travel protection for greater peace of mind.',
-    tagline: 'Guidance on suitable travel insurance options aligned with your destination and trip duration.',
+    headline: 'Explore travel protection aligned with your itinerary.',
+    tagline: 'Guidance on suitable travel insurance options matched to your destination and trip duration.',
     summary:
-      'Pre-departure assistance to help you review travel insurance options suited to domestic or international leisure, corporate, senior, or student journeys.',
+      'Pre-departure assistance to review travel insurance options for domestic or international leisure, corporate, family, senior, or student journeys.',
     editorialIntro:
-      'Unexpected flight disruptions, lost baggage, or unforeseen emergencies abroad can derail an otherwise well-planned journey—and several destinations require proof of travel insurance during visa application. EzyQuick helps you explore suitable travel insurance options aligned with your itinerary.',
-    image: assetPath('/images/services/travel-insurance.jpg'),
+      'Unexpected flight disruptions, baggage delays, or unforeseen emergencies abroad can disrupt even a carefully planned trip, and several destinations require proof of travel insurance for visa submission. EzyQuick helps you review suitable travel insurance options aligned with your dates.',
+    image: assetPath('/assets/images/services/travel-insurance.jpg'),
     imageAlt: 'Calm pre-departure travel planning and policy review desk',
     ctaLabel: 'Explore insurance options',
     scope: [
@@ -476,16 +467,16 @@ export const SERVICES: TravelService[] = [
     ],
     benefits: [
       {
-        title: 'Aligned with visa & trip timelines',
+        title: 'Aligned with visa and trip dates',
         detail: 'Ensure policy dates correspond cleanly to your departure, transit, and return schedule.',
       },
       {
-        title: 'Tailored to traveller profile',
+        title: 'Matched to traveller profile',
         detail: 'Review options suited for solo travellers, families, corporate executives, or group itineraries.',
       },
       {
         title: 'Transparent pre-purchase review',
-        detail: 'Review official policy wordings, exclusions, and coverage schedules before making any selection.',
+        detail: 'Review official policy wordings, exclusions, and coverage schedules before selecting.',
       },
     ],
     processSteps: [
@@ -499,7 +490,7 @@ export const SERVICES: TravelService[] = [
     faqs: [
       {
         question: 'Is travel insurance required for international visas?',
-        answer: 'Certain destinations require proof of travel medical insurance as part of the visa application checklist, while others strongly recommend it. We align your guidance with your destination.',
+        answer: 'Certain destinations require proof of travel medical insurance as part of the visa checklist, while others strongly recommend it. We align guidance with your destination.',
       },
       {
         question: 'Do you quote fixed insurance prices online?',
@@ -511,39 +502,39 @@ export const SERVICES: TravelService[] = [
   {
     slug: 'mice-services',
     index: '09',
-    category: 'Executive & Institutional',
+    category: 'Corporate & Institutional',
     shortLabel: 'Events',
     name: 'MICE Services',
-    headline: 'Meetings, incentives, conferences, and corporate events—orchestrated end to end.',
+    headline: 'Meetings, incentives, conferences, and corporate events orchestrated end to end.',
     tagline: 'Coordinated group travel, venue sourcing support, and delegation logistics across India, Dubai, and international destinations.',
     summary:
-      'Structured group air travel, hotel room blocks, conference venue coordination, incentive itineraries, and on-ground transport for corporate teams and dealer delegations.',
+      'Structured group air travel, hotel room blocks, conference venue coordination, incentive itineraries, and on-ground transport for corporate teams and delegations.',
     editorialIntro:
-      'Moving a leadership team, sales force, or international conference delegation requires disciplined logistics behind a memorable guest experience. EzyQuick coordinates MICE travel across India, Dubai, Abu Dhabi, Southeast Asia, and beyond—bringing group flights, room blocks, transfers, and event scheduling into one coherent plan.',
-    image: assetPath('/images/services/mice-services.jpg'),
+      'Moving a leadership team, sales force, or international conference delegation demands disciplined logistics behind a memorable guest experience. EzyQuick coordinates MICE travel across India, Dubai, Abu Dhabi, Southeast Asia, and beyond, uniting group flights, room blocks, transfers, and programme scheduling under one desk.',
+    image: assetPath('/assets/images/services/mice-services.jpg'),
     imageAlt: 'Architectural international conference hall and corporate gathering',
     ctaLabel: 'Plan a MICE programme',
     scope: [
       'Corporate meetings and leadership offsites',
-      'Incentive travel programmes for high-performing teams and partners',
+      'Incentive travel programmes for teams and partners',
       'Conference and exhibition delegation travel',
-      'Group air ticket coordination from multiple origin cities',
+      'Multi-origin group air ticket coordination',
       'Hotel room blocks and venue-adjacent accommodation',
       'Group visa documentation guidance for international delegations',
-      'Coach transfers, airport meets, and curated group sightseeing',
+      'Coach transfers, airport meets, and curated group excursions',
     ],
     benefits: [
       {
-        title: 'Multi-city arrival coordination',
-        detail: 'Synchronise travellers arriving from Delhi, Mumbai, Bengaluru, Dubai, or international hubs into one unified schedule.',
+        title: 'Multi-city arrival synchronisation',
+        detail: 'Coordinate delegates arriving from Indian cities, Dubai, or international hubs into one unified arrival schedule.',
       },
       {
-        title: 'Gulf & Asian destination strength',
-        detail: 'Ideal for Dubai, Abu Dhabi, Goa, Kerala, Phuket, Bali, Singapore, Malaysia, and Almaty corporate offsites and incentive programmes.',
+        title: 'India and Gulf destination fluency',
+        detail: 'Well suited for Dubai, Abu Dhabi, Goa, Kerala, Phuket, Bali, Singapore, Malaysia, and Almaty corporate offsites and incentive programmes.',
       },
       {
-        title: 'Single executive point of contact',
-        detail: 'Streamlined communication from initial programme scoping through final delegation return.',
+        title: 'Single executive contact',
+        detail: 'Clear communication from initial scoping through final delegation return.',
       },
     ],
     processSteps: [
@@ -555,15 +546,11 @@ export const SERVICES: TravelService[] = [
     faqs: [
       {
         question: 'What does MICE stand for?',
-        answer: 'MICE stands for Meetings, Incentives, Conferences, and Exhibitions—covering corporate offsites, leadership summits, dealer incentive trips, and event delegation travel.',
+        answer: 'MICE stands for Meetings, Incentives, Conferences, and Exhibitions, covering corporate offsites, leadership summits, dealer incentive trips, and event delegation travel.',
       },
       {
         question: 'Can EzyQuick coordinate delegations departing from multiple cities?',
-        answer: 'Yes. We regularly coordinate multi-origin flight arrivals, shared airport transfers, and unified hotel room blocks for corporate groups.',
-      },
-      {
-        question: 'Are Dubai and Abu Dhabi suitable for corporate incentive travel?',
-        answer: 'Yes. With our Dubai office in Silicon Oasis and India office in New Delhi, UAE corporate summits and incentive programmes are a natural strength.',
+        answer: 'Yes. We coordinate multi-origin flight arrivals, shared airport transfers, and unified hotel room blocks for corporate groups.',
       },
     ],
     relatedSlugs: ['corporate-travel', 'hotel-bookings', 'air-tickets'],

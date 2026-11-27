@@ -1,50 +1,51 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
-import { ArrowUpRight } from 'lucide-react';
-import { DESTINATIONS } from '@/data/destinations';
-import { DestinationDirectoryClient } from '@/components/DestinationDirectoryClient';
+import { GlobalAtlasExperience } from '@/components/globe/GlobalAtlasExperience';
+import { DestinationDirectory } from '@/components/destinations/DestinationDirectory';
+import { SITE } from '@/data/site';
+import { buildBreadcrumbJsonLd } from '@/lib/structured-data';
 
 export const metadata: Metadata = {
-  title: 'Destinations — India & International Travel Guides',
+  title: 'Destinations — 14 Verified Places Across India, UAE & Asia',
   description:
-    'Explore 14 curated domestic and international destinations arranged by EzyQuick: Dubai, Abu Dhabi, Phuket, Krabi, Phu Quoc, Bali, Sri Lanka, Singapore, Malaysia, Almaty, Kerala, Goa, Andaman & Nicobar, and Ladakh.',
+    'Explore all 14 verified EzyQuick destinations on the interactive 3D Global Atlas or browse the full searchable directory covering Dubai, Abu Dhabi, Kerala, Goa, Ladakh, Bali, Thailand, Vietnam, Singapore, Malaysia, Sri Lanka, and Almaty.',
+  alternates: { canonical: `${SITE.url}/destinations/` },
+  openGraph: {
+    title: '14 Verified Travel Destinations | EzyQuick Global Atlas',
+    description:
+      'Interactive 3D globe and searchable directory of all 14 domestic and international EzyQuick destinations.',
+    url: `${SITE.url}/destinations/`,
+  },
 };
 
 export default function DestinationsPage() {
+  const breadcrumb = buildBreadcrumbJsonLd([
+    { name: 'Home', path: '/' },
+    { name: 'Destinations', path: '/destinations/' },
+  ]);
+
   return (
-    <div className="pt-28 sm:pt-36 pb-[var(--section-space)] bg-[var(--color-bg-primary)]">
-      <div className="site-container space-y-12">
-        <nav aria-label="Breadcrumb" className="text-xs text-[var(--color-text-muted)]">
-          <Link href="/" className="hover:text-[var(--color-brand-primary-ink)]">
-            Home
-          </Link>
-          <span className="mx-2">/</span>
-          <span className="text-[var(--color-text-primary)] font-medium">Destinations</span>
-        </nav>
+    <main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+      />
+      <GlobalAtlasExperience mode="destinations" />
 
-        <header className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-end">
-          <div className="lg:col-span-8 space-y-4">
-            <p className="t-meta text-[var(--color-brand-primary-ink)]">
-              India &amp; International Atlas
-            </p>
-            <h1 className="t-hero text-[var(--color-text-primary)]">
-              Fourteen places worth travelling for.
-            </h1>
-          </div>
-          <div className="lg:col-span-4 space-y-4">
-            <p className="text-sm sm:text-base text-[var(--color-text-secondary)] leading-relaxed">
-              Every destination below is custom-planned upon enquiry around your dates, pace, and
-              travellers—never locked into rigid off-the-shelf packages.
-            </p>
-            <Link href="/contact#enquiry" className="btn-ezy btn-primary !min-h-[44px]">
-              <span>Request a custom itinerary</span>
-              <ArrowUpRight className="btn-arrow h-4 w-4" aria-hidden="true" />
-            </Link>
-          </div>
-        </header>
+      <section className="mx-auto max-w-[1440px] px-4 py-20 sm:px-8" aria-labelledby="all-dest-heading">
+        <div className="mb-10 max-w-2xl">
+          <p className="font-mono-hud text-xs font-semibold tracking-wider text-[#0059FD] uppercase">
+            Complete Directory · 14 Verified Destinations
+          </p>
+          <h2
+            id="all-dest-heading"
+            className="font-display mt-2 text-3xl font-extrabold text-[#0C1E3A] sm:text-5xl"
+          >
+            Search and filter every destination.
+          </h2>
+        </div>
 
-        <DestinationDirectoryClient destinations={DESTINATIONS} />
-      </div>
-    </div>
+        <DestinationDirectory />
+      </section>
+    </main>
   );
 }

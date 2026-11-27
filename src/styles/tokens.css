@@ -1,0 +1,50 @@
+:root {
+  /* === EzyQuick Global Atlas — Official Blue & White Brand System === */
+  --brand-cobalt: #0059fd;
+  --brand-cobalt-hover: #0047cc;
+  --brand-atlas-navy: #0c1e3a;
+  --brand-secondary-blue: #174a9c;
+  --brand-sky-cyan: #6ec8ff;
+  --brand-solar-gold: #fdbc03;
+  --brand-obsidian: #101b25;
+
+  /* Dominant White & Blue Surfaces */
+  --surface-white: #ffffff;
+  --surface-cloud: #f4f7fc;
+  --surface-ice: #dce8f8;
+
+  /* Semantic Aliases */
+  --ground: #f4f7fc;
+  --surface: #ffffff;
+  --ink: #0c1e3a;
+  --ink-muted: #475b78;
+  --ink-subtle: #647896;
+  --line: rgba(12, 30, 58, 0.11);
+  --line-strong: rgba(12, 30, 58, 0.22);
+
+  /* Dark Contrast Bands (Corporate / Footer) */
+  --night: #0c1e3a;
+  --night-deep: #101b25;
+  --night-elevated: #142a4d;
+  --night-ink: #ffffff;
+  --night-muted: #b7c9e2;
+  --night-line: rgba(220, 232, 248, 0.16);
+
+  /* Accents */
+  --accent: #0059fd;
+  --accent-hover: #0047cc;
+  --accent-soft: rgba(0, 89, 253, 0.09);
+  --solar: #fdbc03;
+  --solar-soft: rgba(253, 188, 3, 0.16);
+
+  /* Geometry & Motion */
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-pill: 9999px;
+
+  --ease-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --dur-fast: 200ms;
+  --dur-base: 380ms;
+  --dur-slow: 680ms;
+}
