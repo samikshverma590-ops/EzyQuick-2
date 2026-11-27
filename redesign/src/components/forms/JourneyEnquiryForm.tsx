@@ -20,6 +20,7 @@ import {
   type EnquiryPayload,
 } from '@/lib/enquiry-schema';
 import { buildSafeMailtoUrl, buildSafeWhatsAppUrl, SITE } from '@/data/site';
+import { useJourneySelection } from '@/lib/journey-selection';
 
 interface JourneyEnquiryFormProps {
   defaultService?: (typeof SERVICE_OPTIONS)[number];
@@ -55,21 +56,32 @@ interface FormState {
 }
 
 export function JourneyEnquiryForm({
-  defaultService = 'Leisure Travel',
-  defaultDestination = '',
-  defaultDesk = 'delhi',
+  defaultService,
+  defaultDestination,
+  defaultDesk,
 }: JourneyEnquiryFormProps) {
+  const { selection, originHub, selectedDestination } = useJourneySelection();
+
+  const resolvedService: (typeof SERVICE_OPTIONS)[number] =
+    defaultService ??
+    ((SERVICE_OPTIONS as readonly string[]).includes(selection.service)
+      ? (selection.service as (typeof SERVICE_OPTIONS)[number])
+      : 'Leisure Travel');
+
+  const resolvedDesk: 'delhi' | 'dubai' = defaultDesk ?? originHub.id;
+  const resolvedDest = defaultDestination ?? selectedDestination?.name ?? '';
+
   const [form, setForm] = useState<FormState>({
-    preferredDesk: defaultDesk,
-    serviceType: defaultService,
+    preferredDesk: resolvedDesk,
+    serviceType: resolvedService,
     fullName: '',
     email: '',
     mobile: '',
-    originCity: '',
-    destination: defaultDestination,
+    originCity: originHub.city,
+    destination: resolvedDest,
     departureDate: '',
     returnDate: '',
-    travellers: '2',
+    travellers: String(selection.travellers || 2),
     companyName: '',
     travelFrequency: 'One-time trip',
     holidayType: 'Family',
@@ -86,7 +98,7 @@ export function JourneyEnquiryForm({
     website: '',
   });
 
-  // Read optional URL query params on client mount (?service=...&destination=...&desk=...&travellers=...)
+  // Also read optional URL query params on client mount (?service=...&destination=...&desk=...&travellers=...)
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const params = new URLSearchParams(window.location.search);
@@ -96,6 +108,8 @@ export function JourneyEnquiryForm({
     const qTravellers = params.get('travellers');
     const parsedTravellers = qTravellers ? Number.parseInt(qTravellers, 10) : NaN;
 
+    if (!qService && !qDest && !qDesk && !qTravellers) return;
+
     setForm((prev) => ({
       ...prev,
       serviceType:
@@ -104,6 +118,8 @@ export function JourneyEnquiryForm({
           : prev.serviceType,
       destination: qDest || prev.destination,
       preferredDesk: qDesk === 'dubai' ? 'dubai' : qDesk === 'delhi' ? 'delhi' : prev.preferredDesk,
+      originCity:
+        qDesk === 'dubai' ? 'Dubai' : qDesk === 'delhi' ? 'New Delhi' : prev.originCity,
       travellers:
         Number.isFinite(parsedTravellers) && parsedTravellers >= 1 && parsedTravellers <= 500
           ? String(parsedTravellers)
