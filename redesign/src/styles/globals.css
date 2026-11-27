@@ -1,0 +1,259 @@
+@import "tailwindcss";
+@import "./tokens.css";
+
+@layer base {
+  html {
+    background-color: var(--surface-cloud);
+    color: var(--ink);
+    font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: var(--surface-cloud);
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: var(--brand-cobalt);
+    color: #ffffff;
+  }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+    letter-spacing: -0.03em;
+  }
+
+  h1, h2 {
+    text-wrap: balance;
+  }
+
+  [id] {
+    scroll-margin-top: 6rem;
+  }
+
+  button, a, select, input, textarea {
+    touch-action: manipulation;
+  }
+
+  .font-mono-hud {
+    font-family: var(--font-mono), ui-monospace, SFMono-Regular, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--brand-cobalt);
+    outline-offset: 2px;
+  }
+}
+
+/* Crisp Bright Blue-and-White Atlas Stage (Clean, International, High-Contrast) */
+.atlas-hero-bg {
+  background:
+    radial-gradient(circle at 54% 46%, rgba(110, 200, 255, 0.22) 0%, rgba(220, 232, 248, 0.32) 38%, transparent 68%),
+    radial-gradient(circle at 86% 14%, rgba(0, 89, 253, 0.08) 0%, transparent 45%),
+    linear-gradient(180deg, #ffffff 0%, #f4f7fc 55%, #e8f0fb 100%);
+}
+
+/* Crisp White Floating Atlas Panel */
+.atlas-panel {
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid #dce8f8;
+  box-shadow:
+    0 22px 54px -18px rgba(12, 30, 58, 0.16),
+    0 4px 12px -4px rgba(12, 30, 58, 0.06);
+}
+
+/* Clean Elevation Card */
+.studio-card {
+  background: #ffffff;
+  border: 1px solid #dce8f8;
+  box-shadow:
+    0 14px 36px -16px rgba(12, 30, 58, 0.12),
+    0 2px 6px rgba(12, 30, 58, 0.04);
+  transition:
+    transform var(--dur-base) var(--ease-expo),
+    box-shadow var(--dur-base) var(--ease-expo),
+    border-color var(--dur-fast) var(--ease-expo);
+}
+
+.studio-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(0, 89, 253, 0.35);
+  box-shadow:
+    0 24px 48px -18px rgba(12, 30, 58, 0.18),
+    0 4px 12px rgba(0, 89, 253, 0.08);
+}
+
+/* Tactile Pill Control */
+.atlas-pill {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid #dce8f8;
+  color: #0c1e3a;
+  transition:
+    transform var(--dur-fast) var(--ease-expo),
+    background-color var(--dur-fast) var(--ease-expo),
+    border-color var(--dur-fast) var(--ease-expo),
+    color var(--dur-fast) var(--ease-expo),
+    box-shadow var(--dur-fast) var(--ease-expo);
+}
+
+.atlas-pill:hover {
+  transform: translateY(-1px);
+  background: #ffffff;
+  border-color: #0059fd;
+  color: #0059fd;
+  box-shadow: 0 8px 20px -8px rgba(0, 89, 253, 0.25);
+}
+
+.atlas-pill-active {
+  background: #0c1e3a;
+  border-color: #0c1e3a;
+  color: #ffffff;
+  box-shadow: 0 8px 20px -6px rgba(12, 30, 58, 0.32);
+}
+
+.atlas-pill-active:hover {
+  background: #0059fd;
+  border-color: #0059fd;
+  color: #ffffff;
+}
+
+/* Primary Electric Cobalt CTA Button */
+.btn-kinetic {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: var(--brand-cobalt);
+  color: #ffffff;
+  font-weight: 600;
+  transition:
+    transform var(--dur-fast) var(--ease-expo),
+    box-shadow var(--dur-fast) var(--ease-expo);
+  box-shadow: 0 12px 28px -8px rgba(0, 89, 253, 0.45);
+}
+
+.btn-kinetic::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--brand-atlas-navy);
+  transform: translateY(102%);
+  transition: transform var(--dur-base) var(--ease-expo);
+  z-index: 0;
+}
+
+.btn-kinetic:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 34px -8px rgba(12, 30, 58, 0.35);
+}
+
+.btn-kinetic:hover::before {
+  transform: translateY(0%);
+}
+
+.btn-kinetic > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Secondary Navy Outline Button */
+.btn-outline-kinetic {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid #0c1e3a;
+  background: #ffffff;
+  color: #0c1e3a;
+  font-weight: 600;
+  transition:
+    color var(--dur-fast) var(--ease-expo),
+    border-color var(--dur-fast) var(--ease-expo),
+    transform var(--dur-fast) var(--ease-expo);
+}
+
+.btn-outline-kinetic::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: #0c1e3a;
+  transform: translateY(102%);
+  transition: transform var(--dur-base) var(--ease-expo);
+  z-index: 0;
+}
+
+.btn-outline-kinetic:hover {
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.btn-outline-kinetic:hover::before {
+  transform: translateY(0%);
+}
+
+.btn-outline-kinetic > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Nav Underline Draw */
+.nav-link-draw {
+  position: relative;
+}
+
+.nav-link-draw::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--brand-cobalt);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--dur-fast) var(--ease-expo);
+}
+
+.nav-link-draw:hover::after,
+.nav-link-draw[aria-current="page"]::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.img-frame {
+  overflow: hidden;
+}
+
+.img-frame img {
+  transition: transform 600ms var(--ease-expo);
+}
+
+.studio-card:hover .img-frame img,
+.img-frame:hover img {
+  transform: scale(1.05);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
