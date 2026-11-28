@@ -1,41 +1,51 @@
 :root {
-  /* === EzyQuick Global Atlas — Official Blue & White Brand System === */
-  --brand-cobalt: #0059fd;
-  --brand-cobalt-hover: #0047cc;
-  --brand-atlas-navy: #0c1e3a;
-  --brand-secondary-blue: #174a9c;
-  --brand-sky-cyan: #6ec8ff;
-  --brand-solar-gold: #fdbc03;
-  --brand-obsidian: #101b25;
-
-  /* Dominant White & Blue Surfaces */
-  --surface-white: #ffffff;
-  --surface-cloud: #f4f7fc;
-  --surface-ice: #dce8f8;
+  /* === EzyQuick — Global Travel Editorial Design System === */
+  --deep-ink: #091933;
+  --deep-ink-night: #061124;
+  --deep-ink-elevated: #13294B;
+  --ocean-teal: #0B56E8;
+  --ocean-teal-hover: #0844BA;
+  --ocean-teal-deep: #083FA8;
+  --muted-sage: #60A5FA;
+  --warm-ivory: #F4F7FC;
+  --soft-sand: #DCE5F2;
+  --champagne-gold: #F5A623;
+  --champagne-gold-ink: #B47209;
+  --warm-white: #FFFFFF;
+  --brand-blue: #0054FC;
+  --brand-blue-hover: #0042C7;
 
   /* Semantic Aliases */
-  --ground: #f4f7fc;
-  --surface: #ffffff;
-  --ink: #0c1e3a;
-  --ink-muted: #475b78;
-  --ink-subtle: #647896;
-  --line: rgba(12, 30, 58, 0.11);
-  --line-strong: rgba(12, 30, 58, 0.22);
+  --ground: #F4F7FC;
+  --surface: #FFFFFF;
+  --surface-sand: #EBF1FA;
+  --ink: #091933;
+  --ink-muted: #3B4F6B;
+  --ink-subtle: #5B708D;
+  --line: rgba(24, 44, 53, 0.12);
+  --line-strong: rgba(24, 44, 53, 0.24);
 
-  /* Dark Contrast Bands (Corporate / Footer) */
-  --night: #0c1e3a;
-  --night-deep: #101b25;
-  --night-elevated: #142a4d;
-  --night-ink: #ffffff;
-  --night-muted: #b7c9e2;
-  --night-line: rgba(220, 232, 248, 0.16);
+  /* Dark Contrast Bands (Hero / Portals / Hubs / Footer) */
+  --night: #091933;
+  --night-deep: #061124;
+  --night-elevated: #13294B;
+  --night-ink: #FFFFFF;
+  --night-muted: #CBD8EC;
+  --night-line: rgba(216, 198, 170, 0.18);
 
   /* Accents */
-  --accent: #0059fd;
-  --accent-hover: #0047cc;
-  --accent-soft: rgba(0, 89, 253, 0.09);
-  --solar: #fdbc03;
-  --solar-soft: rgba(253, 188, 3, 0.16);
+  --accent: #0B56E8;
+  --accent-hover: #0844BA;
+  --accent-soft: rgba(46, 116, 115, 0.11);
+  --brand-accent: #0054FC;
+  --gold: #F5A623;
+  --gold-soft: rgba(198, 161, 107, 0.16);
+
+  /* Backwards-compatible variable aliases */
+  --brand-cobalt: #0B56E8;
+  --brand-atlas-navy: #091933;
+  --brand-solar-gold: #F5A623;
+  --surface-cloud: #F4F7FC;
 
   /* Geometry & Motion */
   --radius-sm: 10px;

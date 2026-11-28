@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Plus_Jakarta_Sans, JetBrains_Mono } from 'next/font/google';
+import { Fraunces, Plus_Jakarta_Sans, JetBrains_Mono } from 'next/font/google';
 import { SiteHeader } from '@/components/layout/SiteHeader';
 import { SiteFooter } from '@/components/layout/SiteFooter';
 import { JourneySelectionProvider } from '@/lib/journey-selection';
@@ -10,6 +10,13 @@ import '@/styles/globals.css';
 export const viewport: Viewport = {
   themeColor: '#F4F7FC',
 };
+
+const fraunces = Fraunces({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-serif',
+  display: 'swap',
+});
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -28,11 +35,11 @@ const jetBrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
-    default: 'EzyQuick Global Atlas — International Corporate & Leisure Travel',
+    default: 'EzyQuick — International Corporate & Leisure Travel (New Delhi & Dubai)',
     template: '%s | EzyQuick',
   },
   description:
-    'International travel services operating through New Delhi and Dubai. Explore 9 travel disciplines and 14 verified destinations on the interactive EzyQuick Global Atlas.',
+    'More world. Less to organise. International travel services operating through New Delhi and Dubai across 9 travel disciplines and 14 verified destinations.',
   openGraph: {
     type: 'website',
     siteName: SITE.legalName,
@@ -51,8 +58,11 @@ export default function RootLayout({
   const jsonLd = buildTravelAgencyJsonLd();
 
   return (
-    <html lang="en" className={`${plusJakartaSans.variable} ${jetBrainsMono.variable}`}>
-      <body className="min-h-screen bg-[#F4F7FC] text-[#0C1E3A] antialiased">
+    <html
+      lang="en"
+      className={`${fraunces.variable} ${plusJakartaSans.variable} ${jetBrainsMono.variable}`}
+    >
+      <body className="min-h-screen bg-[#F4F7FC] text-[#091933] antialiased">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

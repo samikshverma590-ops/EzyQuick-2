@@ -4,20 +4,25 @@ import { useEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { GLOBE_RADIUS } from '@/lib/geo';
-import { buildCartographicEarthTextures } from './cartographicTextures';
+import {
+  buildCartographicEarthTextures,
+  buildSelectedCountryOverlayTexture,
+} from './cartographicTextures';
 import { AtmosphereRim } from './AtmosphereRim';
 
 interface EarthSphereProps {
   textureWidth: number;
   segments: number;
+  originCountryIso?: string | null;
+  selectedCountryIso?: string | null;
   reducedMotion?: boolean;
   onTexturesReady?: () => void;
 }
 
 /**
  * Generates an ultra-lightweight procedural high-altitude cloud whisper texture
- * (100% self-contained, zero external downloads) to pair Phase 1 atmospheric depth
- * with the sculptural Blue & Cloud-Pearl cartographic globe without obscuring coastlines.
+ * (100% self-contained, zero external downloads) to pair atmospheric depth
+ * with the sculptural cartographic globe without obscuring coastlines.
  */
 function buildCloudWhisperTexture(width: number): THREE.CanvasTexture {
   const w = Math.min(1024, Math.max(512, Math.floor(width / 2)));
@@ -67,12 +72,14 @@ function buildCloudWhisperTexture(width: number): THREE.CanvasTexture {
 
 /**
  * Sculptural Cartographic 3D Earth built from Natural Earth 1:50m vector polygons
- * styled in EzyQuick's official Atlas Blue, Cloud White, and Sky Cyan palette,
- * enhanced with a subtle independently drifting atmospheric cloud whisper shell.
+ * with multi-tone editorial country differentiation, live origin/destination country
+ * highlight overlay, and an independently drifting high-altitude cloud whisper shell.
  */
 export function EarthSphere({
   textureWidth,
   segments,
+  originCountryIso = null,
+  selectedCountryIso = null,
   reducedMotion = false,
   onTexturesReady,
 }: EarthSphereProps) {
@@ -83,6 +90,12 @@ export function EarthSphere({
   const textures = useMemo(() => buildCartographicEarthTextures(textureWidth), [textureWidth]);
   const cloudTex = useMemo(() => buildCloudWhisperTexture(textureWidth), [textureWidth]);
 
+  const highlightWidth = Math.min(1024, textureWidth);
+  const countryOverlayTex = useMemo(() => {
+    if (!originCountryIso && !selectedCountryIso) return null;
+    return buildSelectedCountryOverlayTexture(originCountryIso, selectedCountryIso, highlightWidth);
+  }, [originCountryIso, selectedCountryIso, highlightWidth]);
+
   useEffect(() => {
     onReadyRef.current?.();
     return () => {
@@ -90,6 +103,12 @@ export function EarthSphere({
       cloudTex.dispose();
     };
   }, [textures, cloudTex]);
+
+  useEffect(() => {
+    return () => {
+      countryOverlayTex?.dispose();
+    };
+  }, [countryOverlayTex]);
 
   useFrame((_, delta) => {
     if (reducedMotion || !cloudMeshRef.current) return;
@@ -111,6 +130,21 @@ export function EarthSphere({
         />
       </mesh>
 
+      {/* Active Origin & Selected Destination Country Highlight Overlay */}
+      {countryOverlayTex && (
+        <mesh raycast={() => null}>
+          <sphereGeometry args={[GLOBE_RADIUS + 0.005, segments, segments]} />
+          <meshStandardMaterial
+            map={countryOverlayTex}
+            transparent
+            opacity={0.96}
+            depthWrite={false}
+            roughness={0.88}
+            metalness={0.02}
+          />
+        </mesh>
+      )}
+
       {/* Subtle Independently Drifting High-Altitude Cloud Whisper Shell */}
       <mesh ref={cloudMeshRef} raycast={() => null}>
         <sphereGeometry args={[GLOBE_RADIUS + 0.014, Math.max(40, segments - 12), Math.max(40, segments - 12)]} />
@@ -124,7 +158,7 @@ export function EarthSphere({
         />
       </mesh>
 
-      {/* Subtle Sky Cyan Atmospheric Rim */}
+      {/* Subtle Ocean Teal Atmospheric Rim */}
       <AtmosphereRim segments={Math.max(40, segments - 12)} />
     </group>
   );

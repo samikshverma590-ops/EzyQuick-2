@@ -9,14 +9,14 @@ import { cameraPositionForLatLng } from '@/lib/geo';
 import type { AtlasRegionFilter } from '@/data/atlas';
 import type { FlightTelemetry } from './Airplane3D';
 
-export const GLOBAL_VIEW_COORDS = { lat: 19, lng: 74 };
-export const DEFAULT_CAMERA_DISTANCE = 6.25;
+export const GLOBAL_VIEW_COORDS = { lat: 21, lng: 68 };
+export const DEFAULT_CAMERA_DISTANCE = 6.2;
 
 export const REGION_VIEW_PRESETS: Record<
   AtlasRegionFilter,
   { lat: number; lng: number; distance: number }
 > = {
-  All: { lat: 19, lng: 74, distance: 6.25 },
+  All: { lat: 21, lng: 68, distance: 6.2 },
   India: { lat: 20, lng: 79, distance: 5.2 },
   'Middle East': { lat: 24.8, lng: 55, distance: 5.05 },
   'Southeast Asia': { lat: 4, lng: 105, distance: 5.25 },
@@ -34,6 +34,12 @@ interface CameraRigProps {
   isMobile: boolean;
 }
 
+/**
+ * Cinematic camera rig with permanent trackpad/wheel scroll protection:
+ * OrbitControls uses enableZoom={false} so two-finger vertical trackpad gestures
+ * and mouse-wheel scrolling ALWAYS scroll the webpage normally.
+ * Intentional camera zoom is handled explicitly via the +/- UI buttons.
+ */
 export function CameraRig({
   focusTarget,
   regionFilter,
@@ -52,21 +58,39 @@ export function CameraRig({
   const lastRegionRef = useRef<AtlasRegionFilter>('All');
   const sunLightRef = useRef<THREE.DirectionalLight>(null);
 
-  const baseDist = isMobile ? 6.6 : DEFAULT_CAMERA_DISTANCE;
+  const baseDist = isMobile ? 6.55 : DEFAULT_CAMERA_DISTANCE;
 
+  // Restore pan-y touchAction after OrbitControls.connect() sets touchAction='none'
+  // so normal vertical touch swipes scroll the page naturally even over the 3D canvas.
+  useEffect(() => {
+    const dom = controlsRef.current?.domElement;
+    if (dom) {
+      dom.style.touchAction = 'pan-y';
+    }
+  }, []);
+
+  // Initial atmospheric reveal: gently glide from slightly wider perspective into poised framing
   useEffect(() => {
     const startPos = cameraPositionForLatLng(
-      GLOBAL_VIEW_COORDS.lat,
-      GLOBAL_VIEW_COORDS.lng,
-      baseDist
+      GLOBAL_VIEW_COORDS.lat + (reducedMotion ? 0 : 3),
+      GLOBAL_VIEW_COORDS.lng - (reducedMotion ? 0 : 8),
+      reducedMotion ? baseDist : baseDist + 0.58
     );
     camera.position.copy(startPos);
     camera.lookAt(0, 0, 0);
-  }, [camera, baseDist]);
+
+    if (!reducedMotion) {
+      desiredPosRef.current = cameraPositionForLatLng(
+        GLOBAL_VIEW_COORDS.lat,
+        GLOBAL_VIEW_COORDS.lng,
+        baseDist
+      );
+    }
+  }, [camera, baseDist, reducedMotion]);
 
   useEffect(() => {
     if (!focusTarget || followFlight) return;
-    const dist = focusTarget.distance ?? (isMobile ? 5.55 : 5.6);
+    const dist = focusTarget.distance ?? (isMobile ? 5.55 : 5.55);
     const nextPos = cameraPositionForLatLng(focusTarget.lat, focusTarget.lng, dist);
     if (reducedMotion) {
       camera.position.copy(nextPos);
@@ -114,11 +138,12 @@ export function CameraRig({
   useEffect(() => {
     if (zoomEvent.seq === 0) return;
     const currentLen = camera.position.length();
-    const targetLen = THREE.MathUtils.clamp(currentLen + zoomEvent.delta, 3.3, 7.2);
+    const targetLen = THREE.MathUtils.clamp(currentLen + zoomEvent.delta, 3.4, 7.2);
     const dir = camera.position.clone().normalize();
     desiredPosRef.current = dir.multiplyScalar(targetLen);
   }, [zoomEvent, camera]);
 
+  // Pre-allocated scratch vectors (zero per-frame GC allocations)
   const upVec = useRef(new THREE.Vector3(0, 1, 0));
   const rightVec = useRef(new THREE.Vector3());
   const lightPos = useRef(new THREE.Vector3());
@@ -129,15 +154,14 @@ export function CameraRig({
   useFrame((_, delta) => {
     const dt = Math.min(delta, 0.05);
 
-    // Optional interactive "Follow Flight" chase camera smoothly tracking the 3D airplane
     if (followFlight && flightTelemetryRef.current && !userInteractingRef.current) {
       const { position, tangent, normal } = flightTelemetryRef.current;
-      const chaseDist = isMobile ? 2.45 : 2.15;
+      const chaseDist = isMobile ? 2.55 : 2.25;
       chaseTarget.current
         .copy(position)
         .addScaledVector(normal, chaseDist)
-        .addScaledVector(tangent, -0.85);
-      const factor = 1 - Math.exp(-3.4 * dt);
+        .addScaledVector(tangent, -0.92);
+      const factor = 1 - Math.exp(-3.1 * dt);
       camera.position.lerp(chaseTarget.current, factor);
     } else if (desiredPosRef.current && !userInteractingRef.current) {
       scratchCamDir.current.copy(camera.position).normalize();
@@ -145,17 +169,17 @@ export function CameraRig({
       const currentLen = camera.position.length();
       const targetLen = desiredPosRef.current.length();
 
-      const factor = 1 - Math.exp(-4.4 * dt);
+      const factor = 1 - Math.exp(-3.6 * dt);
       scratchCamDir.current.lerp(scratchTargetDir.current, factor).normalize();
       const nextLen = THREE.MathUtils.lerp(currentLen, targetLen, factor);
       camera.position.copy(scratchCamDir.current).multiplyScalar(nextLen);
 
-      if (camera.position.distanceTo(desiredPosRef.current) < 0.02) {
+      if (camera.position.distanceTo(desiredPosRef.current) < 0.018) {
         desiredPosRef.current = null;
       }
     }
 
-    // Viewing-hemisphere daylight studio key light (keeps cartographic globe bright & sculptural at any angle)
+    // Warm daylight studio key light gently tracking the viewing hemisphere
     if (sunLightRef.current) {
       scratchCamDir.current.copy(camera.position).normalize();
       rightVec.current.crossVectors(upVec.current, scratchCamDir.current).normalize();
@@ -163,7 +187,7 @@ export function CameraRig({
         .copy(scratchCamDir.current)
         .multiplyScalar(9)
         .addScaledVector(rightVec.current, -3.2)
-        .addScaledVector(upVec.current, 4.0);
+        .addScaledVector(upVec.current, 4.2);
       sunLightRef.current.position.copy(lightPos.current);
     }
 
@@ -172,19 +196,18 @@ export function CameraRig({
 
   return (
     <>
-      <directionalLight ref={sunLightRef} intensity={2.35} color="#FFFFFF" />
+      <directionalLight ref={sunLightRef} intensity={2.35} color="#FFFBF2" />
       <OrbitControls
         ref={controlsRef}
         enablePan={false}
-        enableZoom
-        zoomSpeed={0.62}
+        enableZoom={false}
         enableDamping
         dampingFactor={0.075}
-        rotateSpeed={0.55}
-        minDistance={3.3}
+        rotateSpeed={0.52}
+        minDistance={3.4}
         maxDistance={7.2}
         autoRotate={!reducedMotion && !focusTarget && !followFlight && regionFilter === 'All'}
-        autoRotateSpeed={0.18}
+        autoRotateSpeed={0.12}
         onStart={() => {
           userInteractingRef.current = true;
           desiredPosRef.current = null;

@@ -78,24 +78,46 @@ function traceGeometry(
   }
 }
 
+const COUNTRY_TONES = ['#FFFFFF', '#F3F7FD', '#E9F0FA', '#F7FAFE'] as const;
+
+let cachedCountriesGeo: ReturnType<typeof feature> | null = null;
+let cachedCountryBorders: ReturnType<typeof mesh> | null = null;
+
+function getWorldVectorData() {
+  if (!cachedCountriesGeo || !cachedCountryBorders) {
+    const topo = countries50m as unknown as Topology<{
+      countries: GeometryCollection;
+      land: GeometryCollection;
+    }>;
+    cachedCountriesGeo = feature(topo, topo.objects.countries);
+    cachedCountryBorders = mesh(topo, topo.objects.countries, (a, b) => a !== b);
+  }
+  return {
+    countriesGeo: cachedCountriesGeo as GeoJSON.FeatureCollection,
+    countryBorders: cachedCountryBorders,
+  };
+}
+
+function normalizeIsoId(id: string | number | undefined | null): string {
+  if (id === undefined || id === null) return '';
+  return String(id).trim().padStart(3, '0');
+}
+
+function pickCountryTone(id: string | number | undefined): string {
+  const num = Number.parseInt(String(id ?? '0'), 10);
+  if (!Number.isFinite(num)) return COUNTRY_TONES[0];
+  const idx = Math.abs((num * 7 + (num % 5) * 3) % COUNTRY_TONES.length);
+  return COUNTRY_TONES[idx];
+}
+
 /**
  * Generates high-DPI sculptural cartographic Earth PBR textures from
  * Natural Earth 1:50m vector data (Public Domain) via world-atlas (ISC License),
- * styled in EzyQuick's official Atlas Blue, Cloud White, and Sky Cyan palette.
- *
- * Surface tonal variation and coastal halo are subtle procedural visual shading
- * for cartographic legibility — not real elevation or bathymetry measurements.
+ * styled in EzyQuick's Logo-Matched Royal Cobalt, Porcelain White & Solar Gold palette.
  */
 export function buildCartographicEarthTextures(width = 2048): CartographicEarthTextures {
   const height = Math.round(width / 2);
-
-  const topo = countries50m as unknown as Topology<{
-    countries: GeometryCollection;
-    land: GeometryCollection;
-  }>;
-
-  const countriesGeo = feature(topo, topo.objects.countries);
-  const countryBorders = mesh(topo, topo.objects.countries, (a, b) => a !== b);
+  const { countriesGeo, countryBorders } = getWorldVectorData();
 
   const traceCountries = (ctx: CanvasRenderingContext2D, isFill: boolean) => {
     for (const f of countriesGeo.features) {
@@ -103,23 +125,23 @@ export function buildCartographicEarthTextures(width = 2048): CartographicEarthT
     }
   };
 
-  // 1. ALBEDO MAP — Luminous Atlas Cobalt-Marine Ocean + Crisp Cloud-Pearl Sculpted Continents
+  // 1. ALBEDO MAP — Luminous Royal Cobalt-Azure Oceans + Crisp Porcelain-White Multi-Tone Continents
   const albedoCanvas = document.createElement('canvas');
   albedoCanvas.width = width;
   albedoCanvas.height = height;
   const aCtx = albedoCanvas.getContext('2d')!;
 
   const oceanGrad = aCtx.createLinearGradient(0, 0, 0, height);
-  oceanGrad.addColorStop(0, '#0B2447');
-  oceanGrad.addColorStop(0.22, '#123A78');
-  oceanGrad.addColorStop(0.5, '#174A9C');
-  oceanGrad.addColorStop(0.78, '#123A78');
-  oceanGrad.addColorStop(1, '#0A1F3E');
+  oceanGrad.addColorStop(0, '#072052');
+  oceanGrad.addColorStop(0.22, '#0B3E9E');
+  oceanGrad.addColorStop(0.5, '#1360E2');
+  oceanGrad.addColorStop(0.78, '#0B3E9E');
+  oceanGrad.addColorStop(1, '#061A42');
   aCtx.fillStyle = oceanGrad;
   aCtx.fillRect(0, 0, width, height);
 
-  // Subtle latitude/longitude cartographic graticule (15° intervals)
-  aCtx.strokeStyle = 'rgba(110, 200, 255, 0.14)';
+  // Subtle sky-white latitude/longitude cartographic graticule (15° intervals)
+  aCtx.strokeStyle = 'rgba(186, 220, 255, 0.16)';
   aCtx.lineWidth = Math.max(0.75, width / 2048);
   aCtx.beginPath();
   for (let lng = -165; lng <= 180; lng += 15) {
@@ -134,35 +156,37 @@ export function buildCartographicEarthTextures(width = 2048): CartographicEarthT
   }
   aCtx.stroke();
 
-  // Soft Sky Cyan coastal shallows glow + sculptural bright Cloud-Pearl landmasses
+  // Soft Sky Azure coastal shallows glow beneath combined continental landmass
   aCtx.save();
   aCtx.beginPath();
   traceCountries(aCtx, true);
-  aCtx.shadowColor = 'rgba(110, 200, 255, 0.52)';
+  aCtx.shadowColor = 'rgba(56, 189, 248, 0.52)';
   aCtx.shadowBlur = Math.max(9, width / 145);
-
-  const landGrad = aCtx.createLinearGradient(0, 0, 0, height);
-  landGrad.addColorStop(0, '#F7FAFF');
-  landGrad.addColorStop(0.22, '#EAF2FC');
-  landGrad.addColorStop(0.5, '#DCE8F8');
-  landGrad.addColorStop(0.78, '#E6F0FB');
-  landGrad.addColorStop(1, '#F7FAFF');
-  aCtx.fillStyle = landGrad;
+  aCtx.fillStyle = '#F4F7FC';
   aCtx.fill('evenodd');
   aCtx.restore();
 
-  // Crisp Deep Atlas Navy coastline contour
+  // Subtle multi-tone crisp porcelain fill per country for clean geopolitical legibility
+  for (const f of countriesGeo.features) {
+    if (!f.geometry) continue;
+    aCtx.beginPath();
+    traceGeometry(aCtx, f.geometry, width, height, true);
+    aCtx.fillStyle = pickCountryTone(f.id);
+    aCtx.fill('evenodd');
+  }
+
+  // Crisp Midnight Sapphire coastline contour
   aCtx.beginPath();
   traceCountries(aCtx, false);
-  aCtx.strokeStyle = 'rgba(12, 30, 58, 0.56)';
+  aCtx.strokeStyle = 'rgba(9, 25, 51, 0.54)';
   aCtx.lineWidth = Math.max(0.95, width / 1500);
   aCtx.stroke();
 
-  // Delicate Secondary Atlas Blue geopolitical country borders
+  // Delicate Royal Cobalt geopolitical country borders
   aCtx.beginPath();
   traceGeometry(aCtx, countryBorders, width, height, false);
-  aCtx.strokeStyle = 'rgba(23, 74, 156, 0.28)';
-  aCtx.lineWidth = Math.max(0.65, width / 2100);
+  aCtx.strokeStyle = 'rgba(11, 86, 232, 0.36)';
+  aCtx.lineWidth = Math.max(0.75, width / 1900);
   aCtx.stroke();
 
   // 2. ROUGHNESS MAP (Satin reflective ocean ~0.46, crisp matte sculpted land ~0.92)
@@ -212,4 +236,69 @@ export function buildCartographicEarthTextures(width = 2048): CartographicEarthT
       bumpMap.dispose();
     },
   };
+}
+
+/**
+ * Generates a lightweight transparent overlay texture that illuminates the active
+ * departure country (Sky Azure) and selected destination country (EzyQuick Solar Gold)
+ * using verified Natural Earth 1:50m ISO-3166 numeric polygons.
+ */
+export function buildSelectedCountryOverlayTexture(
+  originCountryIso: string | null,
+  selectedCountryIso: string | null,
+  width = 2048
+): THREE.CanvasTexture {
+  const height = Math.round(width / 2);
+  const { countriesGeo } = getWorldVectorData();
+
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext('2d')!;
+  ctx.clearRect(0, 0, width, height);
+
+  const normOrigin = originCountryIso ? normalizeIsoId(originCountryIso) : '';
+  const normSelected = selectedCountryIso ? normalizeIsoId(selectedCountryIso) : '';
+
+  for (const f of countriesGeo.features) {
+    if (!f.geometry) continue;
+    const fId = normalizeIsoId(f.id);
+    if (!fId) continue;
+
+    if (normSelected && fId === normSelected) {
+      ctx.save();
+      ctx.beginPath();
+      traceGeometry(ctx, f.geometry, width, height, true);
+      ctx.fillStyle = 'rgba(252, 180, 0, 0.78)';
+      ctx.shadowColor = 'rgba(252, 180, 0, 0.6)';
+      ctx.shadowBlur = Math.max(8, width / 180);
+      ctx.fill('evenodd');
+      ctx.restore();
+
+      ctx.beginPath();
+      traceGeometry(ctx, f.geometry, width, height, false);
+      ctx.strokeStyle = 'rgba(9, 25, 51, 0.92)';
+      ctx.lineWidth = Math.max(1.5, width / 1100);
+      ctx.stroke();
+    } else if (normOrigin && fId === normOrigin) {
+      ctx.save();
+      ctx.beginPath();
+      traceGeometry(ctx, f.geometry, width, height, true);
+      ctx.fillStyle = 'rgba(96, 165, 250, 0.54)';
+      ctx.fill('evenodd');
+      ctx.restore();
+
+      ctx.beginPath();
+      traceGeometry(ctx, f.geometry, width, height, false);
+      ctx.strokeStyle = 'rgba(11, 86, 232, 0.92)';
+      ctx.lineWidth = Math.max(1.25, width / 1300);
+      ctx.stroke();
+    }
+  }
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.anisotropy = 4;
+  texture.needsUpdate = true;
+  return texture;
 }

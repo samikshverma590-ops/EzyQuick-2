@@ -45,35 +45,35 @@ export function ServiceShowcase() {
                 className="h-full w-full object-cover"
                 loading="lazy"
               />
-              <span className="font-mono-hud absolute top-3 left-3 rounded-full bg-[#0C1E3A]/85 px-3 py-1 text-[10px] font-semibold text-[#FFFFFF]">
+              <span className="font-mono-hud absolute top-3 left-3 rounded-full bg-[#091933]/85 px-3 py-1 text-[10px] font-semibold text-[#FFFFFF]">
                 {service.index} · {service.shortLabel}
               </span>
             </Link>
 
             <div className="flex flex-1 flex-col p-6">
-              <span className="font-mono-hud text-[10px] font-semibold tracking-wider text-[#0059FD] uppercase">
+              <span className="font-mono-hud text-[10px] font-semibold tracking-wider text-[#0B56E8] uppercase">
                 {service.category}
               </span>
-              <h3 className="font-display mt-1 text-2xl font-bold text-[#0C1E3A]">
-                <Link href={`/services/${service.slug}/`} className="hover:text-[#0059FD]">
+              <h3 className="font-display mt-1 text-2xl font-bold text-[#091933]">
+                <Link href={`/services/${service.slug}/`} className="hover:text-[#0B56E8]">
                   {service.name}
                 </Link>
               </h3>
-              <p className="mt-2.5 flex-1 text-sm leading-relaxed text-[#475B78]">
+              <p className="mt-2.5 flex-1 text-sm leading-relaxed text-[#3B4F6B]">
                 {service.summary}
               </p>
 
-              <div className="mt-5 flex items-center justify-between border-t border-[#0C1E3A]/10 pt-4">
+              <div className="mt-5 flex items-center justify-between border-t border-[#091933]/10 pt-4">
                 <Link
                   href={`/services/${service.slug}/`}
-                  className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0C1E3A] hover:text-[#0059FD]"
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-[#091933] hover:text-[#0B56E8]"
                 >
                   <span>Service details</span>
                   <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
                 </Link>
                 <Link
                   href={`/plan-your-journey/?service=${encodeURIComponent(service.name)}`}
-                  className="rounded-full bg-[#DCE8F8] px-3.5 py-1.5 text-xs font-semibold text-[#0C1E3A] transition-colors hover:bg-[#0059FD] hover:text-white"
+                  className="rounded-full bg-[#DCE5F2] px-3.5 py-1.5 text-xs font-semibold text-[#091933] transition-colors hover:bg-[#0B56E8] hover:text-white"
                 >
                   {service.ctaLabel}
                 </Link>

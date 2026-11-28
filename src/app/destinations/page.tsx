@@ -33,12 +33,12 @@ export default function DestinationsPage() {
 
       <section className="mx-auto max-w-[1440px] px-4 py-20 sm:px-8" aria-labelledby="all-dest-heading">
         <div className="mb-10 max-w-2xl">
-          <p className="font-mono-hud text-xs font-semibold tracking-wider text-[#0059FD] uppercase">
+          <p className="font-mono-hud text-xs font-semibold tracking-wider text-[#0B56E8] uppercase">
             Complete Directory · 14 Verified Destinations
           </p>
           <h2
             id="all-dest-heading"
-            className="font-display mt-2 text-3xl font-extrabold text-[#0C1E3A] sm:text-5xl"
+            className="font-display mt-2 text-3xl font-extrabold text-[#091933] sm:text-5xl"
           >
             Search and filter every destination.
           </h2>

@@ -3,8 +3,8 @@
 
 @layer base {
   html {
-    background-color: var(--surface-cloud);
-    color: var(--ink);
+    background-color: var(--warm-ivory);
+    color: var(--deep-ink);
     font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
@@ -12,19 +12,24 @@
   }
 
   body {
-    background-color: var(--surface-cloud);
-    color: var(--ink);
-    overflow-x: hidden;
+    background-color: var(--warm-ivory);
+    color: var(--deep-ink);
+    overflow-x: clip;
   }
 
   ::selection {
-    background-color: var(--brand-cobalt);
-    color: #ffffff;
+    background-color: var(--ocean-teal);
+    color: #FFFFFF;
   }
 
-  h1, h2, h3, h4, .font-display {
+  h1, h2, .font-editorial {
+    font-family: var(--font-serif), var(--font-sans), Georgia, serif;
+    letter-spacing: -0.02em;
+  }
+
+  h3, h4, .font-display {
     font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.025em;
   }
 
   h1, h2 {
@@ -45,37 +50,46 @@
   }
 
   :focus-visible {
-    outline: 2px solid var(--brand-cobalt);
+    outline: 2px solid var(--ocean-teal);
     outline-offset: 2px;
   }
 }
 
-/* Crisp Bright Blue-and-White Atlas Stage (Clean, International, High-Contrast) */
+/* Sunlit Aviation Sky-Porcelain Hero Stage — Dribbble-Inspired Clean White & Royal Cobalt */
 .atlas-hero-bg {
   background:
-    radial-gradient(circle at 54% 46%, rgba(110, 200, 255, 0.22) 0%, rgba(220, 232, 248, 0.32) 38%, transparent 68%),
-    radial-gradient(circle at 86% 14%, rgba(0, 89, 253, 0.08) 0%, transparent 45%),
-    linear-gradient(180deg, #ffffff 0%, #f4f7fc 55%, #e8f0fb 100%);
+    radial-gradient(circle at 60% 44%, rgba(11, 86, 232, 0.13) 0%, rgba(56, 189, 248, 0.08) 38%, transparent 70%),
+    radial-gradient(circle at 86% 14%, rgba(252, 180, 0, 0.12) 0%, transparent 42%),
+    linear-gradient(180deg, #FFFFFF 0%, #F2F7FF 54%, #E6F0FF 100%);
 }
 
-/* Crisp White Floating Atlas Panel */
+/* Crisp Cloud-White Floating Booking Dock & Inspector Panel */
 .atlas-panel {
-  background: rgba(255, 255, 255, 0.94);
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(203, 216, 236, 0.85);
+  box-shadow:
+    0 24px 60px -18px rgba(9, 25, 51, 0.16),
+    0 4px 14px -4px rgba(11, 86, 232, 0.08);
+}
+
+/* Deep Sapphire Floating Panel */
+.atlas-panel-dark {
+  background: rgba(9, 25, 51, 0.86);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid #dce8f8;
-  box-shadow:
-    0 22px 54px -18px rgba(12, 30, 58, 0.16),
-    0 4px 12px -4px rgba(12, 30, 58, 0.06);
+  border: 1px solid rgba(96, 165, 250, 0.24);
+  box-shadow: 0 24px 56px -18px rgba(0, 0, 0, 0.45);
 }
 
-/* Clean Elevation Card */
+/* Crisp White Elevation Card */
 .studio-card {
-  background: #ffffff;
-  border: 1px solid #dce8f8;
+  background: #FFFFFF;
+  border: 1px solid rgba(220, 229, 242, 0.9);
   box-shadow:
-    0 14px 36px -16px rgba(12, 30, 58, 0.12),
-    0 2px 6px rgba(12, 30, 58, 0.04);
+    0 14px 36px -18px rgba(9, 25, 51, 0.12),
+    0 2px 6px rgba(9, 25, 51, 0.04);
   transition:
     transform var(--dur-base) var(--ease-expo),
     box-shadow var(--dur-base) var(--ease-expo),
@@ -84,17 +98,17 @@
 
 .studio-card:hover {
   transform: translateY(-3px);
-  border-color: rgba(0, 89, 253, 0.35);
+  border-color: rgba(11, 86, 232, 0.45);
   box-shadow:
-    0 24px 48px -18px rgba(12, 30, 58, 0.18),
-    0 4px 12px rgba(0, 89, 253, 0.08);
+    0 24px 48px -18px rgba(9, 25, 51, 0.18),
+    0 4px 12px rgba(11, 86, 232, 0.12);
 }
 
-/* Tactile Pill Control */
+/* Tactile Porcelain Pill Control */
 .atlas-pill {
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid #dce8f8;
-  color: #0c1e3a;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(220, 229, 242, 0.95);
+  color: #091933;
   transition:
     transform var(--dur-fast) var(--ease-expo),
     background-color var(--dur-fast) var(--ease-expo),
@@ -105,26 +119,52 @@
 
 .atlas-pill:hover {
   transform: translateY(-1px);
-  background: #ffffff;
-  border-color: #0059fd;
-  color: #0059fd;
-  box-shadow: 0 8px 20px -8px rgba(0, 89, 253, 0.25);
+  background: #FFFFFF;
+  border-color: #0B56E8;
+  color: #0B56E8;
+  box-shadow: 0 8px 20px -8px rgba(11, 86, 232, 0.28);
 }
 
 .atlas-pill-active {
-  background: #0c1e3a;
-  border-color: #0c1e3a;
-  color: #ffffff;
-  box-shadow: 0 8px 20px -6px rgba(12, 30, 58, 0.32);
+  background: #091933;
+  border-color: #091933;
+  color: #FFFFFF;
+  box-shadow: 0 8px 20px -6px rgba(9, 25, 51, 0.35);
 }
 
 .atlas-pill-active:hover {
-  background: #0059fd;
-  border-color: #0059fd;
-  color: #ffffff;
+  background: #0B56E8;
+  border-color: #0B56E8;
+  color: #FFFFFF;
 }
 
-/* Primary Electric Cobalt CTA Button */
+/* Dark Sapphire Hero Tactile Pill */
+.atlas-pill-dark {
+  background: rgba(9, 25, 51, 0.72);
+  border: 1px solid rgba(147, 197, 253, 0.26);
+  color: #F4F7FC;
+  transition:
+    transform var(--dur-fast) var(--ease-expo),
+    background-color var(--dur-fast) var(--ease-expo),
+    border-color var(--dur-fast) var(--ease-expo),
+    color var(--dur-fast) var(--ease-expo);
+}
+
+.atlas-pill-dark:hover {
+  transform: translateY(-1px);
+  background: rgba(11, 86, 232, 0.88);
+  border-color: #F5A623;
+  color: #FFFFFF;
+}
+
+.atlas-pill-dark-active {
+  background: #0B56E8;
+  border-color: #F5A623;
+  color: #FFFFFF;
+  box-shadow: 0 10px 24px -8px rgba(0, 84, 252, 0.55);
+}
+
+/* Primary EzyQuick Royal Cobalt CTA Button */
 .btn-kinetic {
   position: relative;
   display: inline-flex;
@@ -133,20 +173,20 @@
   gap: 0.5rem;
   overflow: hidden;
   border-radius: var(--radius-pill);
-  background: var(--brand-cobalt);
-  color: #ffffff;
+  background: #0B56E8;
+  color: #FFFFFF;
   font-weight: 600;
   transition:
     transform var(--dur-fast) var(--ease-expo),
     box-shadow var(--dur-fast) var(--ease-expo);
-  box-shadow: 0 12px 28px -8px rgba(0, 89, 253, 0.45);
+  box-shadow: 0 12px 28px -8px rgba(0, 84, 252, 0.45);
 }
 
 .btn-kinetic::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: var(--brand-atlas-navy);
+  background: #091933;
   transform: translateY(102%);
   transition: transform var(--dur-base) var(--ease-expo);
   z-index: 0;
@@ -154,7 +194,7 @@
 
 .btn-kinetic:hover {
   transform: translateY(-1px);
-  box-shadow: 0 16px 34px -8px rgba(12, 30, 58, 0.35);
+  box-shadow: 0 16px 34px -8px rgba(9, 25, 51, 0.35);
 }
 
 .btn-kinetic:hover::before {
@@ -166,7 +206,7 @@
   z-index: 1;
 }
 
-/* Secondary Navy Outline Button */
+/* Secondary Deep Ink Outline Button */
 .btn-outline-kinetic {
   position: relative;
   display: inline-flex;
@@ -175,9 +215,9 @@
   gap: 0.5rem;
   overflow: hidden;
   border-radius: var(--radius-pill);
-  border: 1.5px solid #0c1e3a;
-  background: #ffffff;
-  color: #0c1e3a;
+  border: 1.5px solid #091933;
+  background: #FFFFFF;
+  color: #091933;
   font-weight: 600;
   transition:
     color var(--dur-fast) var(--ease-expo),
@@ -189,14 +229,14 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: #0c1e3a;
+  background: #091933;
   transform: translateY(102%);
   transition: transform var(--dur-base) var(--ease-expo);
   z-index: 0;
 }
 
 .btn-outline-kinetic:hover {
-  color: #ffffff;
+  color: #FFFFFF;
   transform: translateY(-1px);
 }
 
@@ -222,7 +262,7 @@
   width: 100%;
   height: 2px;
   border-radius: 2px;
-  background: var(--brand-cobalt);
+  background: var(--ocean-teal);
   transform: scaleX(0);
   transform-origin: right;
   transition: transform var(--dur-fast) var(--ease-expo);
@@ -247,9 +287,149 @@
   transform: scale(1.05);
 }
 
+/* 2.5D Destination Portals — Deep Ink Editorial Horizon Scrim, Focus Ring & Clean Rail */
+.portal-horizon-scrim {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(9, 25, 51, 0.34) 0%,
+      rgba(9, 25, 51, 0.02) 34%,
+      rgba(9, 25, 51, 0.24) 72%,
+      rgba(6, 17, 36, 0.86) 100%
+    ),
+    radial-gradient(circle at 50% 42%, transparent 38%, rgba(9, 25, 51, 0.28) 92%);
+}
+
+@keyframes portal-air-drift {
+  0% {
+    transform: translate3d(-4%, 0, 0) scale(1);
+    opacity: 0.65;
+  }
+  50% {
+    transform: translate3d(4%, -2%, 0) scale(1.06);
+    opacity: 0.92;
+  }
+  100% {
+    transform: translate3d(-4%, 0, 0) scale(1);
+    opacity: 0.65;
+  }
+}
+
+.portal-air-drift-slow {
+  animation: portal-air-drift 18s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.portal-air-drift-reverse {
+  animation: portal-air-drift 24s ease-in-out infinite reverse;
+  will-change: transform, opacity;
+}
+
+.portal-focus:focus-visible {
+  outline: 2px solid #F5A623;
+  outline-offset: 2px;
+}
+
+.portal-rail {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.portal-rail::-webkit-scrollbar {
+  display: none;
+}
+
+/* Dual-Row GPU-Accelerated Partner Marquee (pauses smoothly on hover; disabled under reduced motion) */
+@keyframes ezy-marquee-left {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes ezy-marquee-right {
+  from {
+    transform: translate3d(-50%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.marquee-left {
+  animation: ezy-marquee-left 34s linear infinite;
+  will-change: transform;
+}
+
+.marquee-right {
+  animation: ezy-marquee-right 38s linear infinite;
+  will-change: transform;
+}
+
+.marquee-viewport:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+/* Awwwards Kinetic Royal Cobalt Display Text Shimmer & Crisp Hero Reveal */
+@keyframes cobalt-shimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.text-cobalt-kinetic {
+  background: linear-gradient(110deg, #0054FC 0%, #0B56E8 36%, #38BDF8 50%, #0B56E8 64%, #0042C7 100%);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: cobalt-shimmer 7.5s ease-in-out infinite;
+}
+
+@keyframes hero-reveal-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.hero-reveal {
+  animation: hero-reveal-up 0.65s var(--ease-expo) both;
+}
+
+.hero-reveal-delay-1 {
+  animation: hero-reveal-up 0.72s var(--ease-expo) 0.1s both;
+}
+
+.hero-reveal-delay-2 {
+  animation: hero-reveal-up 0.78s var(--ease-expo) 0.18s both;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+  .marquee-left,
+  .marquee-right,
+  .portal-air-drift-slow,
+  .portal-air-drift-reverse,
+  .text-cobalt-kinetic,
+  .hero-reveal,
+  .hero-reveal-delay-1,
+  .hero-reveal-delay-2 {
+    animation: none !important;
   }
   *, *::before, *::after {
     animation-duration: 0.01ms !important;

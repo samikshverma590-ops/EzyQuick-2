@@ -4,10 +4,17 @@ import { useMemo } from 'react';
 import { feature } from 'topojson-client';
 import type { Topology, GeometryCollection } from 'topojson-specification';
 import countries110m from 'world-atlas/countries-110m.json';
-import { ATLAS_DESTINATIONS, ATLAS_HUBS, type AtlasDestination, type AtlasHub } from '@/data/atlas';
+import {
+  ATLAS_DESTINATIONS,
+  ATLAS_HUBS,
+  type AtlasDestination,
+  type AtlasHub,
+  type AtlasOriginCity,
+} from '@/data/atlas';
 
 interface FallbackAtlas2DProps {
   visibleDestinations: AtlasDestination[];
+  originCity?: AtlasOriginCity;
   originHub: AtlasHub;
   selectedDestination: AtlasDestination | null;
   selectedHub: AtlasHub | null;
@@ -57,6 +64,7 @@ const LABEL_OFFSETS: Record<string, { dx: number; dy: number; anchor?: 'start' |
 
 export function FallbackAtlas2D({
   visibleDestinations,
+  originCity,
   originHub,
   selectedDestination,
   selectedHub,
@@ -98,10 +106,18 @@ export function FallbackAtlas2D({
     return paths;
   }, []);
 
+  const activeOriginPoint = originCity ?? originHub;
+  const originIn2DBounds =
+    activeOriginPoint.lng >= MIN_LNG &&
+    activeOriginPoint.lng <= MAX_LNG &&
+    activeOriginPoint.lat >= MIN_LAT &&
+    activeOriginPoint.lat <= MAX_LAT;
+
   const activeArc = useMemo(() => {
     if (selectedDestination) {
-      if (originHub.id === 'dubai' && selectedDestination.slug === 'dubai') return null;
-      const [x1, y1] = project(originHub.lat, originHub.lng);
+      if (activeOriginPoint.city === 'Dubai' && selectedDestination.slug === 'dubai') return null;
+      const fromPt = originIn2DBounds ? activeOriginPoint : originHub;
+      const [x1, y1] = project(fromPt.lat, fromPt.lng);
       const [x2, y2] = project(selectedDestination.lat, selectedDestination.lng);
       const mx = (x1 + x2) / 2;
       const my = Math.min(y1, y2) - Math.hypot(x2 - x1, y2 - y1) * 0.22;
@@ -113,7 +129,7 @@ export function FallbackAtlas2D({
       return `M ${x1} ${y1} Q ${(x1 + x2) / 2} ${Math.min(y1, y2) - 48} ${x2} ${y2}`;
     }
     return null;
-  }, [originHub, selectedDestination, selectedHub]);
+  }, [activeOriginPoint, originIn2DBounds, originHub, selectedDestination, selectedHub]);
 
   return (
     <div
@@ -122,21 +138,21 @@ export function FallbackAtlas2D({
       aria-label="Interactive 2D EzyQuick Global Atlas Map"
     >
       {reason && (
-        <p className="font-mono-hud mb-2 rounded-full border border-[#DCE8F8] bg-white/95 px-3 py-1 text-[11px] font-medium text-[#0C1E3A] shadow-sm">
+        <p className="font-mono-hud mb-2 rounded-full border border-[#DCE5F2] bg-white/95 px-3 py-1 text-[11px] font-medium text-[#091933] shadow-sm">
           {reason}
         </p>
       )}
 
       <svg
         viewBox={`0 0 ${SVG_W} ${SVG_H}`}
-        className="h-auto max-h-[60vh] w-full max-w-4xl rounded-3xl border border-[#DCE8F8] bg-[#143A78] shadow-[0_22px_50px_-16px_rgba(12,30,58,0.24)]"
+        className="h-auto max-h-[60vh] w-full max-w-4xl rounded-3xl border border-[#DCE5F2] bg-[#083FA8] shadow-[0_22px_50px_-16px_rgba(24,44,53,0.24)]"
         role="img"
         aria-label="Geographic map showing EzyQuick hubs in New Delhi and Dubai and 14 travel destinations"
       >
         <defs>
           <radialGradient id="naturalOcean" cx="52%" cy="46%" r="68%">
-            <stop offset="0%" stopColor="#1B4E9B" />
-            <stop offset="100%" stopColor="#0C244A" />
+            <stop offset="0%" stopColor="#0B56E8" />
+            <stop offset="100%" stopColor="#072052" />
           </radialGradient>
         </defs>
 
@@ -151,7 +167,7 @@ export function FallbackAtlas2D({
               y1={0}
               x2={x}
               y2={SVG_H}
-              stroke="rgba(220,232,248,0.12)"
+              stroke="rgba(216,198,170,0.12)"
               strokeWidth="1"
             />
           );
@@ -165,14 +181,14 @@ export function FallbackAtlas2D({
               y1={y}
               x2={SVG_W}
               y2={y}
-              stroke="rgba(220,232,248,0.12)"
+              stroke="rgba(216,198,170,0.12)"
               strokeWidth="1"
             />
           );
         })}
 
         {/* Sculptural Cloud-Pearl continents matching 3D Cartographic Atlas */}
-        <g fill="#EAF2FC" stroke="rgba(12,30,58,0.45)" strokeWidth="1">
+        <g fill="#F4F7FC" stroke="rgba(24,44,53,0.45)" strokeWidth="1">
           {landPaths.map((d, i) => (
             <path key={i} d={d} />
           ))}
@@ -183,7 +199,7 @@ export function FallbackAtlas2D({
           <path
             d={activeArc}
             fill="none"
-            stroke="#FDBC03"
+            stroke="#F5A623"
             strokeWidth="3"
             strokeDasharray="7 5"
           />
@@ -212,14 +228,14 @@ export function FallbackAtlas2D({
               }}
             >
               {isSelected && (
-                <circle cx={cx} cy={cy} r={14} fill="rgba(110,200,255,0.32)" stroke="#6EC8FF" strokeWidth="2" />
+                <circle cx={cx} cy={cy} r={14} fill="rgba(167,185,168,0.32)" stroke="#60A5FA" strokeWidth="2" />
               )}
               <circle
                 cx={cx}
                 cy={cy}
                 r={isSelected ? 6.5 : 4.8}
-                fill={isSelected ? '#FDBC03' : dest.region === 'India' ? '#6EC8FF' : '#FFFFFF'}
-                stroke="#0C1E3A"
+                fill={isSelected ? '#F5A623' : dest.region === 'India' ? '#60A5FA' : '#FFFFFF'}
+                stroke="#091933"
                 strokeWidth="1.6"
               />
               <text
@@ -227,7 +243,7 @@ export function FallbackAtlas2D({
                 y={cy + offset.dy}
                 textAnchor={offset.anchor || 'start'}
                 fill="#FFFFFF"
-                stroke="#0C1E3A"
+                stroke="#091933"
                 strokeWidth="3"
                 paintOrder="stroke"
                 fontSize={isSelected ? '12.5' : '10.8'}
@@ -262,17 +278,17 @@ export function FallbackAtlas2D({
                 cx={cx}
                 cy={cy}
                 r={isSelected ? 15 : 11}
-                fill="rgba(253,188,3,0.25)"
-                stroke="#FDBC03"
+                fill="rgba(198,161,107,0.25)"
+                stroke="#F5A623"
                 strokeWidth="2"
               />
-              <circle cx={cx} cy={cy} r={5.5} fill="#FDBC03" stroke="#0C1E3A" strokeWidth="1.8" />
+              <circle cx={cx} cy={cy} r={5.5} fill="#F5A623" stroke="#091933" strokeWidth="1.8" />
               <text
                 x={cx}
                 y={cy - 16}
                 textAnchor="middle"
-                fill="#FDBC03"
-                stroke="#0C1E3A"
+                fill="#F5A623"
+                stroke="#091933"
                 strokeWidth="3.2"
                 paintOrder="stroke"
                 fontSize="11"

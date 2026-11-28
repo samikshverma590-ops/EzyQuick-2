@@ -29,13 +29,13 @@ export default function PlanYourJourneyPage() {
       />
       <div className="mx-auto max-w-[1040px] px-4 sm:px-8">
         <div className="mb-10 max-w-2xl">
-          <p className="font-mono-hud text-xs font-semibold tracking-wider text-[#0059FD] uppercase">
+          <p className="font-mono-hud text-xs font-semibold tracking-wider text-[#0B56E8] uppercase">
             Journey Brief · B2B &amp; B2C
           </p>
-          <h1 className="font-display mt-2 text-4xl font-extrabold leading-[0.98] text-[#0C1E3A] sm:text-6xl">
+          <h1 className="font-display mt-2 text-4xl font-extrabold leading-[0.98] text-[#091933] sm:text-6xl">
             Plan Your Journey.
           </h1>
-          <p className="mt-4 text-base leading-relaxed text-[#475B78]">
+          <p className="mt-4 text-base leading-relaxed text-[#3B4F6B]">
             Select your service and preferred desk (New Delhi or Dubai). Form fields adapt
             automatically for corporate, MICE, medical, visa, flight, hotel, forex, or holiday
             enquiries.
@@ -48,15 +48,15 @@ export default function PlanYourJourneyPage() {
           {OFFICES.map((office) => (
             <div
               key={office.id}
-              className="rounded-2xl border border-[#0C1E3A]/12 bg-[#FFFFFF] p-5 text-xs text-[#475B78]"
+              className="rounded-2xl border border-[#091933]/12 bg-[#FFFFFF] p-5 text-xs text-[#3B4F6B]"
             >
-              <strong className="font-display text-sm text-[#0C1E3A]">
+              <strong className="font-display text-sm text-[#091933]">
                 {office.label} ({office.code})
               </strong>
               <p className="mt-1">{office.addressLines.join(' ')}</p>
               <a
                 href={office.phoneHref}
-                className="mt-2 inline-block font-semibold text-[#0059FD] hover:underline"
+                className="mt-2 inline-block font-semibold text-[#0B56E8] hover:underline"
               >
                 {office.phoneDisplay}
               </a>

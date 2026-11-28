@@ -31,15 +31,15 @@ export default function ServicesPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
       />
       <div className="mx-auto max-w-[1440px] px-4 sm:px-8">
-        <div className="mb-12 flex flex-col justify-between gap-6 border-b border-[#0C1E3A]/12 pb-10 lg:flex-row lg:items-end">
+        <div className="mb-12 flex flex-col justify-between gap-6 border-b border-[#091933]/12 pb-10 lg:flex-row lg:items-end">
           <div className="max-w-3xl">
-            <p className="font-mono-hud text-xs font-semibold tracking-wider text-[#0059FD] uppercase">
+            <p className="font-mono-hud text-xs font-semibold tracking-wider text-[#0B56E8] uppercase">
               Nine Travel Disciplines
             </p>
-            <h1 className="font-display mt-2 text-4xl font-extrabold leading-[0.98] text-[#0C1E3A] sm:text-6xl">
+            <h1 className="font-display mt-2 text-4xl font-extrabold leading-[0.98] text-[#091933] sm:text-6xl">
               Travel Services built for both business and leisure.
             </h1>
-            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-[#475B78] sm:text-base">
+            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-[#3B4F6B] sm:text-base">
               Every service is coordinated by our New Delhi and Dubai desks with clear pre-booking
               proposals, organised documentation checklists, and single-point human support.
             </p>

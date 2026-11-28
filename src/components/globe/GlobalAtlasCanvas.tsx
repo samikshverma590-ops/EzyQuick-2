@@ -2,7 +2,12 @@
 
 import React, { Component, Suspense, useEffect, useRef, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
-import type { AtlasDestination, AtlasHub, AtlasRegionFilter } from '@/data/atlas';
+import type {
+  AtlasDestination,
+  AtlasHub,
+  AtlasOriginCity,
+  AtlasRegionFilter,
+} from '@/data/atlas';
 import { ATLAS_HUBS } from '@/data/atlas';
 import { EarthSphere } from './EarthSphere';
 import { HubAndMarkers } from './HubAndMarkers';
@@ -13,12 +18,14 @@ import { FallbackAtlas2D } from './FallbackAtlas2D';
 
 interface GlobalAtlasCanvasProps {
   visibleDestinations: AtlasDestination[];
+  originCity: AtlasOriginCity;
   originHub: AtlasHub;
   selectedDestination: AtlasDestination | null;
   selectedHub: AtlasHub | null;
   regionFilter: AtlasRegionFilter;
   focusTarget: { lat: number; lng: number; distance?: number } | null;
   followFlight: boolean;
+  replaySeq: number;
   zoomEvent: { delta: number; seq: number };
   resetCounter: number;
   reducedMotion: boolean;
@@ -63,12 +70,14 @@ function detectWebGL(): boolean {
 
 export function GlobalAtlasCanvas({
   visibleDestinations,
+  originCity,
   originHub,
   selectedDestination,
   selectedHub,
   regionFilter,
   focusTarget,
   followFlight,
+  replaySeq,
   zoomEvent,
   resetCounter,
   reducedMotion,
@@ -102,33 +111,50 @@ export function GlobalAtlasCanvas({
   }, []);
 
   // Active flight route:
-  // - When a destination is selected: Origin Hub -> Selected Destination (if distinct)
-  // - Otherwise (Global View or Hub View): EzyQuick's flagship DEL <-> DXB hub corridor
+  // - When a destination is selected: Selected International/Domestic Origin -> Destination
+  // - Otherwise: International Origin -> Servicing EzyQuick Hub, or flagship DEL -> DXB corridor
   const activeRoute = React.useMemo(() => {
     if (selectedDestination) {
-      if (originHub.id === 'dubai' && selectedDestination.slug === 'dubai') {
+      if (originCity.id === 'dubai' && selectedDestination.slug === 'dubai') {
         return {
           from: { lat: ATLAS_HUBS[0].lat, lng: ATLAS_HUBS[0].lng },
           to: { lat: ATLAS_HUBS[1].lat, lng: ATLAS_HUBS[1].lng },
-          showArc: false,
+          showArc: true,
+        };
+      }
+      if (originCity.id === 'singapore' && selectedDestination.slug === 'singapore') {
+        return {
+          from: { lat: ATLAS_HUBS[0].lat, lng: ATLAS_HUBS[0].lng },
+          to: { lat: selectedDestination.lat, lng: selectedDestination.lng },
+          showArc: true,
         };
       }
       return {
-        from: { lat: originHub.lat, lng: originHub.lng },
+        from: { lat: originCity.lat, lng: originCity.lng },
         to: { lat: selectedDestination.lat, lng: selectedDestination.lng },
         showArc: true,
       };
     }
+
+    if (!originCity.isEzyQuickHub) {
+      return {
+        from: { lat: originCity.lat, lng: originCity.lng },
+        to: { lat: originHub.lat, lng: originHub.lng },
+        showArc: true,
+      };
+    }
+
     return {
       from: { lat: ATLAS_HUBS[0].lat, lng: ATLAS_HUBS[0].lng },
       to: { lat: ATLAS_HUBS[1].lat, lng: ATLAS_HUBS[1].lng },
-      showArc: Boolean(selectedHub),
+      showArc: true,
     };
-  }, [originHub, selectedDestination, selectedHub]);
+  }, [originCity, originHub, selectedDestination]);
 
   const fallbackNode = (
     <FallbackAtlas2D
       visibleDestinations={visibleDestinations}
+      originCity={originCity}
       originHub={originHub}
       selectedDestination={selectedDestination}
       selectedHub={selectedHub}
@@ -151,12 +177,13 @@ export function GlobalAtlasCanvas({
   }
 
   return (
-    <div ref={containerRef} className="relative h-full w-full">
+    <div ref={containerRef} className="relative h-full w-full touch-pan-y">
       <WebGLErrorBoundary fallback={fallbackNode}>
         <Canvas
           dpr={[1, maxDpr]}
           frameloop={inView ? 'always' : 'never'}
-          camera={{ fov: isMobile ? 42 : 36, near: 0.1, far: 100, position: [0, 1.5, 6.25] }}
+          camera={{ fov: isMobile ? 42 : 36, near: 0.1, far: 100, position: [0, 1.5, 6.2] }}
+          style={{ touchAction: 'pan-y' }}
           gl={{
             antialias: true,
             alpha: true,
@@ -164,6 +191,25 @@ export function GlobalAtlasCanvas({
           }}
           onCreated={({ gl }) => {
             const dom = gl.domElement;
+            dom.style.touchAction = 'pan-y';
+            // Ensure OrbitControls' internal wheel listener (no-op with enableZoom={false})
+            // is registered passively so the browser compositor scrolls immediately over the 3D hero.
+            const origAddListener = dom.addEventListener.bind(dom);
+            dom.addEventListener = ((
+              type: string,
+              listener: EventListenerOrEventListenerObject,
+              options?: boolean | AddEventListenerOptions
+            ) => {
+              if (type === 'wheel') {
+                const passiveOpts =
+                  typeof options === 'object' && options !== null
+                    ? { ...options, passive: true }
+                    : { capture: Boolean(options), passive: true };
+                return origAddListener(type, listener, passiveOpts);
+              }
+              return origAddListener(type, listener, options);
+            }) as typeof dom.addEventListener;
+
             const handleLost = (e: Event) => {
               e.preventDefault();
               setContextLost(true);
@@ -175,15 +221,17 @@ export function GlobalAtlasCanvas({
             dom.addEventListener('webglcontextrestored', handleRestored, false);
           }}
         >
-          {/* Bright Studio Daylight Lighting */}
-          <ambientLight intensity={1.15} color="#FFFFFF" />
-          <hemisphereLight args={['#FFFFFF', '#DCE8F8', 0.92]} />
-          <directionalLight position={[0, -6, 4]} intensity={0.45} color="#6EC8FF" />
+          {/* Warm Editorial Studio Lighting */}
+          <ambientLight intensity={1.1} color="#FFFFFF" />
+          <hemisphereLight args={['#FFFDF8', '#0B56E8', 0.85]} />
+          <directionalLight position={[0, -6, 4]} intensity={0.42} color="#F5A623" />
 
           <Suspense fallback={null}>
             <EarthSphere
               textureWidth={textureWidth}
               segments={sphereSegments}
+              originCountryIso={originCity.countryIso}
+              selectedCountryIso={selectedDestination?.countryIso ?? selectedHub?.countryIso ?? null}
               reducedMotion={reducedMotion}
               onTexturesReady={onReady}
             />
@@ -192,6 +240,7 @@ export function GlobalAtlasCanvas({
               selectedDestination={selectedDestination}
               selectedHub={selectedHub}
               activeOriginHubId={originHub.id}
+              originCity={originCity}
               reducedMotion={reducedMotion}
               onSelectDestination={onSelectDestination}
               onSelectHub={onSelectHub}
@@ -201,13 +250,15 @@ export function GlobalAtlasCanvas({
                 from={activeRoute.from}
                 to={activeRoute.to}
                 reducedMotion={reducedMotion}
+                telemetryRef={flightTelemetryRef}
               />
             )}
-            {/* Animated 3D EzyQuick Commercial Jet flying the active corridor */}
+            {/* Choreographed 3D EzyQuick Commercial Jet */}
             <Airplane3D
               from={activeRoute.from}
               to={activeRoute.to}
               reducedMotion={reducedMotion}
+              replaySeq={replaySeq}
               telemetryRef={flightTelemetryRef}
             />
             <CameraRig

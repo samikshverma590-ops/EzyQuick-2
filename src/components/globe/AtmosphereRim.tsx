@@ -49,7 +49,7 @@ export function AtmosphereRim({ segments = 64 }: { segments?: number }) {
         vertexShader: VERTEX_SHADER,
         fragmentShader: INNER_FRAGMENT,
         uniforms: {
-          uColor: { value: new THREE.Color('#6EC8FF') },
+          uColor: { value: new THREE.Color('#38BDF8') },
         },
         side: THREE.FrontSide,
         transparent: true,
@@ -64,7 +64,7 @@ export function AtmosphereRim({ segments = 64 }: { segments?: number }) {
         vertexShader: VERTEX_SHADER,
         fragmentShader: OUTER_FRAGMENT,
         uniforms: {
-          uColor: { value: new THREE.Color('#3B82F6') },
+          uColor: { value: new THREE.Color('#0B56E8') },
         },
         side: THREE.BackSide,
         transparent: true,

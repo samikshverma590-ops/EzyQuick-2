@@ -4,34 +4,44 @@ import { useEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { createGreatCircleArc, GLOBE_RADIUS } from '@/lib/geo';
+import type { FlightTelemetry } from './Airplane3D';
 
 interface IllustrativeArcProps {
   from: { lat: number; lng: number };
   to: { lat: number; lng: number };
   reducedMotion: boolean;
+  telemetryRef?: React.MutableRefObject<FlightTelemetry | null>;
 }
 
 /**
- * Renders an elevated great-circle illustrative geographic connection arc
- * in Electric Cobalt (#0059FD) + Sky Cyan (#6EC8FF) with a Solar Gold (#FDBC03) pulse.
- * Uses frame-rate-independent delta motion and cleans up GPU geometries on unmount.
+ * Progressively revealed illustrative great-circle connection arc synchronised with
+ * the 3D aircraft flight choreography, styled in Ocean Teal (#0B56E8) & Champagne Gold (#F5A623).
  */
-export function IllustrativeArc({ from, to, reducedMotion }: IllustrativeArcProps) {
+export function IllustrativeArc({
+  from,
+  to,
+  reducedMotion,
+  telemetryRef,
+}: IllustrativeArcProps) {
   const pulseRef = useRef<THREE.Mesh>(null);
-  const progressRef = useRef(0);
+  const pulseClockRef = useRef(0);
 
-  const { curve, tubeGeo, glowGeo } = useMemo(() => {
-    const pts = createGreatCircleArc(from, to, GLOBE_RADIUS + 0.015, 76);
+  const { curve, tubeGeo, glowGeo, totalTubeCount, totalGlowCount } = useMemo(() => {
+    const pts = createGreatCircleArc(from, to, GLOBE_RADIUS + 0.016, 76);
     const c = new THREE.CatmullRomCurve3(pts);
+    const tGeo = new THREE.TubeGeometry(c, 76, 0.0078, 10, false);
+    const gGeo = new THREE.TubeGeometry(c, 76, 0.018, 8, false);
     return {
       curve: c,
-      tubeGeo: new THREE.TubeGeometry(c, 76, 0.008, 10, false),
-      glowGeo: new THREE.TubeGeometry(c, 76, 0.019, 8, false),
+      tubeGeo: tGeo,
+      glowGeo: gGeo,
+      totalTubeCount: tGeo.index ? tGeo.index.count : tGeo.attributes.position.count,
+      totalGlowCount: gGeo.index ? gGeo.index.count : gGeo.attributes.position.count,
     };
   }, [from, to]);
 
   useEffect(() => {
-    progressRef.current = 0;
+    pulseClockRef.current = 0;
     return () => {
       tubeGeo.dispose();
       glowGeo.dispose();
@@ -39,39 +49,47 @@ export function IllustrativeArc({ from, to, reducedMotion }: IllustrativeArcProp
   }, [tubeGeo, glowGeo]);
 
   useFrame((_, delta) => {
+    const reveal = reducedMotion
+      ? 1
+      : THREE.MathUtils.clamp(telemetryRef?.current?.routeReveal ?? 1, 0.04, 1);
+
+    tubeGeo.setDrawRange(0, Math.floor(totalTubeCount * reveal));
+    glowGeo.setDrawRange(0, Math.floor(totalGlowCount * reveal));
+
     if (!pulseRef.current) return;
     if (reducedMotion) {
       pulseRef.current.position.copy(curve.getPointAt(0.5));
       return;
     }
-    progressRef.current = (progressRef.current + Math.min(delta, 0.05) * 0.34) % 1;
-    pulseRef.current.position.copy(curve.getPointAt(progressRef.current));
+    pulseClockRef.current = (pulseClockRef.current + Math.min(delta, 0.05) * 0.24) % 1;
+    const beaconPos = Math.min(reveal, pulseClockRef.current);
+    pulseRef.current.position.copy(curve.getPointAt(Math.max(0.01, beaconPos)));
   });
 
   return (
     <group raycast={() => null}>
-      {/* Core Electric Cobalt + Sky Cyan route arc */}
+      {/* Core Champagne Gold & Warm Teal Route Arc */}
       <mesh geometry={tubeGeo}>
         <meshStandardMaterial
-          color="#0059FD"
-          emissive="#6EC8FF"
-          emissiveIntensity={0.65}
-          roughness={0.25}
+          color="#F5A623"
+          emissive="#F5A623"
+          emissiveIntensity={0.52}
+          roughness={0.28}
         />
       </mesh>
 
-      {/* Soft Sky Cyan outer sheath */}
+      {/* Soft Ocean Teal Outer Halo */}
       <mesh geometry={glowGeo}>
-        <meshBasicMaterial color="#6EC8FF" transparent opacity={0.28} depthWrite={false} />
+        <meshBasicMaterial color="#38BDF8" transparent opacity={0.26} depthWrite={false} />
       </mesh>
 
-      {/* Sparing Solar Gold travelling beacon */}
+      {/* Restrained Champagne Gold Beacon */}
       <mesh ref={pulseRef}>
-        <sphereGeometry args={[0.028, 16, 16]} />
+        <sphereGeometry args={[0.024, 16, 16]} />
         <meshStandardMaterial
-          color="#FDBC03"
-          emissive="#FDBC03"
-          emissiveIntensity={1.1}
+          color="#FFFFFF"
+          emissive="#F5A623"
+          emissiveIntensity={1.0}
           roughness={0.2}
         />
       </mesh>

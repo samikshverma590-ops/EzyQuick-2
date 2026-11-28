@@ -3,7 +3,13 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
-import { ATLAS_DESTINATIONS, ATLAS_HUBS, type AtlasDestination, type AtlasHub } from '@/data/atlas';
+import {
+  ATLAS_DESTINATIONS,
+  ATLAS_HUBS,
+  type AtlasDestination,
+  type AtlasHub,
+  type AtlasOriginCity,
+} from '@/data/atlas';
 import { GLOBE_RADIUS, latLngToVector3 } from '@/lib/geo';
 
 interface HubAndMarkersProps {
@@ -11,6 +17,7 @@ interface HubAndMarkersProps {
   selectedDestination: AtlasDestination | null;
   selectedHub: AtlasHub | null;
   activeOriginHubId: 'delhi' | 'dubai';
+  originCity?: AtlasOriginCity;
   reducedMotion: boolean;
   onSelectDestination: (dest: AtlasDestination) => void;
   onSelectHub: (hub: AtlasHub) => void;
@@ -97,7 +104,7 @@ function SpriteBadge({
   sublabel = null,
   bgColor,
   textColor,
-  subColor = '#6EC8FF',
+  subColor = '#60A5FA',
   borderColor,
   position,
   height = 0.145,
@@ -187,7 +194,7 @@ function HubBeacon({
         {/* Expanding Solar Gold pulse ring */}
         <mesh ref={pulseRef} raycast={() => null}>
           <ringGeometry args={[0.036, 0.048, 32]} />
-          <meshBasicMaterial color="#FDBC03" transparent opacity={0.65} side={THREE.DoubleSide} />
+          <meshBasicMaterial color="#F5A623" transparent opacity={0.65} side={THREE.DoubleSide} />
         </mesh>
 
         {/* Crisp white collar */}
@@ -210,8 +217,8 @@ function HubBeacon({
         >
           <sphereGeometry args={[highlighted ? 0.036 : 0.029, 20, 20]} />
           <meshStandardMaterial
-            color="#FDBC03"
-            emissive="#FDBC03"
+            color="#F5A623"
+            emissive="#F5A623"
             emissiveIntensity={highlighted ? 0.9 : 0.45}
             roughness={0.22}
           />
@@ -222,9 +229,9 @@ function HubBeacon({
       {!hideLabel && (
         <SpriteBadge
           label={`${hub.code} HUB`}
-          bgColor={highlighted ? '#0059FD' : '#0C1E3A'}
-          textColor={highlighted ? '#FFFFFF' : isActiveOrigin ? '#FDBC03' : '#FFFFFF'}
-          borderColor={highlighted ? '#6EC8FF' : isActiveOrigin ? '#FDBC03' : '#6EC8FF'}
+          bgColor={highlighted ? '#0B56E8' : '#091933'}
+          textColor={highlighted ? '#FFFFFF' : isActiveOrigin ? '#F5A623' : '#FFFFFF'}
+          borderColor={highlighted ? '#60A5FA' : isActiveOrigin ? '#F5A623' : '#60A5FA'}
           position={labelPos}
           height={0.135}
         />
@@ -290,7 +297,7 @@ function DestinationPin({
         {isSelected && (
           <mesh ref={ringRef} raycast={() => null}>
             <ringGeometry args={[0.034, 0.047, 28]} />
-            <meshBasicMaterial color="#6EC8FF" transparent opacity={0.95} side={THREE.DoubleSide} />
+            <meshBasicMaterial color="#60A5FA" transparent opacity={0.95} side={THREE.DoubleSide} />
           </mesh>
         )}
 
@@ -298,7 +305,7 @@ function DestinationPin({
         <mesh raycast={() => null}>
           <ringGeometry args={[0.017, 0.025, 20]} />
           <meshBasicMaterial
-            color={isSelected ? '#0059FD' : isIndiaRegional ? '#0C1E3A' : '#0059FD'}
+            color={isSelected ? '#0B56E8' : isIndiaRegional ? '#091933' : '#0B56E8'}
             transparent
             opacity={isDimmed ? 0.25 : 0.95}
             side={THREE.DoubleSide}
@@ -326,9 +333,9 @@ function DestinationPin({
           <sphereGeometry args={[active ? 0.026 : 0.018, 16, 16]} />
           <meshStandardMaterial
             color={
-              isSelected ? '#FDBC03' : hovered ? '#0059FD' : isIndiaRegional ? '#6EC8FF' : '#FFFFFF'
+              isSelected ? '#F5A623' : hovered ? '#0B56E8' : isIndiaRegional ? '#60A5FA' : '#FFFFFF'
             }
-            emissive={isSelected ? '#FDBC03' : hovered ? '#0059FD' : '#6EC8FF'}
+            emissive={isSelected ? '#F5A623' : hovered ? '#0B56E8' : '#60A5FA'}
             emissiveIntensity={active ? 0.8 : isDimmed ? 0.05 : 0.25}
             transparent
             opacity={isDimmed ? 0.3 : 1}
@@ -342,14 +349,54 @@ function DestinationPin({
         <SpriteBadge
           label={dest.name}
           sublabel={isIndiaRegional ? 'India' : dest.country}
-          bgColor="#0C1E3A"
+          bgColor="#091933"
           textColor="#FFFFFF"
-          subColor="#6EC8FF"
-          borderColor="#6EC8FF"
+          subColor="#60A5FA"
+          borderColor="#60A5FA"
           position={labelPos}
           height={0.145}
         />
       )}
+    </group>
+  );
+}
+
+function OriginDeparturePin({ originCity }: { originCity: AtlasOriginCity }) {
+  const { position, quaternion, labelPos } = useMemo(() => {
+    const pos = latLngToVector3(originCity.lat, originCity.lng, GLOBE_RADIUS + 0.025);
+    const lPos = latLngToVector3(originCity.lat + 3.8, originCity.lng, GLOBE_RADIUS + 0.13);
+    return {
+      position: pos,
+      quaternion: getNormalQuaternion(pos),
+      labelPos: [lPos.x, lPos.y, lPos.z] as [number, number, number],
+    };
+  }, [originCity.lat, originCity.lng]);
+
+  return (
+    <group>
+      <group position={position} quaternion={quaternion}>
+        <mesh raycast={() => null}>
+          <ringGeometry args={[0.028, 0.04, 28]} />
+          <meshBasicMaterial color="#60A5FA" transparent opacity={0.92} side={THREE.DoubleSide} />
+        </mesh>
+        <mesh raycast={() => null} position={[0, 0, 0.012]}>
+          <sphereGeometry args={[0.026, 18, 18]} />
+          <meshStandardMaterial
+            color="#0B56E8"
+            emissive="#60A5FA"
+            emissiveIntensity={0.65}
+            roughness={0.25}
+          />
+        </mesh>
+      </group>
+      <SpriteBadge
+        label={`FROM ${originCity.code}`}
+        bgColor="#091933"
+        textColor="#60A5FA"
+        borderColor="#60A5FA"
+        position={labelPos}
+        height={0.132}
+      />
     </group>
   );
 }
@@ -359,6 +406,7 @@ export function HubAndMarkers({
   selectedDestination,
   selectedHub,
   activeOriginHubId,
+  originCity,
   reducedMotion,
   onSelectDestination,
   onSelectHub,
@@ -375,12 +423,14 @@ export function HubAndMarkers({
           key={hub.id}
           hub={hub}
           isSelected={selectedHub?.id === hub.id}
-          isActiveOrigin={activeOriginHubId === hub.id}
+          isActiveOrigin={Boolean(originCity?.isEzyQuickHub && activeOriginHubId === hub.id)}
           hideLabel={hub.id === 'dubai' && selectedDestination?.slug === 'dubai'}
           reducedMotion={reducedMotion}
           onSelect={() => onSelectHub(hub)}
         />
       ))}
+
+      {originCity && !originCity.isEzyQuickHub && <OriginDeparturePin originCity={originCity} />}
 
       {ATLAS_DESTINATIONS.map((dest) => (
         <DestinationPin

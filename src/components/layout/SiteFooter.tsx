@@ -4,6 +4,7 @@ import { buildSafeWhatsAppUrl, NAV_LINKS, OFFICES, SITE } from '@/data/site';
 import { SERVICES } from '@/data/services';
 import { DESTINATIONS } from '@/data/destinations';
 import { assetPath } from '@/lib/asset-path';
+import { FooterWordmark } from './FooterWordmark';
 
 export function SiteFooter() {
   const { url: whatsappUrl } = buildSafeWhatsAppUrl(
@@ -11,7 +12,7 @@ export function SiteFooter() {
   );
 
   return (
-    <footer className="bg-[#0C1E3A] text-[#F4F7FC]" aria-label="Site footer">
+    <footer className="bg-[#091933] text-[#F4F7FC]" aria-label="Site footer">
       <div className="mx-auto max-w-[1440px] px-4 py-16 sm:px-8 lg:py-20">
         {/* Top Row: Brand & Direct Action */}
         <div className="flex flex-col justify-between gap-8 border-b border-[#F4F7FC]/12 pb-12 lg:flex-row lg:items-end">
@@ -28,7 +29,7 @@ export function SiteFooter() {
             <p className="font-display mt-5 text-3xl font-bold leading-tight text-[#FFFFFF] sm:text-4xl">
               {SITE.secondaryTagline}.
             </p>
-            <p className="mt-3 text-sm leading-relaxed text-[#B7C9E2]">
+            <p className="mt-3 text-sm leading-relaxed text-[#CBD8EC]">
               International travel coordination for corporate teams, families, and individual
               travellers from our offices in New Delhi and Dubai.
             </p>
@@ -46,9 +47,9 @@ export function SiteFooter() {
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-[#F4F7FC]/25 px-5 py-3 text-sm font-semibold text-[#FFFFFF] transition-colors hover:border-[#FDBC03] hover:text-[#FDBC03]"
+              className="inline-flex items-center gap-2 rounded-full border border-[#F4F7FC]/25 px-5 py-3 text-sm font-semibold text-[#FFFFFF] transition-colors hover:border-[#F5A623] hover:text-[#F5A623]"
             >
-              <MessageCircle className="h-4 w-4 text-[#FDBC03]" aria-hidden="true" />
+              <MessageCircle className="h-4 w-4 text-[#F5A623]" aria-hidden="true" />
               <span>WhatsApp Desk</span>
             </a>
           </div>
@@ -58,41 +59,41 @@ export function SiteFooter() {
         <div className="grid gap-10 py-12 md:grid-cols-2 lg:grid-cols-12">
           {/* Verified Offices (DEL & DXB) */}
           <div className="space-y-5 lg:col-span-4">
-            <h2 className="font-mono-hud text-xs font-semibold tracking-wider text-[#FDBC03] uppercase">
+            <h2 className="font-mono-hud text-xs font-semibold tracking-wider text-[#F5A623] uppercase">
               Operating Hubs
             </h2>
             <div className="space-y-4">
               {OFFICES.map((office) => (
                 <div
                   key={office.id}
-                  className="rounded-2xl border border-[#F4F7FC]/12 bg-[#13294B] p-4"
+                  className="rounded-2xl border border-[#F4F7FC]/12 bg-[#1F3943] p-4"
                 >
                   <div className="flex items-center justify-between">
                     <span className="font-display text-base font-bold text-[#FFFFFF]">
                       {office.label} · {office.city}
                     </span>
-                    <span className="font-mono-hud rounded-full bg-[#0059FD]/20 px-2 py-0.5 text-[10px] font-bold text-[#FDBC03]">
+                    <span className="font-mono-hud rounded-full bg-[#0B56E8]/20 px-2 py-0.5 text-[10px] font-bold text-[#F5A623]">
                       {office.code}
                     </span>
                   </div>
-                  <p className="mt-2 flex items-start gap-2 text-xs leading-relaxed text-[#B7C9E2]">
-                    <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#0059FD]" aria-hidden="true" />
+                  <p className="mt-2 flex items-start gap-2 text-xs leading-relaxed text-[#CBD8EC]">
+                    <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#0B56E8]" aria-hidden="true" />
                     <span>{office.addressLines.join(' ')}</span>
                   </p>
                   <a
                     href={office.phoneHref}
-                    className="mt-2.5 inline-flex items-center gap-1.5 text-xs font-semibold text-[#FFFFFF] hover:text-[#FDBC03]"
+                    className="mt-2.5 inline-flex items-center gap-1.5 text-xs font-semibold text-[#FFFFFF] hover:text-[#F5A623]"
                   >
-                    <Phone className="h-3.5 w-3.5 text-[#0059FD]" aria-hidden="true" />
+                    <Phone className="h-3.5 w-3.5 text-[#0B56E8]" aria-hidden="true" />
                     {office.phoneDisplay}
                   </a>
                 </div>
               ))}
               <a
                 href={SITE.emailHref}
-                className="inline-flex items-center gap-2 text-sm font-semibold text-[#FFFFFF] hover:text-[#FDBC03]"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-[#FFFFFF] hover:text-[#F5A623]"
               >
-                <Mail className="h-4 w-4 text-[#0059FD]" aria-hidden="true" />
+                <Mail className="h-4 w-4 text-[#0B56E8]" aria-hidden="true" />
                 {SITE.email}
               </a>
             </div>
@@ -100,13 +101,13 @@ export function SiteFooter() {
 
           {/* Primary Navigation */}
           <div className="lg:col-span-2">
-            <h2 className="font-mono-hud text-xs font-semibold tracking-wider text-[#FDBC03] uppercase">
+            <h2 className="font-mono-hud text-xs font-semibold tracking-wider text-[#F5A623] uppercase">
               Company
             </h2>
             <ul className="mt-4 space-y-2.5 text-sm">
               {NAV_LINKS.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className="text-[#DCE8F8] transition-colors hover:text-[#FFFFFF]">
+                  <Link href={link.href} className="text-[#DCE5F2] transition-colors hover:text-[#FFFFFF]">
                     {link.label}
                   </Link>
                 </li>
@@ -114,7 +115,7 @@ export function SiteFooter() {
               <li>
                 <Link
                   href="/plan-your-journey/"
-                  className="font-semibold text-[#FDBC03] transition-colors hover:text-[#FFFFFF]"
+                  className="font-semibold text-[#F5A623] transition-colors hover:text-[#FFFFFF]"
                 >
                   Plan Your Journey
                 </Link>
@@ -124,7 +125,7 @@ export function SiteFooter() {
 
           {/* All 9 Services */}
           <div className="lg:col-span-3">
-            <h2 className="font-mono-hud text-xs font-semibold tracking-wider text-[#FDBC03] uppercase">
+            <h2 className="font-mono-hud text-xs font-semibold tracking-wider text-[#F5A623] uppercase">
               Services (9)
             </h2>
             <ul className="mt-4 grid grid-cols-1 gap-2 text-sm">
@@ -132,7 +133,7 @@ export function SiteFooter() {
                 <li key={service.slug}>
                   <Link
                     href={`/services/${service.slug}/`}
-                    className="text-[#DCE8F8] transition-colors hover:text-[#FFFFFF]"
+                    className="text-[#DCE5F2] transition-colors hover:text-[#FFFFFF]"
                   >
                     {service.name}
                   </Link>
@@ -143,7 +144,7 @@ export function SiteFooter() {
 
           {/* All 14 Destinations */}
           <div className="lg:col-span-3">
-            <h2 className="font-mono-hud text-xs font-semibold tracking-wider text-[#FDBC03] uppercase">
+            <h2 className="font-mono-hud text-xs font-semibold tracking-wider text-[#F5A623] uppercase">
               Destinations (14)
             </h2>
             <ul className="mt-4 grid grid-cols-2 gap-x-3 gap-y-2 text-sm">
@@ -151,7 +152,7 @@ export function SiteFooter() {
                 <li key={dest.slug}>
                   <Link
                     href={`/destinations/${dest.slug}/`}
-                    className="text-[#DCE8F8] transition-colors hover:text-[#FFFFFF]"
+                    className="text-[#DCE5F2] transition-colors hover:text-[#FFFFFF]"
                   >
                     {dest.name}
                   </Link>
@@ -162,7 +163,7 @@ export function SiteFooter() {
         </div>
 
         {/* Bottom Legal & Privacy Strip */}
-        <div className="flex flex-col justify-between gap-3 border-t border-[#F4F7FC]/12 pt-6 text-xs text-[#93A8C7] sm:flex-row sm:items-center">
+        <div className="flex flex-col justify-between gap-3 border-t border-[#F4F7FC]/12 pt-6 pb-6 text-xs text-[#60A5FA] sm:flex-row sm:items-center">
           <p>© {SITE.copyrightYear} {SITE.legalName}. All rights reserved.</p>
           <p>
             New Delhi (DEL) &amp; Dubai (DXB) ·{' '}
@@ -171,6 +172,9 @@ export function SiteFooter() {
             </Link>
           </p>
         </div>
+
+        {/* Full-Width Oversized Awwwards Display Wordmark */}
+        <FooterWordmark />
       </div>
     </footer>
   );

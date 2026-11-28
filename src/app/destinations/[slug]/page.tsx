@@ -64,7 +64,7 @@ export default async function DestinationDetailPage({
       <div className="mx-auto max-w-[1280px] px-4 sm:px-8">
         <Link
           href="/destinations/"
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#475B78] hover:text-[#0059FD]"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#3B4F6B] hover:text-[#0B56E8]"
         >
           <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
           <span>Back to all 14 destinations</span>
@@ -73,14 +73,14 @@ export default async function DestinationDetailPage({
         {/* Hero Composition */}
         <div className="mt-6 grid gap-10 lg:grid-cols-12 lg:items-center">
           <div className="lg:col-span-6">
-            <span className="font-mono-hud text-xs font-semibold tracking-wider text-[#0059FD] uppercase">
+            <span className="font-mono-hud text-xs font-semibold tracking-wider text-[#0B56E8] uppercase">
               {dest.subregion} · {dest.country} · {dest.coordinates}
             </span>
-            <h1 className="font-display mt-2 text-4xl font-extrabold leading-[0.96] text-[#0C1E3A] sm:text-6xl">
+            <h1 className="font-display mt-2 text-4xl font-extrabold leading-[0.96] text-[#091933] sm:text-6xl">
               {dest.name}
             </h1>
-            <p className="font-display mt-4 text-xl font-bold text-[#174A9C]">{dest.tagline}</p>
-            <p className="mt-4 text-sm leading-relaxed text-[#475B78] sm:text-base">
+            <p className="font-display mt-4 text-xl font-bold text-[#083FA8]">{dest.tagline}</p>
+            <p className="mt-4 text-sm leading-relaxed text-[#3B4F6B] sm:text-base">
               {dest.editorialIntro}
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
@@ -97,7 +97,7 @@ export default async function DestinationDetailPage({
             </div>
           </div>
 
-          <div className="img-frame rounded-3xl border border-[#0C1E3A]/12 shadow-xl lg:col-span-6">
+          <div className="img-frame rounded-3xl border border-[#091933]/12 shadow-xl lg:col-span-6">
             <img
               src={dest.image}
               alt={dest.imageAlt}
@@ -108,14 +108,14 @@ export default async function DestinationDetailPage({
 
         {/* Highlights & Experiences */}
         <div className="mt-14 grid gap-8 lg:grid-cols-12">
-          <div className="rounded-3xl border border-[#0C1E3A]/12 bg-[#FFFFFF] p-6 sm:p-8 lg:col-span-6">
-            <h2 className="font-display text-2xl font-bold text-[#0C1E3A]">
+          <div className="rounded-3xl border border-[#091933]/12 bg-[#FFFFFF] p-6 sm:p-8 lg:col-span-6">
+            <h2 className="font-display text-2xl font-bold text-[#091933]">
               Verified Highlights
             </h2>
             <ul className="mt-5 space-y-3.5">
               {dest.highlights.map((h) => (
-                <li key={h} className="flex items-start gap-2.5 text-sm text-[#0C1E3A]">
-                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#0059FD]" aria-hidden="true" />
+                <li key={h} className="flex items-start gap-2.5 text-sm text-[#091933]">
+                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#0B56E8]" aria-hidden="true" />
                   <span>{h}</span>
                 </li>
               ))}
@@ -123,16 +123,16 @@ export default async function DestinationDetailPage({
           </div>
 
           <div className="space-y-4 lg:col-span-6">
-            <h2 className="font-display text-2xl font-bold text-[#0C1E3A]">
+            <h2 className="font-display text-2xl font-bold text-[#091933]">
               Curated Ways to Experience {dest.name}
             </h2>
             {dest.experiences.map((exp) => (
               <div
                 key={exp.title}
-                className="rounded-3xl border border-[#0C1E3A]/12 bg-[#FFFFFF] p-6"
+                className="rounded-3xl border border-[#091933]/12 bg-[#FFFFFF] p-6"
               >
-                <h3 className="font-display text-lg font-bold text-[#0C1E3A]">{exp.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-[#475B78]">{exp.detail}</p>
+                <h3 className="font-display text-lg font-bold text-[#091933]">{exp.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-[#3B4F6B]">{exp.detail}</p>
               </div>
             ))}
           </div>
@@ -140,46 +140,46 @@ export default async function DestinationDetailPage({
 
         {/* Practical Planning Information */}
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="rounded-3xl border border-[#0C1E3A]/12 bg-[#FFFFFF] p-5">
-            <Compass className="h-5 w-5 text-[#0059FD]" aria-hidden="true" />
-            <h3 className="font-mono-hud mt-3 text-[11px] font-bold text-[#647896] uppercase">
+          <div className="rounded-3xl border border-[#091933]/12 bg-[#FFFFFF] p-5">
+            <Compass className="h-5 w-5 text-[#0B56E8]" aria-hidden="true" />
+            <h3 className="font-mono-hud mt-3 text-[11px] font-bold text-[#5B708D] uppercase">
               Ideal Travel Styles
             </h3>
-            <p className="mt-1.5 text-sm font-semibold text-[#0C1E3A]">
+            <p className="mt-1.5 text-sm font-semibold text-[#091933]">
               {dest.planningInfo.idealStyles.join(', ')}
             </p>
           </div>
 
-          <div className="rounded-3xl border border-[#0C1E3A]/12 bg-[#FFFFFF] p-5">
-            <Calendar className="h-5 w-5 text-[#0059FD]" aria-hidden="true" />
-            <h3 className="font-mono-hud mt-3 text-[11px] font-bold text-[#647896] uppercase">
+          <div className="rounded-3xl border border-[#091933]/12 bg-[#FFFFFF] p-5">
+            <Calendar className="h-5 w-5 text-[#0B56E8]" aria-hidden="true" />
+            <h3 className="font-mono-hud mt-3 text-[11px] font-bold text-[#5B708D] uppercase">
               Suggested Window
             </h3>
-            <p className="mt-1.5 text-sm text-[#0C1E3A]">{dest.planningInfo.suggestedWindow}</p>
+            <p className="mt-1.5 text-sm text-[#091933]">{dest.planningInfo.suggestedWindow}</p>
           </div>
 
-          <div className="rounded-3xl border border-[#0C1E3A]/12 bg-[#FFFFFF] p-5">
-            <Clock className="h-5 w-5 text-[#0059FD]" aria-hidden="true" />
-            <h3 className="font-mono-hud mt-3 text-[11px] font-bold text-[#647896] uppercase">
+          <div className="rounded-3xl border border-[#091933]/12 bg-[#FFFFFF] p-5">
+            <Clock className="h-5 w-5 text-[#0B56E8]" aria-hidden="true" />
+            <h3 className="font-mono-hud mt-3 text-[11px] font-bold text-[#5B708D] uppercase">
               Typical Duration
             </h3>
-            <p className="mt-1.5 text-sm text-[#0C1E3A]">{dest.planningInfo.typicalDuration}</p>
+            <p className="mt-1.5 text-sm text-[#091933]">{dest.planningInfo.typicalDuration}</p>
           </div>
 
-          <div className="rounded-3xl border border-[#0C1E3A]/12 bg-[#FFFFFF] p-5">
-            <ShieldCheck className="h-5 w-5 text-[#174A9C]" aria-hidden="true" />
-            <h3 className="font-mono-hud mt-3 text-[11px] font-bold text-[#647896] uppercase">
+          <div className="rounded-3xl border border-[#091933]/12 bg-[#FFFFFF] p-5">
+            <ShieldCheck className="h-5 w-5 text-[#083FA8]" aria-hidden="true" />
+            <h3 className="font-mono-hud mt-3 text-[11px] font-bold text-[#5B708D] uppercase">
               Entry &amp; Documentation Note
             </h3>
-            <p className="mt-1.5 text-xs leading-relaxed text-[#475B78]">
+            <p className="mt-1.5 text-xs leading-relaxed text-[#3B4F6B]">
               {dest.planningInfo.visaAdvisory}
             </p>
           </div>
         </div>
 
         {/* Supporting Services */}
-        <div className="mt-16 border-t border-[#0C1E3A]/12 pt-12">
-          <h2 className="font-display text-2xl font-bold text-[#0C1E3A]">
+        <div className="mt-16 border-t border-[#091933]/12 pt-12">
+          <h2 className="font-display text-2xl font-bold text-[#091933]">
             Services Supporting Your {dest.name} Trip
           </h2>
           <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -189,19 +189,19 @@ export default async function DestinationDetailPage({
                 href={`/services/${s.slug}/`}
                 className="studio-card rounded-2xl p-5"
               >
-                <span className="font-mono-hud text-[10px] font-semibold text-[#0059FD] uppercase">
+                <span className="font-mono-hud text-[10px] font-semibold text-[#0B56E8] uppercase">
                   {s.index} · {s.shortLabel}
                 </span>
-                <h3 className="font-display mt-1 text-lg font-bold text-[#0C1E3A]">{s.name}</h3>
-                <p className="mt-2 text-xs text-[#475B78]">{s.tagline}</p>
+                <h3 className="font-display mt-1 text-lg font-bold text-[#091933]">{s.name}</h3>
+                <p className="mt-2 text-xs text-[#3B4F6B]">{s.tagline}</p>
               </Link>
             ))}
           </div>
         </div>
 
         {/* Related Destinations */}
-        <div className="mt-16 border-t border-[#0C1E3A]/12 pt-12">
-          <h2 className="font-display text-2xl font-bold text-[#0C1E3A]">
+        <div className="mt-16 border-t border-[#091933]/12 pt-12">
+          <h2 className="font-display text-2xl font-bold text-[#091933]">
             Continue Exploring Nearby Routes
           </h2>
           <div className="mt-6 grid gap-6 md:grid-cols-3">
@@ -220,13 +220,13 @@ export default async function DestinationDetailPage({
                   />
                 </div>
                 <div className="p-5">
-                  <span className="font-mono-hud text-[10px] text-[#0059FD] uppercase">
+                  <span className="font-mono-hud text-[10px] text-[#0B56E8] uppercase">
                     {rel.country}
                   </span>
-                  <h3 className="font-display mt-0.5 text-xl font-bold text-[#0C1E3A]">
+                  <h3 className="font-display mt-0.5 text-xl font-bold text-[#091933]">
                     {rel.name}
                   </h3>
-                  <p className="mt-1.5 text-xs text-[#475B78]">{rel.shortDescription}</p>
+                  <p className="mt-1.5 text-xs text-[#3B4F6B]">{rel.shortDescription}</p>
                 </div>
               </Link>
             ))}

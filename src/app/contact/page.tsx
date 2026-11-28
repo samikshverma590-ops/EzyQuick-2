@@ -34,15 +34,15 @@ export default function ContactPage() {
       />
       <div className="mx-auto max-w-[1320px] px-4 sm:px-8">
         <div className="max-w-3xl">
-          <p className="font-mono-hud text-xs font-semibold tracking-wider text-[#0059FD] uppercase">
+          <p className="font-mono-hud text-xs font-semibold tracking-wider text-[#0B56E8] uppercase">
             Contact &amp; Operating Desks
           </p>
-          <h1 className="font-display mt-2 text-4xl font-extrabold leading-[0.98] text-[#0C1E3A] sm:text-6xl">
+          <h1 className="font-display mt-2 text-4xl font-extrabold leading-[0.98] text-[#091933] sm:text-6xl">
             Speak directly with New Delhi or Dubai.
           </h1>
-          <p className="mt-4 text-base leading-relaxed text-[#475B78]">
+          <p className="mt-4 text-base leading-relaxed text-[#3B4F6B]">
             Choose your preferred office below, start a WhatsApp conversation, email{' '}
-            <a href={SITE.emailHref} className="font-semibold text-[#0C1E3A] underline">
+            <a href={SITE.emailHref} className="font-semibold text-[#091933] underline">
               {SITE.email}
             </a>
             , or send a structured journey brief.
@@ -55,24 +55,24 @@ export default function ContactPage() {
             {OFFICES.map((office) => (
               <div
                 key={office.id}
-                className="rounded-3xl border border-[#0C1E3A]/12 bg-[#FFFFFF] p-6"
+                className="rounded-3xl border border-[#091933]/12 bg-[#FFFFFF] p-6"
               >
                 <div className="flex items-center justify-between">
-                  <span className="font-mono-hud text-xs font-semibold text-[#0059FD] uppercase">
+                  <span className="font-mono-hud text-xs font-semibold text-[#0B56E8] uppercase">
                     {office.label}
                   </span>
-                  <span className="font-mono-hud rounded-full bg-[#0C1E3A] px-2.5 py-0.5 text-[10px] font-bold text-[#FFFFFF]">
+                  <span className="font-mono-hud rounded-full bg-[#091933] px-2.5 py-0.5 text-[10px] font-bold text-[#FFFFFF]">
                     {office.code}
                   </span>
                 </div>
-                <h2 className="font-display mt-2 text-2xl font-bold text-[#0C1E3A]">
+                <h2 className="font-display mt-2 text-2xl font-bold text-[#091933]">
                   {office.city}, {office.country}
                 </h2>
-                <p className="mt-2 flex items-start gap-2 text-sm text-[#475B78]">
-                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#0059FD]" aria-hidden="true" />
+                <p className="mt-2 flex items-start gap-2 text-sm text-[#3B4F6B]">
+                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#0B56E8]" aria-hidden="true" />
                   <span>{office.addressLines.join(' ')}</span>
                 </p>
-                <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-[#0C1E3A]/10 pt-4">
+                <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-[#091933]/10 pt-4">
                   <a
                     href={office.phoneHref}
                     className="btn-kinetic px-4 py-2 text-xs"
@@ -80,7 +80,7 @@ export default function ContactPage() {
                     <Phone className="h-3.5 w-3.5" aria-hidden="true" />
                     <span>{office.phoneDisplay}</span>
                   </a>
-                  <span className="font-mono-hud text-[11px] text-[#647896]">
+                  <span className="font-mono-hud text-[11px] text-[#5B708D]">
                     {office.coordinates}
                   </span>
                 </div>
@@ -88,22 +88,22 @@ export default function ContactPage() {
             ))}
 
             {/* Direct Email & WhatsApp */}
-            <div className="rounded-3xl border border-[#0C1E3A]/12 bg-[#FFFFFF] p-6 space-y-3">
-              <h2 className="font-display text-lg font-bold text-[#0C1E3A]">Direct Channels</h2>
+            <div className="rounded-3xl border border-[#091933]/12 bg-[#FFFFFF] p-6 space-y-3">
+              <h2 className="font-display text-lg font-bold text-[#091933]">Direct Channels</h2>
               <a
                 href={SITE.emailHref}
-                className="flex items-center gap-2.5 text-sm font-semibold text-[#0C1E3A] hover:text-[#0059FD]"
+                className="flex items-center gap-2.5 text-sm font-semibold text-[#091933] hover:text-[#0B56E8]"
               >
-                <Mail className="h-4 w-4 text-[#0059FD]" aria-hidden="true" />
+                <Mail className="h-4 w-4 text-[#0B56E8]" aria-hidden="true" />
                 {SITE.email}
               </a>
               <a
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2.5 text-sm font-semibold text-[#0C1E3A] hover:text-[#0059FD]"
+                className="flex items-center gap-2.5 text-sm font-semibold text-[#091933] hover:text-[#0B56E8]"
               >
-                <MessageCircle className="h-4 w-4 text-[#0059FD]" aria-hidden="true" />
+                <MessageCircle className="h-4 w-4 text-[#0B56E8]" aria-hidden="true" />
                 WhatsApp: {SITE.whatsappNumber}
               </a>
             </div>
@@ -111,15 +111,15 @@ export default function ContactPage() {
             {/* Anchored Privacy & Data-Retention Explanation */}
             <div
               id="privacy"
-              className="rounded-3xl border border-[#174A9C]/25 bg-[#174A9C]/8 p-6"
+              className="rounded-3xl border border-[#083FA8]/25 bg-[#083FA8]/8 p-6"
             >
               <div className="flex items-start gap-2.5">
-                <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-[#174A9C]" aria-hidden="true" />
+                <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-[#083FA8]" aria-hidden="true" />
                 <div>
-                  <h2 className="font-display text-base font-bold text-[#0C1E3A]">
+                  <h2 className="font-display text-base font-bold text-[#091933]">
                     Privacy &amp; Data Handling
                   </h2>
-                  <p className="mt-2 text-xs leading-relaxed text-[#475B78]">{SITE.privacyNotice}</p>
+                  <p className="mt-2 text-xs leading-relaxed text-[#3B4F6B]">{SITE.privacyNotice}</p>
                 </div>
               </div>
             </div>

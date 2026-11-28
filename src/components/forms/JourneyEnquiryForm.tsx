@@ -20,6 +20,7 @@ import {
   type EnquiryPayload,
 } from '@/lib/enquiry-schema';
 import { buildSafeMailtoUrl, buildSafeWhatsAppUrl, SITE } from '@/data/site';
+import { INTERNATIONAL_ORIGINS } from '@/data/atlas';
 import { useJourneySelection } from '@/lib/journey-selection';
 
 interface JourneyEnquiryFormProps {
@@ -60,7 +61,7 @@ export function JourneyEnquiryForm({
   defaultDestination,
   defaultDesk,
 }: JourneyEnquiryFormProps) {
-  const { selection, originHub, selectedDestination } = useJourneySelection();
+  const { selection, originCity, originHub, selectedDestination } = useJourneySelection();
 
   const resolvedService: (typeof SERVICE_OPTIONS)[number] =
     defaultService ??
@@ -77,7 +78,7 @@ export function JourneyEnquiryForm({
     fullName: '',
     email: '',
     mobile: '',
-    originCity: originHub.city,
+    originCity: originCity.city,
     destination: resolvedDest,
     departureDate: '',
     returnDate: '',
@@ -98,17 +99,18 @@ export function JourneyEnquiryForm({
     website: '',
   });
 
-  // Also read optional URL query params on client mount (?service=...&destination=...&desk=...&travellers=...)
+  // Also read optional URL query params on client mount (?origin=...&service=...&destination=...&desk=...&travellers=...)
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const params = new URLSearchParams(window.location.search);
+    const qOrigin = params.get('origin');
     const qService = params.get('service');
     const qDest = params.get('destination');
     const qDesk = params.get('desk');
     const qTravellers = params.get('travellers');
     const parsedTravellers = qTravellers ? Number.parseInt(qTravellers, 10) : NaN;
 
-    if (!qService && !qDest && !qDesk && !qTravellers) return;
+    if (!qOrigin && !qService && !qDest && !qDesk && !qTravellers) return;
 
     setForm((prev) => ({
       ...prev,
@@ -119,7 +121,7 @@ export function JourneyEnquiryForm({
       destination: qDest || prev.destination,
       preferredDesk: qDesk === 'dubai' ? 'dubai' : qDesk === 'delhi' ? 'delhi' : prev.preferredDesk,
       originCity:
-        qDesk === 'dubai' ? 'Dubai' : qDesk === 'delhi' ? 'New Delhi' : prev.originCity,
+        qOrigin || (qDesk === 'dubai' ? 'Dubai' : qDesk === 'delhi' ? 'New Delhi' : prev.originCity),
       travellers:
         Number.isFinite(parsedTravellers) && parsedTravellers >= 1 && parsedTravellers <= 500
           ? String(parsedTravellers)
@@ -234,32 +236,51 @@ export function JourneyEnquiryForm({
   const isForex = form.serviceType === 'Forex Services';
 
   const inputCls =
-    'w-full rounded-xl border border-[#0C1E3A]/18 bg-white px-3.5 py-3 text-sm text-[#0C1E3A] placeholder:text-[#647896] focus-visible:border-[#0059FD] focus-visible:ring-2 focus-visible:ring-[#0059FD]/25';
-  const labelCls = 'mb-1.5 block text-xs font-bold tracking-wide text-[#0C1E3A] uppercase';
+    'w-full rounded-xl border border-[#091933]/18 bg-white px-3.5 py-3 text-sm text-[#091933] placeholder:text-[#5B708D] focus-visible:border-[#0B56E8] focus-visible:ring-2 focus-visible:ring-[#0B56E8]/25';
+  const labelCls = 'mb-1.5 block text-xs font-bold tracking-wide text-[#091933] uppercase';
 
   if (status === 'delivered' || status === 'static_ready') {
     return (
       <div
-        className="rounded-3xl border border-[#0C1E3A]/15 bg-[#FFFFFF] p-6 sm:p-8"
+        className="rounded-3xl border border-[#091933]/15 bg-[#FFFFFF] p-6 sm:p-8"
         role="status"
         aria-live="polite"
       >
         <div className="flex items-start gap-3">
           <CheckCircle2
             className={`mt-0.5 h-6 w-6 shrink-0 ${
-              status === 'delivered' ? 'text-emerald-600' : 'text-[#0059FD]'
+              status === 'delivered' ? 'text-emerald-600' : 'text-[#0B56E8]'
             }`}
             aria-hidden="true"
           />
           <div>
-            <h3 className="font-display text-2xl font-bold text-[#0C1E3A]">
+            <h3 className="font-display text-2xl font-bold text-[#091933]">
               {status === 'delivered'
                 ? 'Enquiry Delivered'
-                : 'Brief Validated — Choose Dispatch Channel'}
+                : 'Brief Validated — Send via WhatsApp or Email'}
             </h3>
-            <p className="mt-2 text-sm leading-relaxed text-[#475B78]">{statusMessage}</p>
+            <p className="mt-2 text-sm leading-relaxed text-[#3B4F6B]">{statusMessage}</p>
           </div>
         </div>
+
+        {/* Priority 8: Explicit WhatsApp Handoff & Static-Mode Transparency */}
+        {status === 'static_ready' && (
+          <div className="mt-4 rounded-2xl border border-[#F5A623]/55 bg-[#F4F7FC] px-4 py-3 text-xs leading-relaxed text-[#091933]">
+            <p className="font-bold">Important — one final step to reach our advisor:</p>
+            <ul className="mt-1.5 list-disc space-y-1 pl-4 text-[#3B4F6B]">
+              <li>
+                Tapping <strong>Continue via WhatsApp</strong> opens WhatsApp with your trip brief
+                pre-filled — <strong>you still need to press Send inside WhatsApp</strong> for our
+                desk to receive it.
+              </li>
+              <li>
+                This public website currently runs in static hosting mode, so enquiries are{' '}
+                <strong>not automatically saved in a server database</strong> yet. You can also send
+                via Email or copy the formatted brief below.
+              </li>
+            </ul>
+          </div>
+        )}
 
         {(waPayload.truncated || mailPayload.truncated) && (
           <p className="mt-4 rounded-xl border border-amber-500/30 bg-amber-50 px-3.5 py-2.5 text-xs text-amber-900">
@@ -276,7 +297,7 @@ export function JourneyEnquiryForm({
             className="btn-kinetic px-5 py-3 text-sm"
           >
             <MessageCircle className="h-4 w-4" aria-hidden="true" />
-            <span>Continue via WhatsApp</span>
+            <span>Continue via WhatsApp (Then Press Send)</span>
           </a>
           <a href={mailPayload.url} className="btn-outline-kinetic px-5 py-3 text-sm">
             <Mail className="h-4 w-4" aria-hidden="true" />
@@ -294,21 +315,21 @@ export function JourneyEnquiryForm({
               </>
             ) : (
               <>
-                <Copy className="h-4 w-4 text-[#0059FD]" aria-hidden="true" />
+                <Copy className="h-4 w-4 text-[#0B56E8]" aria-hidden="true" />
                 <span>Copy Full Brief</span>
               </>
             )}
           </button>
         </div>
 
-        <pre className="font-mono-hud mt-5 max-h-56 overflow-auto rounded-2xl border border-[#0C1E3A]/10 bg-[#F4F7FC] p-4 text-xs leading-relaxed text-[#0C1E3A] whitespace-pre-wrap">
+        <pre className="font-mono-hud mt-5 max-h-56 overflow-auto rounded-2xl border border-[#091933]/10 bg-[#F4F7FC] p-4 text-xs leading-relaxed text-[#091933] whitespace-pre-wrap">
           {formattedBrief}
         </pre>
 
         <button
           type="button"
           onClick={() => setStatus('idle')}
-          className="mt-4 text-xs font-semibold text-[#475B78] underline hover:text-[#0C1E3A]"
+          className="mt-4 text-xs font-semibold text-[#3B4F6B] underline hover:text-[#091933]"
         >
           Edit enquiry details
         </button>
@@ -320,11 +341,11 @@ export function JourneyEnquiryForm({
     <form
       onSubmit={handleSubmit}
       noValidate
-      className="rounded-3xl border border-[#0C1E3A]/12 bg-[#FFFFFF] p-6 shadow-[0_24px_60px_-20px_rgba(22,19,16,0.12)] sm:p-8 lg:p-10"
+      className="rounded-3xl border border-[#091933]/12 bg-[#FFFFFF] p-6 shadow-[0_24px_60px_-20px_rgba(22,19,16,0.12)] sm:p-8 lg:p-10"
     >
       {/* Privacy Warning Banner */}
-      <div className="mb-7 flex items-start gap-3 rounded-2xl border border-[#174A9C]/20 bg-[#174A9C]/6 p-4 text-xs leading-relaxed text-[#0C1E3A]">
-        <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-[#174A9C]" aria-hidden="true" />
+      <div className="mb-7 flex items-start gap-3 rounded-2xl border border-[#083FA8]/20 bg-[#083FA8]/6 p-4 text-xs leading-relaxed text-[#091933]">
+        <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-[#083FA8]" aria-hidden="true" />
         <p>
           <strong>Privacy notice:</strong> Never enter passport numbers, payment-card details, or
           clinical medical records in this public form. Share only broad travel requirements.
@@ -366,8 +387,8 @@ export function JourneyEnquiryForm({
                 key={desk.id}
                 className={`flex cursor-pointer items-center gap-3 rounded-2xl border p-3.5 text-xs font-semibold transition-[border-color,background-color,color] ${
                   active
-                    ? 'border-[#0059FD] bg-[#0059FD]/8 text-[#0C1E3A]'
-                    : 'border-[#0C1E3A]/15 bg-white text-[#475B78] hover:border-[#0C1E3A]/35'
+                    ? 'border-[#0B56E8] bg-[#0B56E8]/8 text-[#091933]'
+                    : 'border-[#091933]/15 bg-white text-[#3B4F6B] hover:border-[#091933]/35'
                 }`}
               >
                 <input
@@ -376,7 +397,7 @@ export function JourneyEnquiryForm({
                   value={desk.id}
                   checked={active}
                   onChange={() => update('preferredDesk', desk.id)}
-                  className="accent-[#0059FD]"
+                  className="accent-[#0B56E8]"
                 />
                 <span>{desk.label}</span>
               </label>
@@ -465,20 +486,28 @@ export function JourneyEnquiryForm({
           )}
         </div>
 
-        {/* Origin City */}
+        {/* Origin City (International & Domestic Gateways) */}
         <div>
           <label htmlFor="originCity" className={labelCls}>
-            Departure City *
+            Departure City (Worldwide) *
           </label>
           <input
             id="originCity"
+            list="ezyquick-origin-options"
             type="text"
             value={form.originCity}
             onChange={(e) => update('originCity', e.target.value)}
-            placeholder="e.g. New Delhi, Mumbai, Dubai"
+            placeholder="e.g. New Delhi, Dubai, London, New York, Sydney"
             className={inputCls}
             required
           />
+          <datalist id="ezyquick-origin-options">
+            {INTERNATIONAL_ORIGINS.map((o) => (
+              <option key={o.id} value={o.city}>
+                {o.city} ({o.code}) — {o.country}
+              </option>
+            ))}
+          </datalist>
           {fieldErrors.originCity && (
             <p className="mt-1 text-xs font-medium text-red-700">{fieldErrors.originCity}</p>
           )}
@@ -761,12 +790,12 @@ export function JourneyEnquiryForm({
 
       {/* Consent & Privacy */}
       <div className="mt-5">
-        <label className="flex cursor-pointer items-start gap-3 text-xs leading-relaxed text-[#475B78]">
+        <label className="flex cursor-pointer items-start gap-3 text-xs leading-relaxed text-[#3B4F6B]">
           <input
             type="checkbox"
             checked={form.consent}
             onChange={(e) => update('consent', e.target.checked)}
-            className="mt-0.5 h-4 w-4 shrink-0 accent-[#0059FD]"
+            className="mt-0.5 h-4 w-4 shrink-0 accent-[#0B56E8]"
             required
           />
           <span>
@@ -777,10 +806,32 @@ export function JourneyEnquiryForm({
         {fieldErrors.consent && (
           <p className="mt-1 text-xs font-medium text-red-700">{fieldErrors.consent}</p>
         )}
-        <p className="mt-2.5 text-[11px] leading-relaxed text-[#647896]">{SITE.privacyNotice}</p>
+        <p className="mt-2.5 text-[11px] leading-relaxed text-[#5B708D]">{SITE.privacyNotice}</p>
       </div>
 
-      <div className="mt-7 flex flex-wrap items-center justify-between gap-4">
+      {/* Pre-Submit Trip Brief Review Strip */}
+      <div
+        className="mt-6 rounded-2xl border border-[#DCE5F2] bg-[#F4F7FC] p-4 text-xs text-[#091933]"
+        aria-label="Live trip brief summary"
+      >
+        <div className="font-mono-hud flex flex-wrap items-center justify-between gap-2 text-[10px] font-bold tracking-wider text-[#0B56E8] uppercase">
+          <span>Trip Brief Preview</span>
+          <span>
+            Servicing Desk: {form.preferredDesk === 'dubai' ? 'Dubai (DXB)' : 'New Delhi (DEL)'}
+          </span>
+        </div>
+        <p className="mt-1.5 font-semibold text-[#091933]">
+          {form.originCity.trim() || 'Origin TBD'} → {form.destination.trim() || 'Destination TBD'}{' '}
+          · {form.serviceType} · {form.travellers.trim() || 'Travellers TBD'}
+        </p>
+        <p className="mt-1 text-[11px] leading-relaxed text-[#5B708D]">
+          Next step: reviewing your brief generates a pre-filled WhatsApp or Email message — if you
+          choose WhatsApp, remember to press <strong>Send</strong> inside WhatsApp to deliver it to
+          our desk.
+        </p>
+      </div>
+
+      <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
         <button
           type="submit"
           disabled={status === 'submitting'}
@@ -790,7 +841,7 @@ export function JourneyEnquiryForm({
           <span>{status === 'submitting' ? 'Validating Brief…' : 'Review & Send Enquiry'}</span>
         </button>
 
-        <p className="font-mono-hud text-[11px] text-[#647896]">
+        <p className="font-mono-hud text-[11px] text-[#5B708D]">
           Direct desk: {SITE.email}
         </p>
       </div>

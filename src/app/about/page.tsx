@@ -32,13 +32,13 @@ export default function AboutPage() {
       />
       <div className="mx-auto max-w-[1280px] px-4 sm:px-8">
         <div className="max-w-3xl">
-          <p className="font-mono-hud text-xs font-semibold tracking-wider text-[#0059FD] uppercase">
+          <p className="font-mono-hud text-xs font-semibold tracking-wider text-[#0B56E8] uppercase">
             About EzyQuick Travel Solutions
           </p>
-          <h1 className="font-display mt-2 text-4xl font-extrabold leading-[0.98] text-[#0C1E3A] sm:text-6xl">
+          <h1 className="font-display mt-2 text-4xl font-extrabold leading-[0.98] text-[#091933] sm:text-6xl">
             One reachable travel desk across New Delhi and Dubai.
           </h1>
-          <p className="mt-5 text-base leading-relaxed text-[#475B78]">
+          <p className="mt-5 text-base leading-relaxed text-[#3B4F6B]">
             EzyQuick Travel Solutions coordinates domestic and international travel for individuals,
             families, and businesses. Operating through our offices in Ranjit Nagar, New Delhi and
             IFZA Properties, Dubai Silicon Oasis, we bring nine travel disciplines together under
@@ -51,33 +51,33 @@ export default function AboutPage() {
           {OFFICES.map((office) => (
             <div
               key={office.id}
-              className="rounded-3xl border border-[#0C1E3A]/12 bg-[#FFFFFF] p-7 shadow-sm"
+              className="rounded-3xl border border-[#091933]/12 bg-[#FFFFFF] p-7 shadow-sm"
             >
               <div className="flex items-center justify-between">
-                <span className="font-mono-hud text-xs font-semibold text-[#0059FD] uppercase">
+                <span className="font-mono-hud text-xs font-semibold text-[#0B56E8] uppercase">
                   {office.label}
                 </span>
-                <span className="font-mono-hud rounded-full bg-[#0C1E3A] px-3 py-1 text-xs font-bold text-[#FFFFFF]">
+                <span className="font-mono-hud rounded-full bg-[#091933] px-3 py-1 text-xs font-bold text-[#FFFFFF]">
                   {office.code}
                 </span>
               </div>
-              <h2 className="font-display mt-2 text-2xl font-bold text-[#0C1E3A]">
+              <h2 className="font-display mt-2 text-2xl font-bold text-[#091933]">
                 {office.city}, {office.country}
               </h2>
-              <p className="mt-1 text-sm font-medium text-[#174A9C]">{office.role}</p>
-              <p className="mt-4 flex items-start gap-2 text-sm text-[#475B78]">
-                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#0059FD]" aria-hidden="true" />
+              <p className="mt-1 text-sm font-medium text-[#083FA8]">{office.role}</p>
+              <p className="mt-4 flex items-start gap-2 text-sm text-[#3B4F6B]">
+                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#0B56E8]" aria-hidden="true" />
                 <span>{office.addressLines.join(' ')}</span>
               </p>
-              <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-[#0C1E3A]/10 pt-4 text-xs">
+              <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-[#091933]/10 pt-4 text-xs">
                 <a
                   href={office.phoneHref}
-                  className="inline-flex items-center gap-1.5 font-bold text-[#0C1E3A] hover:text-[#0059FD]"
+                  className="inline-flex items-center gap-1.5 font-bold text-[#091933] hover:text-[#0B56E8]"
                 >
-                  <Phone className="h-3.5 w-3.5 text-[#0059FD]" aria-hidden="true" />
+                  <Phone className="h-3.5 w-3.5 text-[#0B56E8]" aria-hidden="true" />
                   {office.phoneDisplay}
                 </a>
-                <span className="font-mono-hud text-[#647896]">{office.timezone}</span>
+                <span className="font-mono-hud text-[#5B708D]">{office.timezone}</span>
               </div>
             </div>
           ))}
@@ -85,22 +85,22 @@ export default function AboutPage() {
 
         {/* Pillars */}
         <section className="mt-16" aria-labelledby="about-pillars">
-          <h2 id="about-pillars" className="font-display text-3xl font-extrabold text-[#0C1E3A]">
+          <h2 id="about-pillars" className="font-display text-3xl font-extrabold text-[#091933]">
             Our Approach
           </h2>
           <div className="mt-6 grid gap-5 sm:grid-cols-2">
             {WHY_EZYQUICK_PILLARS.map((pillar) => (
               <div
                 key={pillar.index}
-                className="rounded-3xl border border-[#0C1E3A]/12 bg-[#FFFFFF] p-6"
+                className="rounded-3xl border border-[#091933]/12 bg-[#FFFFFF] p-6"
               >
-                <span className="font-mono-hud text-xs font-bold text-[#0059FD]">
+                <span className="font-mono-hud text-xs font-bold text-[#0B56E8]">
                   {pillar.index}
                 </span>
-                <h3 className="font-display mt-2 text-xl font-bold text-[#0C1E3A]">
+                <h3 className="font-display mt-2 text-xl font-bold text-[#091933]">
                   {pillar.title}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-[#475B78]">{pillar.description}</p>
+                <p className="mt-2 text-sm leading-relaxed text-[#3B4F6B]">{pillar.description}</p>
               </div>
             ))}
           </div>
@@ -108,32 +108,32 @@ export default function AboutPage() {
 
         {/* 4 Stages */}
         <section className="mt-16" aria-labelledby="about-stages">
-          <h2 id="about-stages" className="font-display text-3xl font-extrabold text-[#0C1E3A]">
+          <h2 id="about-stages" className="font-display text-3xl font-extrabold text-[#091933]">
             Discover, Plan, Prepare, Travel
           </h2>
           <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {JOURNEY_STAGES.map((stage) => (
               <div
                 key={stage.index}
-                className="rounded-3xl border border-[#0C1E3A]/12 bg-[#FFFFFF] p-6"
+                className="rounded-3xl border border-[#091933]/12 bg-[#FFFFFF] p-6"
               >
-                <span className="font-mono-hud text-xl font-bold text-[#0059FD]">{stage.index}</span>
-                <h3 className="font-display mt-3 text-xl font-bold text-[#0C1E3A]">{stage.title}</h3>
-                <p className="mt-2 text-xs leading-relaxed text-[#475B78]">{stage.detail}</p>
+                <span className="font-mono-hud text-xl font-bold text-[#0B56E8]">{stage.index}</span>
+                <h3 className="font-display mt-3 text-xl font-bold text-[#091933]">{stage.title}</h3>
+                <p className="mt-2 text-xs leading-relaxed text-[#3B4F6B]">{stage.detail}</p>
               </div>
             ))}
           </div>
         </section>
 
         {/* Transparency Statement */}
-        <section className="mt-16 rounded-3xl border border-[#174A9C]/25 bg-[#174A9C]/8 p-7">
+        <section className="mt-16 rounded-3xl border border-[#083FA8]/25 bg-[#083FA8]/8 p-7">
           <div className="flex items-start gap-3">
-            <ShieldCheck className="mt-1 h-5 w-5 shrink-0 text-[#174A9C]" aria-hidden="true" />
+            <ShieldCheck className="mt-1 h-5 w-5 shrink-0 text-[#083FA8]" aria-hidden="true" />
             <div>
-              <h2 className="font-display text-xl font-bold text-[#0C1E3A]">
+              <h2 className="font-display text-xl font-bold text-[#091933]">
                 Commitment to Honest Communication
               </h2>
-              <p className="mt-2 text-sm leading-relaxed text-[#475B78]">
+              <p className="mt-2 text-sm leading-relaxed text-[#3B4F6B]">
                 EzyQuick does not publish speculative live airfares, unverified promotional offers,
                 fabricated customer reviews, or guaranteed embassy/medical outcomes. All quotations
                 and documentation checklists are verified directly against your travel dates before
@@ -144,7 +144,7 @@ export default function AboutPage() {
         </section>
 
         {/* Nine Services Quick Links */}
-        <div className="mt-14 flex flex-wrap items-center justify-between gap-4 border-t border-[#0C1E3A]/12 pt-10">
+        <div className="mt-14 flex flex-wrap items-center justify-between gap-4 border-t border-[#091933]/12 pt-10">
           <div className="flex flex-wrap gap-2">
             {SERVICES.map((s) => (
               <Link

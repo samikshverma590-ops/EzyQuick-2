@@ -6,6 +6,7 @@ export interface AtlasHub {
   label: string;
   city: string;
   country: string;
+  countryIso: string;
   lat: number;
   lng: number;
   address: string;
@@ -13,6 +14,19 @@ export interface AtlasHub {
   phoneHref: string;
   timezone: string;
   role: string;
+}
+
+export interface AtlasOriginCity {
+  id: string;
+  code: string;
+  city: string;
+  country: string;
+  countryIso: string;
+  regionGroup: 'EzyQuick Office Hubs' | 'India Gateways' | 'International Gateways';
+  lat: number;
+  lng: number;
+  servicingDesk: 'delhi' | 'dubai';
+  isEzyQuickHub?: boolean;
 }
 
 export type AtlasRegionFilter =
@@ -26,6 +40,8 @@ export interface AtlasDestination {
   slug: string;
   name: string;
   country: string;
+  countryIso: string;
+  stateOrProvince: string;
   region: 'India' | 'International';
   subregion: Exclude<AtlasRegionFilter, 'All'>;
   lat: number;
@@ -48,6 +64,7 @@ export const ATLAS_HUBS: AtlasHub[] = [
     label: 'India Hub',
     city: 'New Delhi',
     country: 'India',
+    countryIso: '356',
     lat: 28.6519,
     lng: 77.1636,
     address: 'HN 3234, Shop Office No. 2, Ground Floor, Ranjit Nagar, Delhi - 110008, India',
@@ -62,6 +79,7 @@ export const ATLAS_HUBS: AtlasHub[] = [
     label: 'UAE Hub',
     city: 'Dubai',
     country: 'United Arab Emirates',
+    countryIso: '784',
     lat: 25.1212,
     lng: 55.3773,
     address: 'IFZA Properties, Silicon Oasis, Dubai, UAE',
@@ -73,14 +91,190 @@ export const ATLAS_HUBS: AtlasHub[] = [
 ];
 
 /**
- * All 14 verified EzyQuick destinations with verified coordinates.
- * Unverified promotional claims are strictly omitted.
+ * Verified international & domestic departure cities (WGS84 coordinates)
+ * supporting global origin-to-destination route planning on the 3D Atlas & Trip Planner.
+ */
+export const INTERNATIONAL_ORIGINS: AtlasOriginCity[] = [
+  {
+    id: 'delhi',
+    code: 'DEL',
+    city: 'New Delhi',
+    country: 'India',
+    countryIso: '356',
+    regionGroup: 'EzyQuick Office Hubs',
+    lat: 28.6519,
+    lng: 77.1636,
+    servicingDesk: 'delhi',
+    isEzyQuickHub: true,
+  },
+  {
+    id: 'dubai',
+    code: 'DXB',
+    city: 'Dubai',
+    country: 'United Arab Emirates',
+    countryIso: '784',
+    regionGroup: 'EzyQuick Office Hubs',
+    lat: 25.1212,
+    lng: 55.3773,
+    servicingDesk: 'dubai',
+    isEzyQuickHub: true,
+  },
+  {
+    id: 'mumbai',
+    code: 'BOM',
+    city: 'Mumbai',
+    country: 'India',
+    countryIso: '356',
+    regionGroup: 'India Gateways',
+    lat: 19.076,
+    lng: 72.8777,
+    servicingDesk: 'delhi',
+  },
+  {
+    id: 'bengaluru',
+    code: 'BLR',
+    city: 'Bengaluru',
+    country: 'India',
+    countryIso: '356',
+    regionGroup: 'India Gateways',
+    lat: 12.9716,
+    lng: 77.5946,
+    servicingDesk: 'delhi',
+  },
+  {
+    id: 'hyderabad',
+    code: 'HYD',
+    city: 'Hyderabad',
+    country: 'India',
+    countryIso: '356',
+    regionGroup: 'India Gateways',
+    lat: 17.385,
+    lng: 78.4867,
+    servicingDesk: 'delhi',
+  },
+  {
+    id: 'london',
+    code: 'LHR',
+    city: 'London',
+    country: 'United Kingdom',
+    countryIso: '826',
+    regionGroup: 'International Gateways',
+    lat: 51.5072,
+    lng: -0.1276,
+    servicingDesk: 'dubai',
+  },
+  {
+    id: 'singapore-origin',
+    code: 'SIN',
+    city: 'Singapore',
+    country: 'Singapore',
+    countryIso: '702',
+    regionGroup: 'International Gateways',
+    lat: 1.3521,
+    lng: 103.8198,
+    servicingDesk: 'delhi',
+  },
+  {
+    id: 'riyadh',
+    code: 'RUH',
+    city: 'Riyadh',
+    country: 'Saudi Arabia',
+    countryIso: '682',
+    regionGroup: 'International Gateways',
+    lat: 24.7136,
+    lng: 46.6753,
+    servicingDesk: 'dubai',
+  },
+  {
+    id: 'doha',
+    code: 'DOH',
+    city: 'Doha',
+    country: 'Qatar',
+    countryIso: '634',
+    regionGroup: 'International Gateways',
+    lat: 25.2854,
+    lng: 51.531,
+    servicingDesk: 'dubai',
+  },
+  {
+    id: 'frankfurt',
+    code: 'FRA',
+    city: 'Frankfurt',
+    country: 'Germany',
+    countryIso: '276',
+    regionGroup: 'International Gateways',
+    lat: 50.1109,
+    lng: 8.6821,
+    servicingDesk: 'dubai',
+  },
+  {
+    id: 'paris',
+    code: 'CDG',
+    city: 'Paris',
+    country: 'France',
+    countryIso: '250',
+    regionGroup: 'International Gateways',
+    lat: 48.8566,
+    lng: 2.3522,
+    servicingDesk: 'dubai',
+  },
+  {
+    id: 'new-york',
+    code: 'JFK',
+    city: 'New York',
+    country: 'United States',
+    countryIso: '840',
+    regionGroup: 'International Gateways',
+    lat: 40.7128,
+    lng: -74.006,
+    servicingDesk: 'dubai',
+  },
+  {
+    id: 'toronto',
+    code: 'YYZ',
+    city: 'Toronto',
+    country: 'Canada',
+    countryIso: '124',
+    regionGroup: 'International Gateways',
+    lat: 43.6532,
+    lng: -79.3832,
+    servicingDesk: 'dubai',
+  },
+  {
+    id: 'sydney',
+    code: 'SYD',
+    city: 'Sydney',
+    country: 'Australia',
+    countryIso: '036',
+    regionGroup: 'International Gateways',
+    lat: -33.8688,
+    lng: 151.2093,
+    servicingDesk: 'delhi',
+  },
+  {
+    id: 'tokyo',
+    code: 'HND',
+    city: 'Tokyo',
+    country: 'Japan',
+    countryIso: '392',
+    regionGroup: 'International Gateways',
+    lat: 35.6762,
+    lng: 139.6503,
+    servicingDesk: 'delhi',
+  },
+];
+
+/**
+ * All 14 verified EzyQuick destinations with verified WGS84 coordinates,
+ * Natural Earth ISO-3166 numeric IDs, and state/emirate/province labels.
  */
 export const ATLAS_DESTINATIONS: AtlasDestination[] = [
   {
     slug: 'dubai',
     name: 'Dubai',
     country: 'United Arab Emirates',
+    countryIso: '784',
+    stateOrProvince: 'Emirate of Dubai',
     region: 'International',
     subregion: 'Middle East',
     lat: 25.2048,
@@ -104,6 +298,8 @@ export const ATLAS_DESTINATIONS: AtlasDestination[] = [
     slug: 'abu-dhabi',
     name: 'Abu Dhabi',
     country: 'United Arab Emirates',
+    countryIso: '784',
+    stateOrProvince: 'Emirate of Abu Dhabi',
     region: 'International',
     subregion: 'Middle East',
     lat: 24.4539,
@@ -127,6 +323,8 @@ export const ATLAS_DESTINATIONS: AtlasDestination[] = [
     slug: 'phu-quoc',
     name: 'Phu Quoc',
     country: 'Vietnam',
+    countryIso: '704',
+    stateOrProvince: 'Kien Giang Province',
     region: 'International',
     subregion: 'Southeast Asia',
     lat: 10.2899,
@@ -150,6 +348,8 @@ export const ATLAS_DESTINATIONS: AtlasDestination[] = [
     slug: 'phuket',
     name: 'Phuket',
     country: 'Thailand',
+    countryIso: '764',
+    stateOrProvince: 'Phuket Province',
     region: 'International',
     subregion: 'Southeast Asia',
     lat: 7.8804,
@@ -173,6 +373,8 @@ export const ATLAS_DESTINATIONS: AtlasDestination[] = [
     slug: 'krabi',
     name: 'Krabi',
     country: 'Thailand',
+    countryIso: '764',
+    stateOrProvince: 'Krabi Province',
     region: 'International',
     subregion: 'Southeast Asia',
     lat: 8.0863,
@@ -196,6 +398,8 @@ export const ATLAS_DESTINATIONS: AtlasDestination[] = [
     slug: 'bali',
     name: 'Bali',
     country: 'Indonesia',
+    countryIso: '360',
+    stateOrProvince: 'Bali Province',
     region: 'International',
     subregion: 'Southeast Asia',
     lat: -8.4095,
@@ -219,6 +423,8 @@ export const ATLAS_DESTINATIONS: AtlasDestination[] = [
     slug: 'sri-lanka',
     name: 'Sri Lanka',
     country: 'Sri Lanka',
+    countryIso: '144',
+    stateOrProvince: 'Central & Southern Provinces',
     region: 'International',
     subregion: 'South & Central Asia',
     lat: 7.8731,
@@ -242,6 +448,8 @@ export const ATLAS_DESTINATIONS: AtlasDestination[] = [
     slug: 'singapore',
     name: 'Singapore',
     country: 'Singapore',
+    countryIso: '702',
+    stateOrProvince: 'Central & Sentosa Region',
     region: 'International',
     subregion: 'Southeast Asia',
     lat: 1.3521,
@@ -265,6 +473,8 @@ export const ATLAS_DESTINATIONS: AtlasDestination[] = [
     slug: 'malaysia',
     name: 'Malaysia',
     country: 'Malaysia',
+    countryIso: '458',
+    stateOrProvince: 'Kuala Lumpur, Penang & Kedah',
     region: 'International',
     subregion: 'Southeast Asia',
     lat: 3.139,
@@ -288,6 +498,8 @@ export const ATLAS_DESTINATIONS: AtlasDestination[] = [
     slug: 'almaty',
     name: 'Almaty',
     country: 'Kazakhstan',
+    countryIso: '398',
+    stateOrProvince: 'Almaty Region',
     region: 'International',
     subregion: 'South & Central Asia',
     lat: 43.222,
@@ -311,6 +523,8 @@ export const ATLAS_DESTINATIONS: AtlasDestination[] = [
     slug: 'kerala',
     name: 'Kerala',
     country: 'India',
+    countryIso: '356',
+    stateOrProvince: 'Kerala State',
     region: 'India',
     subregion: 'India',
     lat: 9.4981,
@@ -334,6 +548,8 @@ export const ATLAS_DESTINATIONS: AtlasDestination[] = [
     slug: 'goa',
     name: 'Goa',
     country: 'India',
+    countryIso: '356',
+    stateOrProvince: 'Goa State',
     region: 'India',
     subregion: 'India',
     lat: 15.2993,
@@ -357,6 +573,8 @@ export const ATLAS_DESTINATIONS: AtlasDestination[] = [
     slug: 'andaman-nicobar',
     name: 'Andaman & Nicobar',
     country: 'India',
+    countryIso: '356',
+    stateOrProvince: 'Andaman & Nicobar UT',
     region: 'India',
     subregion: 'India',
     lat: 11.7401,
@@ -380,6 +598,8 @@ export const ATLAS_DESTINATIONS: AtlasDestination[] = [
     slug: 'ladakh',
     name: 'Ladakh',
     country: 'India',
+    countryIso: '356',
+    stateOrProvince: 'Ladakh UT',
     region: 'India',
     subregion: 'India',
     lat: 34.1526,

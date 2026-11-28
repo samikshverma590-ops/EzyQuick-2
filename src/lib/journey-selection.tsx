@@ -4,13 +4,17 @@ import React, { createContext, useCallback, useContext, useMemo, useState } from
 import {
   ATLAS_DESTINATIONS,
   ATLAS_HUBS,
+  INTERNATIONAL_ORIGINS,
   type AtlasDestination,
   type AtlasHub,
+  type AtlasOriginCity,
   type AtlasRegionFilter,
 } from '@/data/atlas';
 import { SERVICE_OPTIONS } from '@/lib/enquiry-schema';
 
-export type OriginHubName = 'New Delhi' | 'Dubai';
+export type OriginHubName = string;
+
+export type ConciergeGroupSize = 'Solo' | 'Couple' | 'Family' | 'Group / Corporate 8+';
 
 export interface JourneySelection {
   origin: OriginHubName;
@@ -20,14 +24,31 @@ export interface JourneySelection {
   travellers: number;
   regionFilter: AtlasRegionFilter;
   selectedHubId: 'delhi' | 'dubai' | null;
+  conciergeOfferTag: string | null;
+  conciergeGroupSize: ConciergeGroupSize;
+}
+
+export interface ConciergeOpenPatch {
+  origin?: string;
+  destination?: string | null;
+  service?: string;
+  offerTag?: string | null;
+  groupSize?: ConciergeGroupSize;
+  mode?: 'scroll' | 'drawer';
 }
 
 export interface JourneySelectionContextValue {
   selection: JourneySelection;
+  originCity: AtlasOriginCity;
   originHub: AtlasHub;
   selectedDestination: AtlasDestination | null;
   selectedHub: AtlasHub | null;
   visibleDestinations: AtlasDestination[];
+  conciergeDrawerOpen: boolean;
+  setConciergeDrawerOpen: (open: boolean) => void;
+  setConciergeOfferTag: (tag: string | null) => void;
+  setConciergeGroupSize: (size: ConciergeGroupSize) => void;
+  openConcierge: (patch?: ConciergeOpenPatch) => void;
   setOrigin: (origin: OriginHubName) => void;
   selectDestinationBySlug: (slug: string | null) => void;
   selectDestinationByName: (name: string | null) => void;
@@ -52,6 +73,8 @@ const DEFAULT_SELECTION: JourneySelection = {
   travellers: 2,
   regionFilter: 'All',
   selectedHubId: null,
+  conciergeOfferTag: 'Unlisted Hotel & Flight Desk Rates',
+  conciergeGroupSize: 'Couple',
 };
 
 const JourneySelectionContext = createContext<JourneySelectionContextValue | null>(null);
@@ -70,11 +93,22 @@ function resolveDestinationByInput(input: string | null | undefined): AtlasDesti
   );
 }
 
-function resolveOrigin(input: string | undefined): OriginHubName {
-  if (!input) return 'New Delhi';
+function resolveOriginCity(input: string | undefined): AtlasOriginCity {
+  if (!input) return INTERNATIONAL_ORIGINS[0];
   const normalized = input.trim().toLowerCase();
-  if (normalized === 'dubai' || normalized === 'dxb' || normalized === 'uae') return 'Dubai';
-  return 'New Delhi';
+  const exact = INTERNATIONAL_ORIGINS.find(
+    (c) =>
+      c.city.toLowerCase() === normalized ||
+      c.id.toLowerCase() === normalized ||
+      c.code.toLowerCase() === normalized
+  );
+  if (exact) return exact;
+  if (normalized === 'uae') return INTERNATIONAL_ORIGINS[1];
+  return INTERNATIONAL_ORIGINS[0];
+}
+
+function resolveOrigin(input: string | undefined): OriginHubName {
+  return resolveOriginCity(input).city;
 }
 
 function resolveService(input: string | undefined): (typeof SERVICE_OPTIONS)[number] {
@@ -85,6 +119,7 @@ function resolveService(input: string | undefined): (typeof SERVICE_OPTIONS)[num
 
 export function JourneySelectionProvider({ children }: { children: React.ReactNode }) {
   const [selection, setSelection] = useState<JourneySelection>(DEFAULT_SELECTION);
+  const [conciergeDrawerOpen, setConciergeDrawerOpen] = useState(false);
 
   const setOrigin = useCallback((origin: OriginHubName) => {
     setSelection((prev) => ({
@@ -138,9 +173,72 @@ export function JourneySelectionProvider({ children }: { children: React.ReactNo
     }));
   }, []);
 
+  const setConciergeOfferTag = useCallback((tag: string | null) => {
+    setSelection((prev) => ({
+      ...prev,
+      conciergeOfferTag: tag,
+    }));
+  }, []);
+
+  const setConciergeGroupSize = useCallback((size: ConciergeGroupSize) => {
+    setSelection((prev) => ({
+      ...prev,
+      conciergeGroupSize: size,
+    }));
+  }, []);
+
+  const openConcierge = useCallback((patch?: ConciergeOpenPatch) => {
+    if (patch) {
+      setSelection((prev) => {
+        const nextOrigin = patch.origin !== undefined ? resolveOrigin(patch.origin) : prev.origin;
+        const nextService =
+          patch.service !== undefined ? resolveService(patch.service) : prev.service;
+        const nextOffer =
+          patch.offerTag !== undefined ? patch.offerTag : prev.conciergeOfferTag;
+        const nextGroup =
+          patch.groupSize !== undefined ? patch.groupSize : prev.conciergeGroupSize;
+
+        if (patch.destination !== undefined) {
+          const dest = resolveDestinationByInput(patch.destination);
+          return {
+            ...prev,
+            origin: nextOrigin,
+            service: nextService,
+            conciergeOfferTag: nextOffer,
+            conciergeGroupSize: nextGroup,
+            destination: dest ? dest.name : patch.destination,
+            destinationSlug: dest ? dest.slug : null,
+            selectedHubId: null,
+          };
+        }
+
+        return {
+          ...prev,
+          origin: nextOrigin,
+          service: nextService,
+          conciergeOfferTag: nextOffer,
+          conciergeGroupSize: nextGroup,
+        };
+      });
+    }
+
+    if (patch?.mode === 'drawer') {
+      setConciergeDrawerOpen(true);
+      return;
+    }
+
+    if (typeof document !== 'undefined') {
+      const target = document.getElementById('fast-track-concierge');
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        return;
+      }
+    }
+    setConciergeDrawerOpen(true);
+  }, []);
+
   const setRegionFilter = useCallback((region: AtlasRegionFilter) => {
     setSelection((prev) => {
-      // Clear selected destination if it no longer belongs to the chosen region
       const currentDest = prev.destinationSlug
         ? ATLAS_DESTINATIONS.find((d) => d.slug === prev.destinationSlug) || null
         : null;
@@ -208,9 +306,11 @@ export function JourneySelectionProvider({ children }: { children: React.ReactNo
     }));
   }, []);
 
+  const originCity = useMemo(() => resolveOriginCity(selection.origin), [selection.origin]);
+
   const originHub = useMemo(
-    () => ATLAS_HUBS.find((h) => h.city === selection.origin) || ATLAS_HUBS[0],
-    [selection.origin]
+    () => ATLAS_HUBS.find((h) => h.id === originCity.servicingDesk) || ATLAS_HUBS[0],
+    [originCity.servicingDesk]
   );
 
   const selectedDestination = useMemo(
@@ -237,10 +337,16 @@ export function JourneySelectionProvider({ children }: { children: React.ReactNo
   const value = useMemo<JourneySelectionContextValue>(
     () => ({
       selection,
+      originCity,
       originHub,
       selectedDestination,
       selectedHub,
       visibleDestinations,
+      conciergeDrawerOpen,
+      setConciergeDrawerOpen,
+      setConciergeOfferTag,
+      setConciergeGroupSize,
+      openConcierge,
       setOrigin,
       selectDestinationBySlug,
       selectDestinationByName,
@@ -253,10 +359,15 @@ export function JourneySelectionProvider({ children }: { children: React.ReactNo
     }),
     [
       selection,
+      originCity,
       originHub,
       selectedDestination,
       selectedHub,
       visibleDestinations,
+      conciergeDrawerOpen,
+      setConciergeOfferTag,
+      setConciergeGroupSize,
+      openConcierge,
       setOrigin,
       selectDestinationBySlug,
       selectDestinationByName,
